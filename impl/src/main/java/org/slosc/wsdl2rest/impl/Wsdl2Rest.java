@@ -1,6 +1,7 @@
 package org.slosc.wsdl2rest.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class Wsdl2Rest {
         return svcClasses;
     }
 
-    public void generateClasses(String toLocation) {
+    public void generateClasses(String toLocation) throws IOException {
         if (toLocation == null || toLocation.length() == 0)
             return;
 

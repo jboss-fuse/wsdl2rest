@@ -26,8 +26,8 @@ import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slosc.wsdl2rest.ClassDefinition;
 import org.slosc.wsdl2rest.Param;
 import org.slosc.wsdl2rest.WSDLProcessor;
@@ -42,7 +42,7 @@ import org.slosc.wsdl2rest.util.IllegalStateAssertion;
  */
 public class WSDLProcessorImpl implements WSDLProcessor {
 
-    private static Log log = LogFactory.getLog(WSDLProcessorImpl.class);
+    private static Logger log = LoggerFactory.getLogger(WSDLProcessorImpl.class);
 
     private static final String xsdURI = "http://www.w3.org/2001/XMLSchema";
 
@@ -100,7 +100,7 @@ public class WSDLProcessorImpl implements WSDLProcessor {
     }
 
     private void processBindings(Definition def, Binding binding) {
-        log.info("\tBinding: " + binding.getQName().getLocalPart());
+        log.info("\tBinding: {}", binding.getQName().getLocalPart());
         processPortTypes(def, binding.getPortType());
     }
 
@@ -114,13 +114,13 @@ public class WSDLProcessorImpl implements WSDLProcessor {
     @SuppressWarnings("unchecked")
     private void processPortTypes(Definition def, PortType portTypes) {
 
-        log.info("\tPortType: " + portTypes.getQName().getLocalPart());
+        log.info("\tPortType: {}", portTypes.getQName().getLocalPart());
         log.info("\tOperations: ");
 
         for (Object op : portTypes.getOperations()) {
             Operation oper = (Operation) op;
             String operation = oper.getName();
-            log.info("\t\tOperation: " + operation);
+            log.info("\t\tOperation: {}", operation);
 
             ClassDefinitionImpl svcDef = (ClassDefinitionImpl) serviceMap.get(this.services.peek());
             svcDef.addMethod(operation);
@@ -156,7 +156,7 @@ public class WSDLProcessorImpl implements WSDLProcessor {
 
     @SuppressWarnings("unchecked")
     private void processMessages(Definition def, Message message, String operation, int type) {
-        log.info("\t\t\tMessage: " + message.getQName().getLocalPart());
+        log.info("\t\t\tMessage: {}", message.getQName().getLocalPart());
         if (!message.isUndefined() && message.getParts() != null) {
 
             List<Part> parts = message.getOrderedParts(null);
@@ -167,14 +167,14 @@ public class WSDLProcessorImpl implements WSDLProcessor {
                 if (paramQName == null) {
                     paramQName = new QName(part.getName());
                 }
-                log.info("\t\t\tPart: " + paramQName.getPrefix() + ":" + paramQName.getLocalPart());
+                log.info("\t\t\tPart: {}:{}", paramQName.getPrefix(), paramQName.getLocalPart());
                 QName typeQName = part.getTypeName();
                 String typeName = typeRegistry.get(typeQName);
                 IllegalStateAssertion.assertNotNull(typeName, "Unsupported parameter type: " + typeQName);
                 if (typeName.startsWith("java.lang.")) {
                     typeName = typeName.substring(10);
                 }
-                log.info("\t\t\t\tParams: " + typeName + " " + paramQName);
+                log.info("\t\t\t\tParams: {} {}", typeName, paramQName);
                 params.add(new ParamImpl(typeName, paramQName.getLocalPart()));
             }
             if (parts.size() > 0) {
@@ -205,7 +205,7 @@ public class WSDLProcessorImpl implements WSDLProcessor {
         log.info("Services: ");
         for (Service svc : services.values()) {
             String svcName = svc.getQName().getLocalPart();
-            log.info("\t" + svcName);
+            log.info("\t{}", svcName);
             ClassDefinitionImpl svcDef = new ClassDefinitionImpl();
             svcDef.setClassName(svcName);
             svcDef.setPackageName(svcPackageName);
@@ -214,7 +214,7 @@ public class WSDLProcessorImpl implements WSDLProcessor {
 
             Map<QName, Port> ports = svc.getPorts();
             for (Port port : ports.values()) {
-                log.info("\tPort: " + port.getName());
+                log.info("\tPort: {}", port.getName());
                 processBindings(def, port.getBinding());
 
             }

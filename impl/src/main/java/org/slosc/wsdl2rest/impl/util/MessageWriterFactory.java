@@ -21,7 +21,7 @@ package org.slosc.wsdl2rest.impl.util;
 public class MessageWriterFactory {
     private static MessageWriter _msgWriter = null;
 
-    public static MessageWriter getMessageWriter(Class msgWriter){
+    public static MessageWriter getMessageWriter(Class<?> msgWriter){
         if(_msgWriter == null){
             if(msgWriter == null){
                 _msgWriter = new ConsoleMessageWriter();

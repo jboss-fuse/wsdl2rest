@@ -1,24 +1,24 @@
 package org.slosc.wsdl2rest.impl.codegenerator;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
 import org.slosc.wsdl2rest.ClassDefinition;
 import org.slosc.wsdl2rest.ClassGenerator;
 import org.slosc.wsdl2rest.MethodInfo;
 import org.slosc.wsdl2rest.Param;
 import org.slosc.wsdl2rest.impl.util.MessageWriter;
 import org.slosc.wsdl2rest.impl.util.MessageWriterFactory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.util.List;
-import java.io.*;
 
 public class ClassGeneratorImpl implements ClassGenerator {
 
-    private static Log log = LogFactory.getLog(ClassGeneratorImpl.class);
     protected MessageWriter msgWriter = MessageWriterFactory.getMessageWriter();
 
     protected String outputPath;
-    protected PrintWriter writer = null;
     protected List<ClassDefinition> svcClasses;
     protected ClassDefinition clazzDef;
 
@@ -30,7 +30,7 @@ public class ClassGeneratorImpl implements ClassGenerator {
         this.outputPath = outputPath;
     }
 
-    public void generateClasses(List<ClassDefinition> svcClassesDefs) {
+    public void generateClasses(List<ClassDefinition> svcClassesDefs) throws IOException {
         this.svcClasses = svcClassesDefs;
         for (ClassDefinition classDef : svcClasses) {
             this.clazzDef = classDef;
@@ -39,23 +39,16 @@ public class ClassGeneratorImpl implements ClassGenerator {
             File packageDir = new File(outputPath + File.separatorChar + packageName);
             packageDir.mkdirs();
 
-            try {
-                File clazzFile = new File(packageDir, clazzDef.getClassName() + ".java");
-                writer = new PrintWriter(new BufferedWriter(new FileWriter(clazzFile)));
-            } catch (IOException e) {
-                log.warn(e.getStackTrace());
-                continue;
+            File clazzFile = new File(packageDir, clazzDef.getClassName() + ".java");
+            try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(clazzFile)))) {
+                writePackageName(writer, classDef);
+                writeImports(writer, classDef);
+                writeServiceClass(writer, classDef);
             }
-
-            writePackageName(classDef);
-            writeImports(classDef);
-            writeServiceClass(classDef);
-
-            writer.close();
         }
     }
 
-    protected void writePackageName(ClassDefinition clazzDef) {
+    protected void writePackageName(PrintWriter writer, ClassDefinition clazzDef) {
         final String packName = clazzDef.getPackageName();
         if (packName != null && packName.length() != 0) {
             writer.println("package " + packName + ";");
@@ -63,7 +56,7 @@ public class ClassGeneratorImpl implements ClassGenerator {
         writer.println();
     }
 
-    protected void writeImports(ClassDefinition clazzDef) {
+    protected void writeImports(PrintWriter writer, ClassDefinition clazzDef) {
         if (clazzDef.getImports() != null) {
             for (String impo : clazzDef.getImports()) {
                 writer.println("import " + impo + ";");
@@ -72,22 +65,22 @@ public class ClassGeneratorImpl implements ClassGenerator {
         writer.println();
     }
 
-    protected void writeServiceClass(ClassDefinition clazzDef) {
+    protected void writeServiceClass(PrintWriter writer, ClassDefinition clazzDef) {
         if (clazzDef.getClassName() != null) {
             writer.println("public interface " + clazzDef.getClassName() + " {\n");
-            writeMethods(clazzDef.getMethodInfos());
+            writeMethods(writer, clazzDef.getMethodInfos());
             writer.println("}");
             writer.println();
         }
     }
 
-    protected void writeMethods(List<? extends MethodInfo> methods) {
+    protected void writeMethods(PrintWriter writer, List<? extends MethodInfo> methods) {
         if (methods != null) {
             for (MethodInfo mInf : methods) {
                 String retType = mInf.getReturnType();
                 writer.print("\tpublic " + (retType != null ? retType : "void") + " ");
                 writer.print(mInf.getMethodName() + "(");
-                writeParams(mInf.getParams());
+                writeParams(writer, mInf.getParams());
                 String excep = mInf.getExceptionType() != null ? (" throws " + mInf.getExceptionType()) : "";
                 writer.println(")" + excep + ";");
                 writer.println();
@@ -95,19 +88,19 @@ public class ClassGeneratorImpl implements ClassGenerator {
         }
     }
 
-    protected void writeMethod(MethodInfo mInf) {
+    protected void writeMethod(PrintWriter writer, MethodInfo mInf) {
         if (mInf != null) {
             String retType = mInf.getReturnType();
             writer.print("\tpublic " + (retType != null ? retType : "void") + " ");
             writer.print(mInf.getMethodName() + "(");
-            writeParams(mInf.getParams());
+            writeParams(writer, mInf.getParams());
             String excep = mInf.getExceptionType() != null ? (" throws " + mInf.getExceptionType()) : "";
             writer.println(")" + excep + ";");
             writer.println();
         }
     }
 
-    protected void writeParams(List<Param> params) {
+    protected void writeParams(PrintWriter writer, List<Param> params) {
         if (params != null) {
             int i = 0;
             int size = params.size();

@@ -21,8 +21,6 @@ public class ResourceMapperImpl implements ResourceMapper {
     private String httpPostWords = "[Pp]ost|[Aa]dd|[Cc]reate";
     private String httpDeleteWords = "[Dd]elete|[Rr]emove";
     private String httpPutWords = "[Pp]ut|[Ss]et|[Uu]pdate|[Cc]hange|[Mm]odify";
-    private String httpAllWords = httpGetWords + "|" + httpPostWords + "|" + httpDeleteWords + "|" + httpPutWords;
-    private String notHttpAllWords = "(?!" + httpAllWords + ").*";
 
     private Pattern httpGetWordsPattern = Pattern.compile(httpGetWords);
     private Pattern httpPostWordsPattern = Pattern.compile(httpPostWords);
@@ -116,12 +114,6 @@ public class ResourceMapperImpl implements ResourceMapper {
                     }
                 }
             }
-        }
-    }
-
-    private void addResources(List<String> resouces) {
-        for (String str : resources) {
-            addResource(str);
         }
     }
 

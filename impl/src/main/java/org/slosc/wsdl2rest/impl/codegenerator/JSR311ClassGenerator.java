@@ -1,5 +1,6 @@
 package org.slosc.wsdl2rest.impl.codegenerator;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,21 +15,23 @@ public class JSR311ClassGenerator extends ClassGeneratorImpl {
     }
 
     @Override
-    protected void writeImports(ClassDefinition clazzDef) {
+    protected void writeImports(PrintWriter writer, ClassDefinition clazzDef) {
         writer.println("import javax.ws.rs.GET;");
         writer.println("import javax.ws.rs.POST;");
         writer.println("import javax.ws.rs.Path;");
         writer.println("import javax.ws.rs.PathParam;");
-        super.writeImports(clazzDef);
+        super.writeImports(writer, clazzDef);
     }
 
-    protected void writeServiceClass(ClassDefinition clazzDef) {
+    @Override
+    protected void writeServiceClass(PrintWriter writer, ClassDefinition clazzDef) {
         String pathName = clazzDef.getClassName().toLowerCase();
         writer.println("@Path(\"/" + pathName + "/\")");
-        super.writeServiceClass(clazzDef);
+        super.writeServiceClass(writer, clazzDef);
     }
 
-    protected void writeMethods(List<? extends MethodInfo> methods) {
+    @Override
+    protected void writeMethods(PrintWriter writer, List<? extends MethodInfo> methods) {
         if (methods != null) {
             for (MethodInfo methodInf : methods) {
                 List<String> resourceInf = methodInf.getResources();
@@ -55,12 +58,13 @@ public class JSR311ClassGenerator extends ClassGeneratorImpl {
                     }
                     writer.println("\")");
                 }
-                writeMethod(methodInf);
+                writeMethod(writer, methodInf);
             }
         }
     }
 
-    protected void writeParams(List<Param> params) {
+    @Override
+    protected void writeParams(PrintWriter writer, List<Param> params) {
         int i = 0;
         for (Param p : params) {
             String paramName = p.getParamName();
