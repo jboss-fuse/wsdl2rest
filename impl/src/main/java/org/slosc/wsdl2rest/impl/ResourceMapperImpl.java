@@ -1,7 +1,8 @@
-package org.slosc.wsdl2rest.impl.mappings;
+package org.slosc.wsdl2rest.impl;
 
 import java.util.List;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -9,6 +10,8 @@ import org.slosc.wsdl2rest.ClassDefinition;
 import org.slosc.wsdl2rest.MethodInfo;
 import org.slosc.wsdl2rest.Param;
 import org.slosc.wsdl2rest.ResourceMapper;
+import org.slosc.wsdl2rest.impl.service.MethodInfoImpl;
+import org.slosc.wsdl2rest.impl.service.ParamImpl;
 
 import java.util.regex.Matcher;
 
@@ -17,32 +20,66 @@ public class ResourceMapperImpl implements ResourceMapper {
     private List<String> resources;
     private String httpMethod;
 
-    private String httpGetWords = "[Gg]et|[Rr]ead|[Ff]etch";
+    private String httpGetWords = "[Gg]et|[Rr]ead|[Ff]etch|[Ll]ist";
     private String httpPostWords = "[Pp]ost|[Aa]dd|[Cc]reate";
-    private String httpDeleteWords = "[Dd]elete|[Rr]emove";
-    private String httpPutWords = "[Pp]ut|[Ss]et|[Uu]pdate|[Cc]hange|[Mm]odify";
+    private String httpPutWords = "[Pp]ut|[Ss]et|[Uu]pd|[Mm]od";
+    private String httpDelWords = "[Dd]el|[Rr]em";
 
     private Pattern httpGetWordsPattern = Pattern.compile(httpGetWords);
     private Pattern httpPostWordsPattern = Pattern.compile(httpPostWords);
-    private Pattern httpDeleteWordsPattern = Pattern.compile(httpDeleteWords);
+    private Pattern httpDeleteWordsPattern = Pattern.compile(httpDelWords);
     private Pattern httpPutWordsPattern = Pattern.compile(httpPutWords);
-    //    private Pattern resourcePattern = Pattern.compile("([A-Z][a-z]+)&&"+notHttpAllWords+"|([a-z]+)&&"+notHttpAllWords);
     private Pattern resourcePattern = Pattern.compile("[a-z]+|([A-Z][a-z]+)*");
 
-    public ResourceMapperImpl() {
-    }
-
-    public ResourceMapperImpl(String resourceName) {
-        resources = new ArrayList<String>();
-        mapResources(resourceName);
-    }
-
     public List<String> getResources() {
-        return resources;
+        return Collections.unmodifiableList(resources);
     }
 
-    public void mapResources(String resourceName) {
-        //        Pattern resourcePattern = Pattern.compile("([A-Z][a-z]+)|([a-z]+)");
+    // This method will iterate through Class, Method and Parameter definitions
+    // and assign respective resources to them
+    public void assignResources(List<ClassDefinition> svcClasses) {
+        for (ClassDefinition clazzDef : svcClasses) {
+            // Don't break up class name
+            if (clazzDef.getClassName() != null) {
+                clazzDef.setResources(Arrays.asList(clazzDef.getClassName()));
+                for (MethodInfo m : clazzDef.getMethodInfos()) {
+                    MethodInfoImpl minfo = (MethodInfoImpl) m;
+                    if (minfo.getMethodName() != null) {
+                        // Parse the method name
+                        resources = new ArrayList<String>();
+                        mapResources(minfo.getMethodName());
+                        minfo.setResources(resources);
+                        minfo.setHttpMethod(httpMethod);
+
+                        if (minfo.getParams() != null) {
+                            for (Param p : minfo.getParams()) {
+                                ParamImpl param = (ParamImpl) p;
+                                if (param.getParamName() != null)
+                                    param.setResources(Arrays.asList(param.getParamName()));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void addResource(String resouce) {
+        if (!resourceExists(resouce)) {
+            this.resources.add(resouce);
+        }
+    }
+
+    private boolean resourceExists(String resource) {
+        for (String str : this.resources) {
+            if (str.equals(resource)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void mapResources(String resourceName) {
         Matcher resourceMatcher = resourcePattern.matcher(resourceName);
         Matcher httpMethodMatcher;
         boolean foundHttpMethod = false;
@@ -50,7 +87,6 @@ public class ResourceMapperImpl implements ResourceMapper {
         while (resourceMatcher.find()) {
             if (!resourceMatcher.group().equals("")) {
                 addResource(resourceMatcher.group());
-
                 if (!foundHttpMethod) {
                     httpMethodMatcher = httpGetWordsPattern.matcher(resourceMatcher.group());
                     if (httpMethodMatcher.find() && !httpMethodMatcher.group().equals("")) {
@@ -87,49 +123,6 @@ public class ResourceMapperImpl implements ResourceMapper {
 
     public String toString() {
         return resources.toString();
-    }
-
-    // This method will iterate through Class, Method and Parameter definitions
-    // and assign respective resources to them
-    public void assignResources(List<ClassDefinition> svcClasses) {
-        for (ClassDefinition clazzDef : svcClasses) {
-            // Don't break up class name
-            if (clazzDef.getClassName() != null) {
-                clazzDef.setResources(Arrays.asList(clazzDef.getClassName()));
-                for (MethodInfo mInf : clazzDef.getMethodInfos()) {
-                    if (mInf.getMethodName() != null) {
-                        // Parse the method name
-                        resources = new ArrayList<String>();
-                        mapResources(mInf.getMethodName());
-                        mInf.setResources(resources);
-                        mInf.setHttpMethod(httpMethod);
-
-                        if (mInf.getParams() != null) {
-                            for (Param p : mInf.getParams()) {
-                                // Don't break up parameter name
-                                if (p.getParamName() != null)
-                                    p.setResources(Arrays.asList(p.getParamName()));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void addResource(String resouce) {
-        if (!resourceExists(resouce)) {
-            this.resources.add(resouce);
-        }
-    }
-
-    private boolean resourceExists(String resource) {
-        for (String str : this.resources) {
-            if (str.equals(resource)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

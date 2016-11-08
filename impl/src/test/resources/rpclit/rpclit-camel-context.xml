@@ -10,12 +10,35 @@
         address="http://localhost:8080/AddressService/AddressPort" 
         serviceClass="org.slosc.wsdl2rest.test.rpclit.Address" />
         
+    <bean id="addressBean" class="org.slosc.wsdl2rest.test.rpclit.AddressBean"/>
+    
     <camelContext id="cxfws" xmlns="http://camel.apache.org/schema/spring">
         <route id="consumerRoute">
             <from uri="cxf:bean:cxfConsumer" />
-            <transform>
-                <simple>Hello ${body}</simple>
-            </transform>
+            <log loggingLevel="INFO" message="${header.operationName}"/>
+            <log loggingLevel="INFO" message="${body}"/>
+            <choice>
+                <when>
+                    <simple>${header.operationName} == 'listAddresses'</simple>
+                    <to uri="bean:addressBean?method=listAddresses"/>
+                </when>
+                <when>
+                    <simple>${header.operationName} == 'getAddress'</simple>
+                    <to uri="bean:addressBean?method=getAddress"/>
+                </when>
+                <when>
+                    <simple>${header.operationName} == 'addAddress'</simple>
+                    <to uri="bean:addressBean?method=addAddress"/>
+                </when>
+                <when>
+                    <simple>${header.operationName} == 'updAddress'</simple>
+                    <to uri="bean:addressBean?method=updAddress&amp;multiParameterArray=true"/>
+                </when>
+                <when>
+                    <simple>${header.operationName} == 'delAddress'</simple>
+                    <to uri="bean:addressBean?method=delAddress"/>
+                </when>
+            </choice>
         </route>
     </camelContext>
 

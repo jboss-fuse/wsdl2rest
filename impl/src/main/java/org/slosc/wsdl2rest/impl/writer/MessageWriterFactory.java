@@ -1,4 +1,4 @@
-package org.slosc.wsdl2rest.impl.util;
+package org.slosc.wsdl2rest.impl.writer;
 
 /*
  * Copyright (c) 2008 SL_OpenSource Consortium

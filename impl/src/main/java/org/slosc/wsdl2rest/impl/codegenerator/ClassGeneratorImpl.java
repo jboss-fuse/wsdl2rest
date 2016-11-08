@@ -11,8 +11,8 @@ import org.slosc.wsdl2rest.ClassDefinition;
 import org.slosc.wsdl2rest.ClassGenerator;
 import org.slosc.wsdl2rest.MethodInfo;
 import org.slosc.wsdl2rest.Param;
-import org.slosc.wsdl2rest.impl.util.MessageWriter;
-import org.slosc.wsdl2rest.impl.util.MessageWriterFactory;
+import org.slosc.wsdl2rest.impl.writer.MessageWriter;
+import org.slosc.wsdl2rest.impl.writer.MessageWriterFactory;
 
 public class ClassGeneratorImpl implements ClassGenerator {
 
@@ -76,38 +76,36 @@ public class ClassGeneratorImpl implements ClassGenerator {
 
     protected void writeMethods(PrintWriter writer, List<? extends MethodInfo> methods) {
         if (methods != null) {
-            for (MethodInfo mInf : methods) {
-                String retType = mInf.getReturnType();
+            for (MethodInfo minfo : methods) {
+                String retType = minfo.getReturnType();
                 writer.print("\tpublic " + (retType != null ? retType : "void") + " ");
-                writer.print(mInf.getMethodName() + "(");
-                writeParams(writer, mInf.getParams());
-                String excep = mInf.getExceptionType() != null ? (" throws " + mInf.getExceptionType()) : "";
+                writer.print(minfo.getMethodName() + "(");
+                writeParams(writer, minfo);
+                String excep = minfo.getExceptionType() != null ? (" throws " + minfo.getExceptionType()) : "";
                 writer.println(")" + excep + ";");
                 writer.println();
             }
         }
     }
 
-    protected void writeMethod(PrintWriter writer, MethodInfo mInf) {
-        if (mInf != null) {
-            String retType = mInf.getReturnType();
+    protected void writeMethod(PrintWriter writer, MethodInfo minfo) {
+        if (minfo != null) {
+            String retType = minfo.getReturnType();
             writer.print("\tpublic " + (retType != null ? retType : "void") + " ");
-            writer.print(mInf.getMethodName() + "(");
-            writeParams(writer, mInf.getParams());
-            String excep = mInf.getExceptionType() != null ? (" throws " + mInf.getExceptionType()) : "";
+            writer.print(minfo.getMethodName() + "(");
+            writeParams(writer, minfo);
+            String excep = minfo.getExceptionType() != null ? (" throws " + minfo.getExceptionType()) : "";
             writer.println(")" + excep + ";");
             writer.println();
         }
     }
 
-    protected void writeParams(PrintWriter writer, List<Param> params) {
-        if (params != null) {
-            int i = 0;
-            int size = params.size();
-            for (Param p : params) {
-                String comma = (++i != size) ? ", " : "";
-                writer.print(p.getParamType() + " " + p.getParamName() + comma);
-            }
+    protected void writeParams(PrintWriter writer, MethodInfo minfo) {
+        List<Param> params = minfo.getParams();
+        int i = 0;
+        for (Param p : params) {
+            writer.print(i++ == 0 ? "" : ", ");
+            writer.print(p.getParamType() + " " + p.getParamName());
         }
     }
 }

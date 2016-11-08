@@ -12,10 +12,8 @@ import org.slosc.wsdl2rest.ClassGenerator;
 import org.slosc.wsdl2rest.ResourceMapper;
 import org.slosc.wsdl2rest.WSDLProcessor;
 import org.slosc.wsdl2rest.impl.codegenerator.ClassGeneratorFactory;
-import org.slosc.wsdl2rest.impl.mappings.ResourceMapperImpl;
-import org.slosc.wsdl2rest.impl.util.MessageWriter;
-import org.slosc.wsdl2rest.impl.util.MessageWriterFactory;
-import org.slosc.wsdl2rest.impl.wsdl.WSDLProcessorImpl;
+import org.slosc.wsdl2rest.impl.writer.MessageWriter;
+import org.slosc.wsdl2rest.impl.writer.MessageWriterFactory;
 
 public class Wsdl2Rest {
 

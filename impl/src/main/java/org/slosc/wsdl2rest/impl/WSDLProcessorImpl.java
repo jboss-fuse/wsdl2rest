@@ -1,5 +1,7 @@
-package org.slosc.wsdl2rest.impl.wsdl;
+package org.slosc.wsdl2rest.impl;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,26 +47,40 @@ public class WSDLProcessorImpl implements WSDLProcessor {
     private static Logger log = LoggerFactory.getLogger(WSDLProcessorImpl.class);
 
     private static final String xsdURI = "http://www.w3.org/2001/XMLSchema";
+    private static final String jaxbArrayURI = "http://jaxb.dev.java.net/array";
 
     private Map<QName, String> typeRegistry = new HashMap<>(); 
     private Map<String, ClassDefinition> serviceMap = new HashMap<String, ClassDefinition>();
     private List<ClassDefinition> clazzDefs = new ArrayList<ClassDefinition>();
     private Stack<String> services = new Stack<>();
 
+    /*
+     * JAXB XML Schema binding
+     * https://docs.oracle.com/javase/tutorial/jaxb/intro/bind.html
+     */
     public WSDLProcessorImpl() {
-        typeRegistry.put(new QName(xsdURI, "string"), String.class.getName());
-        typeRegistry.put(new QName(xsdURI, "normalizedString"), String.class.getName());
-        typeRegistry.put(new QName(xsdURI, "byte"), "byte");
-        typeRegistry.put(new QName(xsdURI, "integer"), "int");
-        typeRegistry.put(new QName(xsdURI, "long"), "long");
-        typeRegistry.put(new QName(xsdURI, "float"), "float");
-        typeRegistry.put(new QName(xsdURI, "double"), "double");
-        typeRegistry.put(new QName(xsdURI, "short"), "short");
+        typeRegistry.put(new QName(xsdURI, "anyURI"), URI.class.getName());
+        typeRegistry.put(new QName(xsdURI, "base64Binary"), "byte[]");
         typeRegistry.put(new QName(xsdURI, "boolean"), "boolean");
-        typeRegistry.put(new QName(xsdURI, "unsignedShort"), "short");
-        typeRegistry.put(new QName(xsdURI, "decimal"), "double");
+        typeRegistry.put(new QName(xsdURI, "byte"), "byte");
         typeRegistry.put(new QName(xsdURI, "date"), Date.class.getName());
+        typeRegistry.put(new QName(xsdURI, "dateTime"), Date.class.getName());
+        typeRegistry.put(new QName(xsdURI, "decimal"), BigDecimal.class.getName());
+        typeRegistry.put(new QName(xsdURI, "double"), "double");
+        typeRegistry.put(new QName(xsdURI, "float"), "float");
+        typeRegistry.put(new QName(xsdURI, "hexBinary"), "byte[]");
+        typeRegistry.put(new QName(xsdURI, "int"), "int");
+        typeRegistry.put(new QName(xsdURI, "integer"), BigInteger.class.getName());
+        typeRegistry.put(new QName(xsdURI, "long"), "long");
+        typeRegistry.put(new QName(xsdURI, "short"), "short");
+        typeRegistry.put(new QName(xsdURI, "string"), String.class.getName());
         typeRegistry.put(new QName(xsdURI, "time"), Date.class.getName());
+        typeRegistry.put(new QName(xsdURI, "unsignedByte"), "short");
+        typeRegistry.put(new QName(xsdURI, "unsignedInt"), "long");
+        typeRegistry.put(new QName(xsdURI, "unsignedShort"), "int");
+        typeRegistry.put(new QName(xsdURI, "QName"), QName.class.getName());
+        
+        typeRegistry.put(new QName(jaxbArrayURI, "intArray"), "int[]");
     }
 
     public void process(URI wsdlURI) throws WSDLException {

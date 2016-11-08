@@ -27,9 +27,37 @@ import javax.jws.soap.SOAPBinding.Style;
 @SOAPBinding(style = Style.RPC)
 public interface Address {
     
+    /**
+     * List the available resource ids.
+     */
     @WebMethod
-    void addAddress(String name);
+    Integer[] listAddresses();
     
+    /**
+     * Get the resource value for the given id.
+     * @return The resource value or null
+     */
     @WebMethod
-    String getAddress(String name);
+    String getAddress(Integer id);
+
+    /**
+     * Add a resource with the given value.
+     * @return The new resource id
+     */
+    @WebMethod
+    Integer addAddress(String name);
+    
+    /**
+     * Update a resource for the given id with the given value.
+     * @return The new resource value or null
+     */
+    @WebMethod
+    String updAddress(Integer id, String name);
+
+    /**
+     * Delete a resource with the given id.
+     * @return The resource value or null
+     */
+    @WebMethod
+    String delAddress(Integer id);
 }

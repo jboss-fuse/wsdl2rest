@@ -20,20 +20,19 @@ package org.slosc.wsdl2rest;
 
 import java.util.List;
 
-
 public interface MetaInfo {
+    
     String getHttpMethod();
-    void setPreferredHttpMethod(String preferredHttpMethod);
+
     String getPreferredHttpMethod();
 
     String getMimeType();
-    void setPreferredMimeType(String preferredMimeType);
+
     String getPreferredMimeType();
 
     List<String> getResources();
-    void setPreferredResource(String preferredResource);
+
     String getPreferredResource();
 
     boolean isPathParam();
-    void setPathParam(boolean val);
 }

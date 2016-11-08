@@ -1,4 +1,4 @@
-package org.slosc.wsdl2rest.impl.util;
+package org.slosc.wsdl2rest.impl.writer;
 
 /*
  * Copyright (c) 2008 SL_OpenSource Consortium
@@ -18,14 +18,13 @@ package org.slosc.wsdl2rest.impl.util;
  *
  */
 
+public class ConsoleMessageWriter implements MessageWriter {
 
-public interface MessageWriter {
+    public void write(TYPE type, String msg) {
+        System.out.print(msg);
+    }
 
-   enum TYPE{
-       WARN,
-       ERROR,
-       INFO
-   }
-
-   void write(TYPE type, String msg);
+    public void writeln(TYPE type, String msg) {
+        System.out.println(msg);                
+    }
 }

@@ -28,9 +28,9 @@ import org.slosc.wsdl2rest.MethodInfo;
 import org.slosc.wsdl2rest.Param;
 import org.slosc.wsdl2rest.ResourceMapper;
 import org.slosc.wsdl2rest.WSDLProcessor;
+import org.slosc.wsdl2rest.impl.ResourceMapperImpl;
+import org.slosc.wsdl2rest.impl.WSDLProcessorImpl;
 import org.slosc.wsdl2rest.impl.codegenerator.ClassGeneratorFactory;
-import org.slosc.wsdl2rest.impl.mappings.ResourceMapperImpl;
-import org.slosc.wsdl2rest.impl.wsdl.WSDLProcessorImpl;
 
 
 public class GenerateRPCLiteralTest {
@@ -48,13 +48,42 @@ public class GenerateRPCLiteralTest {
         Assert.assertEquals("AddressService", clazzDef.getClassName());
 
         List<MethodInfo> methods = clazzDef.getMethodInfos();
-        Assert.assertEquals(2, methods.size());
-        Assert.assertEquals("addAddress", methods.get(0).getMethodName());
-        Assert.assertEquals("getAddress", methods.get(1).getMethodName());
-        List<Param> params = methods.get(0).getParams();
+        Assert.assertEquals(5, methods.size());
+        
+        MethodInfo method = clazzDef.getMethodInfo("listAddresses");
+        Assert.assertEquals("int[]", method.getReturnType());
+        List<Param> params = method.getParams();
+        Assert.assertEquals(0, params.size());
+        
+        method = clazzDef.getMethodInfo("getAddress");
+        Assert.assertEquals("String", method.getReturnType());
+        params = method.getParams();
+        Assert.assertEquals(1, params.size());
+        Assert.assertEquals("arg0", params.get(0).getParamName());
+        Assert.assertEquals("int", params.get(0).getParamType());
+        
+        method = clazzDef.getMethodInfo("addAddress");
+        Assert.assertEquals("int", method.getReturnType());
+        params = method.getParams();
         Assert.assertEquals(1, params.size());
         Assert.assertEquals("arg0", params.get(0).getParamName());
         Assert.assertEquals("String", params.get(0).getParamType());
+        
+        method = clazzDef.getMethodInfo("updAddress");
+        Assert.assertEquals("String", method.getReturnType());
+        params = method.getParams();
+        Assert.assertEquals(2, params.size());
+        Assert.assertEquals("arg0", params.get(0).getParamName());
+        Assert.assertEquals("int", params.get(0).getParamType());
+        Assert.assertEquals("arg1", params.get(1).getParamName());
+        Assert.assertEquals("String", params.get(1).getParamType());
+        
+        method = clazzDef.getMethodInfo("delAddress");
+        Assert.assertEquals("String", method.getReturnType());
+        params = method.getParams();
+        Assert.assertEquals(1, params.size());
+        Assert.assertEquals("arg0", params.get(0).getParamName());
+        Assert.assertEquals("int", params.get(0).getParamType());
         
         ResourceMapper resMapper = new ResourceMapperImpl();
         resMapper.assignResources(clazzDefs);

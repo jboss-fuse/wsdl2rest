@@ -83,6 +83,16 @@ public final class IllegalStateAssertion {
     /**
      * Throws an IllegalStateException when the given values are not equal.
      */
+    public static <T> T assertNotEqual(T exp, T was, String message) {
+        assertNotNull(exp, message);
+        assertNotNull(was, message);
+        assertFalse(exp.equals(was), message);
+        return was;
+    }
+
+    /**
+     * Throws an IllegalStateException when the given values are not equal.
+     */
     public static <T> T assertSame(T exp, T was, String message) {
         assertNotNull(exp, message);
         assertNotNull(was, message);

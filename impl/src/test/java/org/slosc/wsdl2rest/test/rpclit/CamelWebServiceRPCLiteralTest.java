@@ -28,7 +28,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slosc.wsdl2rest.util.SpringCamelContextFactory;
 
-
 public class CamelWebServiceRPCLiteralTest {
 
     @Test
@@ -39,13 +38,17 @@ public class CamelWebServiceRPCLiteralTest {
         camelctx.start();
         try {
             Assert.assertEquals(ServiceStatus.Started, camelctx.getStatus());
-            
+
             QName qname = new QName("http://rpclit.test.wsdl2rest.slosc.org/", "AddressService");
             Service service = Service.create(new URL("http://localhost:8080/AddressService/AddressPort?wsdl"), qname);
             Address port = service.getPort(Address.class);
             Assert.assertNotNull("Address not null", port);
 
-            Assert.assertEquals("Hello Kermit", port.getAddress("Kermit"));
+            Assert.assertNull(port.listAddresses());
+            Assert.assertEquals(1, (int) port.addAddress("Kermit"));
+            Assert.assertEquals("Kermit", port.getAddress(1));
+            Assert.assertEquals("Kermit", port.updAddress(1, "Frog"));
+            Assert.assertEquals("Frog", port.delAddress(1));
         } finally {
             camelctx.stop();
         }
