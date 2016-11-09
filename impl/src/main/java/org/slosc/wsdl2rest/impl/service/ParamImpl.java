@@ -1,8 +1,8 @@
 package org.slosc.wsdl2rest.impl.service;
 
-import org.slosc.wsdl2rest.Param;
+import org.slosc.wsdl2rest.ParamInfo;
 
-public class ParamImpl extends MetaInfoImpl implements Param {
+public class ParamImpl extends MetaInfoImpl implements ParamInfo {
 
     private String paramType;
     private String paramName;

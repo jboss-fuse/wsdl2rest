@@ -4,13 +4,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import javax.wsdl.Binding;
+import javax.wsdl.BindingOperation;
 import javax.wsdl.Definition;
 import javax.wsdl.Fault;
 import javax.wsdl.Input;
@@ -24,19 +26,19 @@ import javax.wsdl.Service;
 import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.schema.Schema;
+import javax.wsdl.extensions.soap.SOAPOperation;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.xml.namespace.QName;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slosc.wsdl2rest.ClassDefinition;
-import org.slosc.wsdl2rest.Param;
+import org.slosc.wsdl2rest.EndpointInfo;
+import org.slosc.wsdl2rest.ParamInfo;
 import org.slosc.wsdl2rest.WSDLProcessor;
 import org.slosc.wsdl2rest.impl.service.ClassDefinitionImpl;
 import org.slosc.wsdl2rest.impl.service.MethodInfoImpl;
 import org.slosc.wsdl2rest.impl.service.ParamImpl;
-import org.slosc.wsdl2rest.util.IllegalStateAssertion;
 
 /**
  * Following class process WSDL document and generate a list of service interfaces & methods
@@ -46,13 +48,12 @@ public class WSDLProcessorImpl implements WSDLProcessor {
 
     private static Logger log = LoggerFactory.getLogger(WSDLProcessorImpl.class);
 
+
     private static final String xsdURI = "http://www.w3.org/2001/XMLSchema";
     private static final String jaxbArrayURI = "http://jaxb.dev.java.net/array";
 
     private Map<QName, String> typeRegistry = new HashMap<>(); 
-    private Map<String, ClassDefinition> serviceMap = new HashMap<String, ClassDefinition>();
-    private List<ClassDefinition> clazzDefs = new ArrayList<ClassDefinition>();
-    private Stack<String> services = new Stack<>();
+    private Map<QName, EndpointInfo> portTypeMap = new LinkedHashMap<>();
 
     /*
      * JAXB XML Schema binding
@@ -95,15 +96,9 @@ public class WSDLProcessorImpl implements WSDLProcessor {
         processServices(def);
     }
 
-    public List<ClassDefinition> getTypeDefs() {
-        for (String key : serviceMap.keySet()) {
-            clazzDefs.add(serviceMap.get(key));
-        }
-        return clazzDefs;
-    }
-
-    public Map<String, ClassDefinition> getServiceDef() {
-        return serviceMap;
+    public List<EndpointInfo> getClassDefinitions() {
+        List<EndpointInfo> result = new ArrayList<>(portTypeMap.values());
+        return Collections.unmodifiableList(result);
     }
 
     @SuppressWarnings("unchecked")
@@ -115,9 +110,10 @@ public class WSDLProcessorImpl implements WSDLProcessor {
         }
     }
 
-    private void processBindings(Definition def, Binding binding) {
-        log.info("\tBinding: {}", binding.getQName().getLocalPart());
-        processPortTypes(def, binding.getPortType());
+    private void processBinding(Definition def, Binding binding) {
+        QName qname = binding.getPortType().getQName();
+        log.info("\tBinding: {}", qname.getLocalPart());
+        processPortType(def, binding, binding.getPortType());
     }
 
     /* WSDL 1.1 spec: 2.4.5 Names of Elements within an Operation
@@ -128,74 +124,88 @@ public class WSDLProcessorImpl implements WSDLProcessor {
      * The name of the fault element is unique within the set of faults defined for the operation.
      */
     @SuppressWarnings("unchecked")
-    private void processPortTypes(Definition def, PortType portTypes) {
+    private void processPortType(Definition def, Binding binding, PortType portType) {
 
-        log.info("\tPortType: {}", portTypes.getQName().getLocalPart());
+        QName qname = portType.getQName();
+        log.info("\tPortType: {}", qname.getLocalPart());
+
+        ClassDefinitionImpl clazzDef = new ClassDefinitionImpl();
+        clazzDef.setPackageName(toPackageName(qname.getNamespaceURI()));
+        clazzDef.setClassName(qname.getLocalPart());
+        portTypeMap.put(qname, clazzDef);
+        
         log.info("\tOperations: ");
+        for (Operation op : (List<Operation>) portType.getOperations()) {
+            String opName = op.getName();
+            log.info("\t\tOperation: {}", opName);
 
-        for (Object op : portTypes.getOperations()) {
-            Operation oper = (Operation) op;
-            String operation = oper.getName();
-            log.info("\t\tOperation: {}", operation);
-
-            ClassDefinitionImpl svcDef = (ClassDefinitionImpl) serviceMap.get(this.services.peek());
-            svcDef.addMethod(operation);
-            Input in = oper.getInput();
-            Output out = oper.getOutput();
-            Map<QName, Fault> f = oper.getFaults();
+            ClassDefinitionImpl svcDef = (ClassDefinitionImpl) portTypeMap.get(portType.getQName());
+            MethodInfoImpl methodInf = new MethodInfoImpl(opName);
+            BindingOperation bop = binding.getBindingOperation(opName, null, null);
+            for (Object aux : bop.getExtensibilityElements()) {
+                if (aux instanceof SOAPOperation) {
+                    SOAPOperation soap = (SOAPOperation) aux;
+                    methodInf.setStyle(soap.getStyle());
+                }
+            }
+            svcDef.addMethod(methodInf);
+            Input in = op.getInput();
+            Output out = op.getOutput();
+            Map<QName, Fault> f = op.getFaults();
 
             log.info("\t\t\tInput: ");
             if (in != null) {
                 if (in.getName() == null) {
-                    in.setName(operation);
+                    in.setName(opName);
                 }
-                processMessages(def, in.getMessage(), operation, 0);
+                processMessages(def, portType, in.getMessage(), opName, 0);
             }
 
             log.info("\t\t\tOutput: ");
             if (out != null) {
                 if (out.getName() == null) {
-                    out.setName(operation + "Response");
+                    out.setName(opName + "Response");
                 }
-                processMessages(def, out.getMessage(), operation, 1);
+                processMessages(def, portType, out.getMessage(), opName, 1);
             }
 
             log.info("\t\t\tFaults: ");
             if (f != null) {
                 for (Object o : f.values()) {
                     Fault fault = (Fault) o;
-                    processMessages(def, fault.getMessage(), operation, 2);
+                    processMessages(def, portType, fault.getMessage(), opName, 2);
                 }
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void processMessages(Definition def, Message message, String operation, int type) {
+    private void processMessages(Definition def, PortType portType, Message message, String operation, int type) {
         log.info("\t\t\tMessage: {}", message.getQName().getLocalPart());
         if (!message.isUndefined() && message.getParts() != null) {
-
             List<Part> parts = message.getOrderedParts(null);
             List<String> imports = new ArrayList<String>();
-            List<Param> params = new ArrayList<>();
+            List<ParamInfo> params = new ArrayList<>();
             for (Part part : parts) {
-                QName paramQName = part.getElementName();
-                if (paramQName == null) {
-                    paramQName = new QName(part.getName());
+                QName elmtQName = part.getElementName();
+                if (elmtQName == null) {
+                    elmtQName = new QName(part.getName());
                 }
-                log.info("\t\t\tPart: {}:{}", paramQName.getPrefix(), paramQName.getLocalPart());
+                log.info("\t\t\tPart: {}:{}", elmtQName.getPrefix(), elmtQName.getLocalPart());
                 QName typeQName = part.getTypeName();
-                String typeName = typeRegistry.get(typeQName);
-                IllegalStateAssertion.assertNotNull(typeName, "Unsupported parameter type: " + typeQName);
-                if (typeName.startsWith("java.lang.")) {
-                    typeName = typeName.substring(10);
+                String javaType = typeRegistry.get(typeQName);
+                if (javaType == null) {
+                    javaType = toJavaType(elmtQName);
                 }
-                log.info("\t\t\t\tParams: {} {}", typeName, paramQName);
-                params.add(new ParamImpl(typeName, paramQName.getLocalPart()));
+                if (javaType.startsWith("java.lang.")) {
+                    javaType = javaType.substring(10);
+                }
+                log.info("\t\t\t\tParams: {} {}", javaType, elmtQName);
+                params.add(new ParamImpl(javaType, elmtQName.getLocalPart()));
             }
             if (parts.size() > 0) {
-                ClassDefinitionImpl svcDef = (ClassDefinitionImpl) serviceMap.get(this.services.peek());
-                MethodInfoImpl mInf = (MethodInfoImpl) svcDef.getMethodInfo(operation);
+                ClassDefinitionImpl svcDef = (ClassDefinitionImpl) portTypeMap.get(portType.getQName());
+                MethodInfoImpl mInf = (MethodInfoImpl) svcDef.getMethod(operation);
                 switch (type) {
                     case 0:
                         mInf.setParams(params);
@@ -211,30 +221,38 @@ public class WSDLProcessorImpl implements WSDLProcessor {
         }
     }
 
-    public static final String[] NS_URI_SCHEMA_XSDS = { "http://www.w3.org/1999/XMLSchema", "http://www.w3.org/2000/10/XMLSchema", xsdURI };
-
     @SuppressWarnings("unchecked")
     private void processServices(Definition def) {
-
-        String svcPackageName = def.getTargetNamespace();
         Map<QName, Service> services = def.getServices();
         log.info("Services: ");
         for (Service svc : services.values()) {
             String svcName = svc.getQName().getLocalPart();
             log.info("\t{}", svcName);
-            ClassDefinitionImpl svcDef = new ClassDefinitionImpl();
-            svcDef.setClassName(svcName);
-            svcDef.setPackageName(svcPackageName);
-            serviceMap.put(svcName, svcDef);
-            this.services.push(svcName);
-
             Map<QName, Port> ports = svc.getPorts();
             for (Port port : ports.values()) {
                 log.info("\tPort: {}", port.getName());
-                processBindings(def, port.getBinding());
-
+                processBinding(def, port.getBinding());
             }
         }
+    }
 
+    static String toPackageName(String nsuri) {
+        if (nsuri.startsWith("http://")) {
+            nsuri = nsuri.substring(7);
+            nsuri = nsuri.endsWith("/") ? nsuri.substring(0, nsuri.length() - 1) : nsuri;
+            StringBuffer buffer = new StringBuffer();
+            for (String tok : nsuri.split("\\.")) {
+                buffer.insert(0, tok + ".");
+            }
+            return buffer.substring(0, buffer.length() - 1);
+        } else {
+            return "";
+        }
+    }
+    
+    static String toJavaType(QName qname) {
+        String lpart = qname.getLocalPart();
+        String pname = toPackageName(qname.getNamespaceURI());
+        return pname + "." + lpart.substring(0, 1).toUpperCase() + lpart.substring(1);
     }
 }

@@ -1,4 +1,4 @@
-package org.slosc.wsdl2rest.test.rpclit;
+package org.slosc.wsdl2rest.test.doclit;
 /*
  * Copyright (c) 2008 SL_OpenSource Consortium
  * All Rights Reserved.
@@ -18,54 +18,58 @@ package org.slosc.wsdl2rest.test.rpclit;
  */
 
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class AddressBean implements Address {
 
-    private Map<Integer, String> map = new LinkedHashMap<>();
+    private Map<Integer, Item> map = new LinkedHashMap<>();
     
     @Override
-    public Integer[] listAddresses() {
+    public String listAddresses() {
         synchronized (map) {
             Set<Integer> keySet = map.keySet();
-            return new ArrayList<>(keySet).toArray(new Integer[keySet.size()]);
+            return keySet.toString();
         }
     }
 
     @Override
-    public String getAddress(Integer id) {
+    public Item getAddress(Integer id) {
+        Item result = null;
         synchronized (map) {
-            return map.get(id);
-        }
-    }
-
-    @Override
-    public Integer addAddress(String name) {
-        synchronized (map) {
-            int id = map.size() + 1;
-            map.put(id, name);
-            return id;
-        }
-    }
-
-    @Override
-    public String updAddress(Integer id, String name) {
-        String result;
-        synchronized (map) {
-            result = map.get(id);
-            if (result != null) {
-                map.put(id, name);
+            Item aux = map.get(id);
+            if (aux != null) {
+                result = new ItemBuilder().copy(aux).build();
             }
         }
         return result;
     }
 
     @Override
-    public String delAddress(Integer id) {
-        String result;
+    public Integer addAddress(Item item) {
+        synchronized (map) {
+            int id = map.size() + 1;
+            map.put(id, new ItemBuilder().id(id).name(item.getName()).dateOfBirth(item.getDateOfBirth()).build());
+            return id;
+        }
+    }
+
+    @Override
+    public Integer updAddress(Integer id, Item item) {
+        Integer result;
+        synchronized (map) {
+            result = map.containsKey(id) ? id : null;
+            if (result != null) {
+                map.put(id, new ItemBuilder().id(id).name(item.getName()).dateOfBirth(item.getDateOfBirth()).build());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Item delAddress(Integer id) {
+        Item result;
         synchronized (map) {
             result = map.remove(id);
         }

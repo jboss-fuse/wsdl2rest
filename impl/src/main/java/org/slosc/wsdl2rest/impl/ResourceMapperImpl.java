@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import org.slosc.wsdl2rest.ClassDefinition;
+import org.slosc.wsdl2rest.EndpointInfo;
 import org.slosc.wsdl2rest.MethodInfo;
-import org.slosc.wsdl2rest.Param;
+import org.slosc.wsdl2rest.ParamInfo;
 import org.slosc.wsdl2rest.ResourceMapper;
 import org.slosc.wsdl2rest.impl.service.MethodInfoImpl;
 import org.slosc.wsdl2rest.impl.service.ParamImpl;
@@ -37,12 +37,12 @@ public class ResourceMapperImpl implements ResourceMapper {
 
     // This method will iterate through Class, Method and Parameter definitions
     // and assign respective resources to them
-    public void assignResources(List<ClassDefinition> svcClasses) {
-        for (ClassDefinition clazzDef : svcClasses) {
+    public void assignResources(List<EndpointInfo> svcClasses) {
+        for (EndpointInfo clazzDef : svcClasses) {
             // Don't break up class name
             if (clazzDef.getClassName() != null) {
                 clazzDef.setResources(Arrays.asList(clazzDef.getClassName()));
-                for (MethodInfo m : clazzDef.getMethodInfos()) {
+                for (MethodInfo m : clazzDef.getMethods()) {
                     MethodInfoImpl minfo = (MethodInfoImpl) m;
                     if (minfo.getMethodName() != null) {
                         // Parse the method name
@@ -52,7 +52,7 @@ public class ResourceMapperImpl implements ResourceMapper {
                         minfo.setHttpMethod(httpMethod);
 
                         if (minfo.getParams() != null) {
-                            for (Param p : minfo.getParams()) {
+                            for (ParamInfo p : minfo.getParams()) {
                                 ParamImpl param = (ParamImpl) p;
                                 if (param.getParamName() != null)
                                     param.setResources(Arrays.asList(param.getParamName()));

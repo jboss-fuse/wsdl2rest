@@ -16,6 +16,14 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.github.javaparser</groupId>
+            <artifactId>javaparser-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-codegen-plugin</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
         </dependency>
@@ -56,16 +64,26 @@
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-java2ws-plugin</artifactId>
-                <version>${version.apache.cxf}</version>
                 <executions>
                     <execution>
+                        <id>rpclit</id>
                         <phase>process-test-classes</phase>
                         <configuration>
                             <className>org.slosc.wsdl2rest.test.rpclit.Address</className>
                             <outputFile>${basedir}/src/test/resources/rpclit/Address.wsdl</outputFile>
                             <classpath>${basedir}/target/test-classes</classpath>
-                            <attachWsdl>false</attachWsdl>
-                            <genWsdl>true</genWsdl>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>doclit</id>
+                        <phase>process-test-classes</phase>
+                        <configuration>
+                            <className>org.slosc.wsdl2rest.test.doclit.Address</className>
+                            <outputFile>${basedir}/src/test/resources/doclit/Address.wsdl</outputFile>
+                            <classpath>${project.build.directory}/test-classes</classpath>
                         </configuration>
                         <goals>
                             <goal>java2ws</goal>

@@ -22,11 +22,13 @@ import java.util.List;
 
 public interface MethodInfo extends MetaInfo {
     
+    String getStyle();
+    
     String getMethodName();
 
     String getReturnType();
 
-    List<Param> getParams();
+    List<ParamInfo> getParams();
 
     String getExceptionType();
 }

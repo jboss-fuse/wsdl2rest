@@ -6,17 +6,20 @@
         http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
         
-    <cxf:cxfEndpoint id="cxfConsumer" 
-        address="http://localhost:8080/rpclit/AddressService" 
-        serviceClass="org.slosc.wsdl2rest.test.rpclit.Address" />
+    <cxf:rsServer id="cxfConsumer" 
+        address="http://localhost:8080/doclit" 
+        serviceClass="org.slosc.wsdl2rest.test.doclit.Address">
+        <cxf:providers>
+            <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
+        </cxf:providers>
+    </cxf:rsServer>
         
-    <bean id="addressBean" class="org.slosc.wsdl2rest.test.rpclit.AddressBean"/>
+    <bean id="addressBean" class="org.slosc.wsdl2rest.test.doclit.AddressBean"/>
     
-    <camelContext id="cxfws" xmlns="http://camel.apache.org/schema/spring">
+    <camelContext id="cxfrs" xmlns="http://camel.apache.org/schema/spring">
         <route id="consumerRoute">
-            <from uri="cxf:bean:cxfConsumer" />
-            <log loggingLevel="INFO" message="${header.operationName}"/>
-            <log loggingLevel="INFO" message="${body}"/>
+            <from uri="cxfrs:bean:cxfConsumer" />
+            <log loggingLevel="INFO" message="OPERATION_NAME=${header.operationName}"/>
             <choice>
                 <when>
                     <simple>${header.operationName} == 'listAddresses'</simple>
@@ -32,7 +35,7 @@
                 </when>
                 <when>
                     <simple>${header.operationName} == 'updAddress'</simple>
-                    <to uri="bean:addressBean?method=updAddress&amp;multiParameterArray=true"/>
+                    <to uri="bean:addressBean?method=updAddress"/>
                 </when>
                 <when>
                     <simple>${header.operationName} == 'delAddress'</simple>

@@ -6,5 +6,5 @@ public interface ResourceMapper {
     
     List<String> getResources();
 
-    void assignResources(List<ClassDefinition> svcClasses);
+    void assignResources(List<EndpointInfo> svcClasses);
 }

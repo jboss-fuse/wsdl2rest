@@ -4,19 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.slosc.wsdl2rest.MethodInfo;
-import org.slosc.wsdl2rest.Param;
+import org.slosc.wsdl2rest.ParamInfo;
 
 
 
 public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
 
+    private String style;
     private String returnType;
     private String methodName;
-    private List<Param> params = new ArrayList<>();
+    private List<ParamInfo> params = new ArrayList<>();
     private String exceptionType;
-
-    public MethodInfoImpl() {
-    }
 
     public MethodInfoImpl(String methodName) {
         this.methodName = methodName;
@@ -38,11 +36,11 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
         this.returnType = returnType;
     }
 
-    public List<Param> getParams() {
+    public List<ParamInfo> getParams() {
         return params;
     }
 
-    public void setParams(List<Param> params) {
+    public void setParams(List<ParamInfo> params) {
         this.params = params;
     }
 
@@ -54,6 +52,14 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
         this.exceptionType = exceptionType;
     }
 
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+    
     public String toString() {
         return methodName+"(): "+returnType;
     }

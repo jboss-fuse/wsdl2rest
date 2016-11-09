@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface ClassGenerator {
 
-    void generateClasses(List<ClassDefinition> clazzDef) throws IOException;
+    void generateClasses(List<EndpointInfo> clazzDef) throws IOException;
 }

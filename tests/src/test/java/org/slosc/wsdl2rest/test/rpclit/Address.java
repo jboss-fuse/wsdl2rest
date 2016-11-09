@@ -10,8 +10,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
-@Path("/addressservice/")
-public interface AddressService {
+@Path("/address/")
+public interface Address {
 
 	@GET
 	@Path("addresses")
@@ -20,12 +20,14 @@ public interface AddressService {
 
 	@PUT
 	@Path("address/{arg0}")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updAddress(@PathParam("arg0") int arg0, String arg1);
 
 	@POST
 	@Path("address")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public int addAddress(String arg0);
 
 	@DELETE

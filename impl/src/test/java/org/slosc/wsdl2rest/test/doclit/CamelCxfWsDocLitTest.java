@@ -1,4 +1,4 @@
-package org.slosc.wsdl2rest.test.rpclit;
+package org.slosc.wsdl2rest.test.doclit;
 /*
  * Copyright (c) 2008 SL_OpenSource Consortium
  * All Rights Reserved.
@@ -17,7 +17,10 @@ package org.slosc.wsdl2rest.test.rpclit;
  *
  */
 
+import static org.slosc.wsdl2rest.test.doclit.Item.DATE_FORMAT;
+
 import java.net.URL;
+import java.util.Date;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -28,27 +31,31 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slosc.wsdl2rest.util.SpringCamelContextFactory;
 
-public class CamelWebServiceRPCLiteralTest {
+public class CamelCxfWsDocLitTest {
 
     @Test
-    public void testGenerate() throws Exception {
+    public void testEndpoint() throws Exception {
 
-        URL resourceUrl = getClass().getResource("/rpclit/rpclit-camel-context.xml");
+        URL resourceUrl = getClass().getResource("/doclit/doclit-camel-context.xml");
         CamelContext camelctx = SpringCamelContextFactory.createSingleCamelContext(resourceUrl, null);
         camelctx.start();
         try {
             Assert.assertEquals(ServiceStatus.Started, camelctx.getStatus());
 
-            QName qname = new QName("http://rpclit.test.wsdl2rest.slosc.org/", "AddressService");
-            Service service = Service.create(new URL("http://localhost:8080/AddressService/AddressPort?wsdl"), qname);
+            QName qname = new QName("http://doclit.test.wsdl2rest.slosc.org/", "AddressService");
+            Service service = Service.create(new URL("http://localhost:8080/doclit/AddressService?wsdl"), qname);
             Address port = service.getPort(Address.class);
             Assert.assertNotNull("Address not null", port);
 
-            Assert.assertNull(port.listAddresses());
-            Assert.assertEquals(1, (int) port.addAddress("Kermit"));
-            Assert.assertEquals("Kermit", port.getAddress(1));
-            Assert.assertEquals("Kermit", port.updAddress(1, "Frog"));
-            Assert.assertEquals("Frog", port.delAddress(1));
+            Date dob = DATE_FORMAT.parse("11.11.1968");
+            Item kermit = new ItemBuilder().name("Kermit").dateOfBirth(dob).build();
+            Item frog = new ItemBuilder().name("Frog").dateOfBirth(dob).build();
+            
+            Assert.assertEquals("[]", port.listAddresses());
+            Assert.assertEquals(1, (int) port.addAddress(kermit));
+            Assert.assertEquals("Kermit", port.getAddress(1).getName());
+            Assert.assertEquals(1, (int) port.updAddress(1, frog));
+            Assert.assertEquals("Frog", port.delAddress(1).getName());
         } finally {
             camelctx.stop();
         }

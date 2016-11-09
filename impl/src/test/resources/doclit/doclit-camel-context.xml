@@ -7,10 +7,10 @@
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
         
     <cxf:cxfEndpoint id="cxfConsumer" 
-        address="http://localhost:8080/rpclit/AddressService" 
-        serviceClass="org.slosc.wsdl2rest.test.rpclit.Address" />
+        address="http://localhost:8080/doclit/AddressService" 
+        serviceClass="org.slosc.wsdl2rest.test.doclit.Address" />
         
-    <bean id="addressBean" class="org.slosc.wsdl2rest.test.rpclit.AddressBean"/>
+    <bean id="addressBean" class="org.slosc.wsdl2rest.test.doclit.AddressBean"/>
     
     <camelContext id="cxfws" xmlns="http://camel.apache.org/schema/spring">
         <route id="consumerRoute">

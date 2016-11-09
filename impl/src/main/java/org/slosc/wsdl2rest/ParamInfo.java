@@ -20,19 +20,11 @@ package org.slosc.wsdl2rest;
 
 import java.util.List;
 
-public interface ClassDefinition extends MetaInfo {
+public interface ParamInfo extends MetaInfo {
+    
+    String getParamType();
 
-    String getPackageName();
-
-    List<String> getImports();
-
-    String getClassName();
+    String getParamName();
 
     List<String> getResources();
-
-    void setResources(List<String> resources);
-
-    MethodInfo getMethodInfo(String operation);
-
-    List<MethodInfo> getMethodInfos();
 }

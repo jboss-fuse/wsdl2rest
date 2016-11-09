@@ -8,6 +8,7 @@
     <properties>
         <version.apache.camel>2.18.0</version.apache.camel>
         <version.apache.cxf>3.1.7</version.apache.cxf>
+        <version.javaparser>2.5.1</version.javaparser>
         <version.javax.ws.rs.api>2.0.1</version.javax.ws.rs.api>
         <version.junit>4.11</version.junit>
         <version.wsdl4j>1.6.3</version.wsdl4j>
@@ -20,6 +21,11 @@
     
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.github.javaparser</groupId>
+                <artifactId>javaparser-core</artifactId>
+                <version>${version.javaparser}</version>
+            </dependency>
             <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>javax.ws.rs-api</artifactId>
@@ -36,6 +42,16 @@
                 <version>${version.apache.camel}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <version>${version.apache.cxf}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-rs-extension-providers</artifactId>
+                <version>${version.apache.cxf}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
@@ -59,6 +75,15 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-java2ws-plugin</artifactId>
+                    <version>${version.apache.cxf}</version>
+                    <configuration>
+                        <attachWsdl>false</attachWsdl>
+                        <genWsdl>true</genWsdl>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>

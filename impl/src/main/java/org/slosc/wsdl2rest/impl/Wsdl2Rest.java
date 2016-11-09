@@ -7,46 +7,48 @@ import java.util.List;
 
 import javax.wsdl.WSDLException;
 
-import org.slosc.wsdl2rest.ClassDefinition;
+import org.slosc.wsdl2rest.EndpointInfo;
 import org.slosc.wsdl2rest.ClassGenerator;
 import org.slosc.wsdl2rest.ResourceMapper;
 import org.slosc.wsdl2rest.WSDLProcessor;
-import org.slosc.wsdl2rest.impl.codegenerator.ClassGeneratorFactory;
+import org.slosc.wsdl2rest.impl.codegen.ClassGeneratorFactory;
 import org.slosc.wsdl2rest.impl.writer.MessageWriter;
 import org.slosc.wsdl2rest.impl.writer.MessageWriterFactory;
 
 public class Wsdl2Rest {
 
     private MessageWriter msgWriter = MessageWriterFactory.getMessageWriter();
-    private List<ClassDefinition> svcClasses;
+    private List<EndpointInfo> endpointInfos;
 
     public void process(URI wsdlURI) throws WSDLException {
+        
         WSDLProcessor wsdlProcessor = new WSDLProcessorImpl();
         wsdlProcessor.process(wsdlURI);
-        svcClasses = wsdlProcessor.getTypeDefs();
+        
+        endpointInfos = wsdlProcessor.getClassDefinitions();
 
-        // Assign resources to Class, method and parameter definitions.
         ResourceMapper resMapper = new ResourceMapperImpl();
-        resMapper.assignResources(svcClasses);
+        resMapper.assignResources(endpointInfos);
     }
 
-    public List<ClassDefinition> getSvcClasses() {
-        return svcClasses;
+    public List<EndpointInfo> getSvcClasses() {
+        return endpointInfos;
     }
 
     public void generateClasses(String toLocation) throws IOException {
+        
         if (toLocation == null || toLocation.length() == 0)
             return;
 
-        File clazzFileLocation = new File(toLocation);
-        if (!clazzFileLocation.exists())
+        File outdir = new File(toLocation);
+        if (!outdir.exists())
             msgWriter.write(MessageWriter.TYPE.WARN, "Existing files will be over writtern ...");
-        String outputPath = toLocation + File.separator;
-        clazzFileLocation.delete();
-        clazzFileLocation.mkdirs();
+        
+        outdir.delete();
+        outdir.mkdirs();
 
-        ClassGenerator gen = ClassGeneratorFactory.getClassGenerator(outputPath);
-        gen.generateClasses(svcClasses);
+        ClassGenerator gen = ClassGeneratorFactory.getClassGenerator(outdir.toPath());
+        gen.generateClasses(endpointInfos);
     }
 
     private static void usage() {

@@ -24,15 +24,9 @@ public interface MetaInfo {
     
     String getHttpMethod();
 
-    String getPreferredHttpMethod();
-
     String getMimeType();
-
-    String getPreferredMimeType();
 
     List<String> getResources();
 
     String getPreferredResource();
-
-    boolean isPathParam();
 }

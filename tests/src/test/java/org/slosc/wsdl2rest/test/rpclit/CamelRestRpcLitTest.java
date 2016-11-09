@@ -33,12 +33,12 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slosc.wsdl2rest.util.SpringCamelContextFactory;
 
-public class CamelRestRPCLiteralTest {
+public class CamelRestRpcLitTest {
 
-    static String CONTEXT_URL = "http://localhost:8080/rpclit/addressservice";
+    static String CONTEXT_URL = "http://localhost:8080/rpclit/address";
 
     @Test
-    public void testSpringContextFromURL() throws Exception {
+    public void testRestEndpoint() throws Exception {
         URL resourceUrl = getClass().getResource("/rpclit/rpclit-camel-context.xml");
         CamelContext camelctx = SpringCamelContextFactory.createSingleCamelContext(resourceUrl, null);
         camelctx.start();
@@ -47,27 +47,27 @@ public class CamelRestRPCLiteralTest {
 
             Client client = ClientBuilder.newClient();
             
-            // GET @AddressService#listAddresses()
+            // GET @Address#listAddresses()
             String result = client.target(CONTEXT_URL + "/addresses").request().get(String.class);
             Assert.assertEquals("[]", result);
 
-            // POST @AddressService#addAddress(String)
+            // POST @Address#addAddress(String)
             String payload = "{\"name\":\"Kermit\"}";
             result = client.target(CONTEXT_URL + "/address").request().post(Entity.entity(payload, MediaType.APPLICATION_JSON), String.class);
             Assert.assertEquals("1", result);
 
-            // GET @AddressService#getAddress(int)
+            // GET @Address#getAddress(int)
             result = client.target(CONTEXT_URL + "/address/1").request().get(String.class);
-            Assert.assertEquals("\"Kermit\"", result);
+            Assert.assertEquals("Kermit", result);
 
-            // PUT @AddressService#updAddress(int, String)
+            // PUT @Address#updAddress(int, String)
             payload = "{\"name\":\"Frog\"}";
             result = client.target(CONTEXT_URL + "/address/1").request().put(Entity.entity(payload, MediaType.APPLICATION_JSON), String.class);
-            Assert.assertEquals("\"Kermit\"", result);
+            Assert.assertEquals("Kermit", result);
 
-            // DEL @AddressService#delAddress(int)
+            // DEL @Address#delAddress(int)
             result = client.target(CONTEXT_URL + "/address/1").request().delete(String.class);
-            Assert.assertEquals("\"Frog\"", result);
+            Assert.assertEquals("Frog", result);
         } finally {
             camelctx.stop();
         }
