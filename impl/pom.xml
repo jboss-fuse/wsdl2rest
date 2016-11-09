@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.slosc.wsdl2rest</groupId>
+        <artifactId>wsdl2rest</artifactId>
+        <version>0.5-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>wsdl2rest-impl</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slosc.wsdl2rest</groupId>
+            <artifactId>wsdl2rest-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-java2ws-plugin</artifactId>
+                <version>${version.apache.cxf}</version>
+                <executions>
+                    <execution>
+                        <phase>process-test-classes</phase>
+                        <configuration>
+                            <className>org.slosc.wsdl2rest.test.rpclit.Address</className>
+                            <outputFile>${basedir}/src/test/resources/rpclit/Address.wsdl</outputFile>
+                            <classpath>${basedir}/target/test-classes</classpath>
+                            <attachWsdl>false</attachWsdl>
+                            <genWsdl>true</genWsdl>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

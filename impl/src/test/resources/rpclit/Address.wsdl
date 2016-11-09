@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AddressService" targetNamespace="http://rpclit.test.wsdl2rest.slosc.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://rpclit.test.wsdl2rest.slosc.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:message name="getAddress">
+    <wsdl:part name="arg0" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addAddress">
+    <wsdl:part name="arg0" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAddressResponse">
+    <wsdl:part name="return" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addAddressResponse">
+  </wsdl:message>
+  <wsdl:portType name="Address">
+    <wsdl:operation name="addAddress">
+      <wsdl:input name="addAddress" message="tns:addAddress">
+    </wsdl:input>
+      <wsdl:output name="addAddressResponse" message="tns:addAddressResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAddress">
+      <wsdl:input name="getAddress" message="tns:getAddress">
+    </wsdl:input>
+      <wsdl:output name="getAddressResponse" message="tns:getAddressResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AddressServiceSoapBinding" type="tns:Address">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="addAddress">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="addAddress">
+        <soap:body use="literal" namespace="http://rpclit.test.wsdl2rest.slosc.org/"/>
+      </wsdl:input>
+      <wsdl:output name="addAddressResponse">
+        <soap:body use="literal" namespace="http://rpclit.test.wsdl2rest.slosc.org/"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAddress">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="getAddress">
+        <soap:body use="literal" namespace="http://rpclit.test.wsdl2rest.slosc.org/"/>
+      </wsdl:input>
+      <wsdl:output name="getAddressResponse">
+        <soap:body use="literal" namespace="http://rpclit.test.wsdl2rest.slosc.org/"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AddressService">
+    <wsdl:port name="AddressPort" binding="tns:AddressServiceSoapBinding">
+      <soap:address location="http://localhost:9090/AddressPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
