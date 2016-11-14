@@ -1,4 +1,4 @@
-package org.slosc.wsdl2rest.test.doclit;
+package org.slosc.wsdl2rest.test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

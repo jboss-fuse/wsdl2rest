@@ -26,12 +26,19 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ServiceStatus;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slosc.wsdl2rest.test.doclit.Item;
+import org.slosc.wsdl2rest.test.doclit.ItemBuilder;
 import org.slosc.wsdl2rest.util.SpringCamelContextFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 public class CamelRestRpcLitTest {
 
@@ -45,29 +52,33 @@ public class CamelRestRpcLitTest {
         try {
             Assert.assertEquals(ServiceStatus.Started, camelctx.getStatus());
 
-            Client client = ClientBuilder.newClient();
+            Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+            
+            XMLGregorianCalendar dob = DatatypeFactory.newInstance().newXMLGregorianCalendarDate(1968, 11, 11, 0);
+            Item kermit = new ItemBuilder().name("Kermit").dateOfBirth(dob).build();
+            Item frog = new ItemBuilder().id(1).name("Frog").dateOfBirth(dob).build();
             
             // GET @Address#listAddresses()
-            String result = client.target(CONTEXT_URL + "/addresses").request().get(String.class);
-            Assert.assertEquals("[]", result);
+            String res1 = client.target(CONTEXT_URL + "/addresses").request().get(String.class);
+            Assert.assertEquals("[]", res1);
 
-            // POST @Address#addAddress(String)
-            String payload = "{\"name\":\"Kermit\"}";
-            result = client.target(CONTEXT_URL + "/address").request().post(Entity.entity(payload, MediaType.APPLICATION_JSON), String.class);
-            Assert.assertEquals("1", result);
+            // POST @Address#addAddress(Item)
+            String payload = new ObjectMapper().writeValueAsString(kermit);
+            Integer res2 = client.target(CONTEXT_URL + "/address").request().post(Entity.entity(payload, MediaType.APPLICATION_JSON), Integer.class);
+            Assert.assertEquals(new Integer(1), res2);
 
             // GET @Address#getAddress(int)
-            result = client.target(CONTEXT_URL + "/address/1").request().get(String.class);
-            Assert.assertEquals("Kermit", result);
+            Item res3 = client.target(CONTEXT_URL + "/address/1").request().get(Item.class);
+            Assert.assertEquals("Kermit", res3.getName());
 
-            // PUT @Address#updAddress(int, String)
-            payload = "{\"name\":\"Frog\"}";
-            result = client.target(CONTEXT_URL + "/address/1").request().put(Entity.entity(payload, MediaType.APPLICATION_JSON), String.class);
-            Assert.assertEquals("Kermit", result);
+            // PUT @Address#updAddress(Item)
+            payload = new ObjectMapper().writeValueAsString(frog);
+            Integer res4 = client.target(CONTEXT_URL + "/address").request().put(Entity.entity(payload, MediaType.APPLICATION_JSON), Integer.class);
+            Assert.assertEquals(new Integer(1), res4);
 
             // DEL @Address#delAddress(int)
-            result = client.target(CONTEXT_URL + "/address/1").request().delete(String.class);
-            Assert.assertEquals("Frog", result);
+            Item res5 = client.target(CONTEXT_URL + "/address/1").request().delete(Item.class);
+            Assert.assertEquals("Frog", res5.getName());
         } finally {
             camelctx.stop();
         }

@@ -19,26 +19,26 @@ public interface Address {
 	public int[] listAddresses();
 
 	@PUT
-	@Path("address/{arg0}")
+	@Path("address")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String updAddress(@PathParam("arg0") int arg0, String arg1);
+	public int updAddress(org.slosc.wsdl2rest.test.rpclit.Item arg0);
 
 	@POST
 	@Path("address")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public int addAddress(String arg0);
+	public int addAddress(org.slosc.wsdl2rest.test.rpclit.Item arg0);
 
 	@DELETE
 	@Path("address/{arg0}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String delAddress(@PathParam("arg0") int arg0);
+	public org.slosc.wsdl2rest.test.rpclit.Item delAddress(@PathParam("arg0") int arg0);
 
 	@GET
 	@Path("address/{arg0}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAddress(@PathParam("arg0") int arg0);
+	public org.slosc.wsdl2rest.test.rpclit.Item getAddress(@PathParam("arg0") int arg0);
 
 }
 

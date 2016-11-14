@@ -104,7 +104,6 @@ public class JSR311ClassGenerator extends ClassGeneratorImpl {
     private boolean hasPathParam(MethodInfo minfo, ParamInfo pinfo) {
         String httpMethod = minfo.getHttpMethod();
         boolean pathParam = httpMethod.equals("GET") || httpMethod.equals("DELETE");
-        pathParam |= httpMethod.equals("PUT") && minfo.getStyle().equals("rpc");
         return pathParam && getNestedParameterType(pinfo) != null;
     }
 

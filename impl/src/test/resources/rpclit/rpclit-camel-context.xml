@@ -32,7 +32,7 @@
                 </when>
                 <when>
                     <simple>${header.operationName} == 'updAddress'</simple>
-                    <to uri="bean:addressBean?method=updAddress&amp;multiParameterArray=true"/>
+                    <to uri="bean:addressBean?method=updAddress"/>
                 </when>
                 <when>
                     <simple>${header.operationName} == 'delAddress'</simple>

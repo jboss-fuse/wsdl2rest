@@ -23,9 +23,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.slosc.wsdl2rest.test.Item;
+import org.slosc.wsdl2rest.test.ItemBuilder;
+
 public class AddressBean implements Address {
 
-    private Map<Integer, String> map = new LinkedHashMap<>();
+    private Map<Integer, Item> map = new LinkedHashMap<>();
     
     @Override
     public Integer[] listAddresses() {
@@ -36,36 +39,42 @@ public class AddressBean implements Address {
     }
 
     @Override
-    public String getAddress(Integer id) {
+    public Item getAddress(Integer id) {
+        Item result = null;
         synchronized (map) {
-            return map.get(id);
-        }
-    }
-
-    @Override
-    public Integer addAddress(String name) {
-        synchronized (map) {
-            int id = map.size() + 1;
-            map.put(id, name);
-            return id;
-        }
-    }
-
-    @Override
-    public String updAddress(Integer id, String name) {
-        String result;
-        synchronized (map) {
-            result = map.get(id);
-            if (result != null) {
-                map.put(id, name);
+            Item aux = map.get(id);
+            if (aux != null) {
+                result = new ItemBuilder().copy(aux).build();
             }
         }
         return result;
     }
 
     @Override
-    public String delAddress(Integer id) {
-        String result;
+    public Integer addAddress(Item item) {
+        synchronized (map) {
+            int id = map.size() + 1;
+            map.put(id, new ItemBuilder().copy(item).id(id).build());
+            return id;
+        }
+    }
+
+    @Override
+    public Integer updAddress(Item item) {
+        Integer result;
+        synchronized (map) {
+            Integer id = item.getId();
+            result = map.containsKey(id) ? id : null;
+            if (result != null) {
+                map.put(id, new ItemBuilder().copy(item).build());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Item delAddress(Integer id) {
+        Item result;
         synchronized (map) {
             result = map.remove(id);
         }

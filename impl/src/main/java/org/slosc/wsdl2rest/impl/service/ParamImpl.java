@@ -4,10 +4,10 @@ import org.slosc.wsdl2rest.ParamInfo;
 
 public class ParamImpl extends MetaInfoImpl implements ParamInfo {
 
-    private String paramType;
-    private String paramName;
+    private final String paramName;
+    private final String paramType;
 
-    public ParamImpl(String paramType, String paramName) {
+    public ParamImpl(String paramName, String paramType) {
         this.paramType = paramType;
         this.paramName = paramName;
     }

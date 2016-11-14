@@ -23,6 +23,8 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import org.slosc.wsdl2rest.test.Item;
+
 @WebService
 @SOAPBinding(style = Style.RPC)
 public interface Address {
@@ -38,26 +40,26 @@ public interface Address {
      * @return The resource value or null
      */
     @WebMethod
-    String getAddress(Integer id);
+    Item getAddress(Integer id);
 
     /**
      * Add a resource with the given value.
      * @return The new resource id
      */
     @WebMethod
-    Integer addAddress(String name);
+    Integer addAddress(Item item);
     
     /**
      * Update a resource for the given id with the given value.
      * @return The new resource value or null
      */
     @WebMethod
-    String updAddress(Integer id, String name);
+    Integer updAddress(Item item);
 
     /**
      * Delete a resource with the given id.
      * @return The resource value or null
      */
     @WebMethod
-    String delAddress(Integer id);
+    Item delAddress(Integer id);
 }

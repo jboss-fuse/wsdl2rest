@@ -31,6 +31,7 @@ import org.slosc.wsdl2rest.WSDLProcessor;
 import org.slosc.wsdl2rest.impl.ResourceMapperImpl;
 import org.slosc.wsdl2rest.impl.WSDLProcessorImpl;
 import org.slosc.wsdl2rest.impl.codegen.ClassGeneratorFactory;
+import org.slosc.wsdl2rest.impl.codegen.JavaTypeGenerator;
 
 
 public class GenerateRpcLitTest {
@@ -56,6 +57,9 @@ public class GenerateRpcLitTest {
         ResourceMapper resMapper = new ResourceMapperImpl();
         resMapper.assignResources(clazzDefs);
 
+        JavaTypeGenerator typeGen = new JavaTypeGenerator(outpath, wsdlFile.toURI().toURL());
+        typeGen.execute();
+        
         ClassGenerator gen = ClassGeneratorFactory.getClassGenerator(outpath);
         gen.generateClasses(clazzDefs);
     }

@@ -19,7 +19,7 @@
     <camelContext id="cxfrs" xmlns="http://camel.apache.org/schema/spring">
         <route id="consumerRoute">
             <from uri="cxfrs:bean:cxfConsumer" />
-            <log loggingLevel="INFO" message="OPERATION_NAME=${header.operationName}"/>
+            <log loggingLevel="INFO" message="${header.operationName}"/>
             <choice>
                 <when>
                     <simple>${header.operationName} == 'listAddresses'</simple>

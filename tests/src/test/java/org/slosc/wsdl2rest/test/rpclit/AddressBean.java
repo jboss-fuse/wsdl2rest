@@ -25,7 +25,7 @@ import java.util.Set;
 
 public class AddressBean {
 
-    private Map<Integer, String> map = new LinkedHashMap<>();
+    private Map<Integer, Item> map = new LinkedHashMap<>();
     
     public Integer[] listAddresses() {
         synchronized (map) {
@@ -34,32 +34,34 @@ public class AddressBean {
         }
     }
 
-    public String getAddress(Integer id) {
+    public Item getAddress(Integer id) {
         synchronized (map) {
             return map.get(id);
         }
     }
 
-    public Integer addAddress(String name) {
+    public Integer addAddress(Item item) {
         synchronized (map) {
-            map.put(map.size() + 1, name);
-            return map.size();
+            int id = map.size() + 1;
+            map.put(id, new ItemBuilder().copy(item).id(id).build());
+            return id;
         }
     }
 
-    public String updAddress(Integer id, String name) {
-        String result;
+    public Integer updAddress(Item item) {
+        Integer result = null;
         synchronized (map) {
-            result = map.get(id);
-            if (result != null) {
-                map.put(id, name);
+            Integer id = item.getId();
+            if (map.get(id) != null) {
+                map.put(id, new ItemBuilder().copy(item).build());
+                result = id;
             }
         }
         return result;
     }
 
-    public String delAddress(Integer id) {
-        String result;
+    public Item delAddress(Integer id) {
+        Item result;
         synchronized (map) {
             result = map.remove(id);
         }

@@ -52,14 +52,17 @@ public class CamelRestDocLitTest {
 
             Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
             
+            XMLGregorianCalendar dob = DatatypeFactory.newInstance().newXMLGregorianCalendarDate(1968, 11, 11, 0);
+            Item kermit = new ItemBuilder().name("Kermit").dateOfBirth(dob).build();
+            Item frog = new ItemBuilder().id(1).name("Frog").dateOfBirth(dob).build();
+            
             // GET @Address#listAddresses()
             ListAddressesResponse res1 = client.target(CONTEXT_URL + "/addresses").request().get(ListAddressesResponse.class);
             Assert.assertEquals("[]", res1.getReturn());
 
             // POST @Address#addAddress(String)
             AddAddress req2 = new AddAddress();
-            XMLGregorianCalendar dob = DatatypeFactory.newInstance().newXMLGregorianCalendarDate(1968, 11, 11, 0);
-            req2.setArg0(new ItemBuilder().name("Kermit").dateOfBirth(dob).build());
+            req2.setArg0(kermit);
             String payload = new ObjectMapper().writeValueAsString(req2);
             AddAddressResponse res2 = client.target(CONTEXT_URL + "/address").request().post(Entity.entity(payload, MediaType.APPLICATION_JSON), AddAddressResponse.class);
             Assert.assertEquals(new Integer(1), res2.getReturn());
@@ -70,8 +73,7 @@ public class CamelRestDocLitTest {
 
             // PUT @Address#updAddress(int, String)
             UpdAddress req4 = new UpdAddress();
-            req4.setArg0(new Integer(1));
-            req4.setArg1(new ItemBuilder().name("Frog").dateOfBirth(dob).build());
+            req4.setArg0(frog);
             payload = new ObjectMapper().writeValueAsString(req4);
             UpdAddressResponse res4 = client.target(CONTEXT_URL + "/address").request().put(Entity.entity(payload, MediaType.APPLICATION_JSON), UpdAddressResponse.class);
             Assert.assertEquals(new Integer(1), res4.getReturn());

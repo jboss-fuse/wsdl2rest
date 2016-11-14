@@ -17,9 +17,6 @@
     <bean id="addressBean" class="org.slosc.wsdl2rest.test.rpclit.AddressBean"/>
     
     <camelContext id="cxfrs" xmlns="http://camel.apache.org/schema/spring">
-        <dataFormats>
-          <json id="json" library="Jackson"/>
-        </dataFormats>
         <route id="consumerRoute">
             <from uri="cxfrs:bean:cxfConsumer" />
             <log loggingLevel="INFO" message="${header.operationName}"/>
@@ -34,21 +31,11 @@
                 </when>
                 <when>
                     <simple>${header.operationName} == 'addAddress'</simple>
-                    <unmarshal ref="json"/>
-                    <log loggingLevel="INFO" message="${body}"/>
-                    <to uri="bean:addressBean?method=addAddress(${body[name]})"/>
+                    <to uri="bean:addressBean?method=addAddress"/>
                 </when>
                 <when>
                     <simple>${header.operationName} == 'updAddress'</simple>
-                    <unmarshal ref="json"/>
-                    <setHeader headerName="addressIdPath">
-                        <simple>${header.CamelHttpPath.substring(${header.CamelHttpPath.lastIndexOf('/')})}</simple>        
-                    </setHeader>
-                    <setHeader headerName="addressId">
-                        <simple>${header.addressIdPath.substring(1)}</simple>        
-                    </setHeader>
-                    <log loggingLevel="INFO" message="${header.addressId},${body}"/>
-                    <to uri="bean:addressBean?method=updAddress(${header.addressId},${body[name]})"/>
+                    <to uri="bean:addressBean?method=updAddress"/>
                 </when>
                 <when>
                     <simple>${header.operationName} == 'delAddress'</simple>

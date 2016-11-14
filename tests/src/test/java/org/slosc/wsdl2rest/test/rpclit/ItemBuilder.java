@@ -1,6 +1,6 @@
-package org.slosc.wsdl2rest.test.doclit;
+package org.slosc.wsdl2rest.test.rpclit;
 
-import java.util.Date;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 public class ItemBuilder {
 
@@ -23,7 +23,7 @@ public class ItemBuilder {
         return this;
     }
     
-    public ItemBuilder dateOfBirth(Date dob) {
+    public ItemBuilder dateOfBirth(XMLGregorianCalendar dob) {
         result.setDateOfBirth(dob);
         return this;
     }

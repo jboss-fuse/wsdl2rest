@@ -22,6 +22,8 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import org.slosc.wsdl2rest.test.Item;
+
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
 public interface Address {
@@ -50,10 +52,10 @@ public interface Address {
 
     /**
      * Update a resource for the given id with the given value.
-     * @return The new resource value or null
+     * @return The updated resource id or null
      */
     @WebMethod
-    Integer updAddress(Integer id, Item item);
+    Integer updAddress(Item item);
 
     /**
      * Delete a resource with the given id.

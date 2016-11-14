@@ -67,8 +67,7 @@
 
   <xs:complexType name="updAddress">
     <xs:sequence>
-      <xs:element minOccurs="0" name="arg0" type="xs:int"/>
-      <xs:element minOccurs="0" name="arg1" type="tns:item"/>
+      <xs:element minOccurs="0" name="arg0" type="tns:item"/>
     </xs:sequence>
   </xs:complexType>
 

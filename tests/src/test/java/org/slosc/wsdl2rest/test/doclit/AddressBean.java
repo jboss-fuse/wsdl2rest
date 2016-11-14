@@ -58,9 +58,10 @@ public class AddressBean implements Address {
     public UpdAddressResponse updAddress(UpdAddress req) {
         UpdAddressResponse res = new UpdAddressResponse();
         synchronized (map) {
-            if (map.containsKey(req.getArg0())) {
-                map.put(req.getArg0(), new ItemBuilder().copy(req.getArg1()).build());
-                res.setReturn(req.getArg0());
+            Integer id = req.getArg0().getId();
+            if (map.containsKey(id)) {
+                map.put(id, new ItemBuilder().copy(req.getArg0()).build());
+                res.setReturn(id);
             }
         }
         return res;

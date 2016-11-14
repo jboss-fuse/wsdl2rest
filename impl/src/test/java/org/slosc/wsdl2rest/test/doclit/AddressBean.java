@@ -22,6 +22,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.slosc.wsdl2rest.test.Item;
+import org.slosc.wsdl2rest.test.ItemBuilder;
+
 public class AddressBean implements Address {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();
@@ -50,18 +53,19 @@ public class AddressBean implements Address {
     public Integer addAddress(Item item) {
         synchronized (map) {
             int id = map.size() + 1;
-            map.put(id, new ItemBuilder().id(id).name(item.getName()).dateOfBirth(item.getDateOfBirth()).build());
+            map.put(id, new ItemBuilder().copy(item).id(id).build());
             return id;
         }
     }
 
     @Override
-    public Integer updAddress(Integer id, Item item) {
+    public Integer updAddress(Item item) {
         Integer result;
         synchronized (map) {
+            Integer id = item.getId();
             result = map.containsKey(id) ? id : null;
             if (result != null) {
-                map.put(id, new ItemBuilder().id(id).name(item.getName()).dateOfBirth(item.getDateOfBirth()).build());
+                map.put(id, new ItemBuilder().copy(item).build());
             }
         }
         return result;

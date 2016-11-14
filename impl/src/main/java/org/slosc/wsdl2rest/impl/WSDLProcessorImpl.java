@@ -195,13 +195,13 @@ public class WSDLProcessorImpl implements WSDLProcessor {
                 QName typeQName = part.getTypeName();
                 String javaType = typeRegistry.get(typeQName);
                 if (javaType == null) {
-                    javaType = toJavaType(elmtQName);
+                    javaType = toJavaType(typeQName != null ? typeQName : elmtQName);
                 }
                 if (javaType.startsWith("java.lang.")) {
                     javaType = javaType.substring(10);
                 }
                 log.info("\t\t\t\tParams: {} {}", javaType, elmtQName);
-                params.add(new ParamImpl(javaType, elmtQName.getLocalPart()));
+                params.add(new ParamImpl(elmtQName.getLocalPart(), javaType));
             }
             if (parts.size() > 0) {
                 ClassDefinitionImpl svcDef = (ClassDefinitionImpl) portTypeMap.get(portType.getQName());
