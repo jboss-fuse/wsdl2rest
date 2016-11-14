@@ -93,6 +93,7 @@
 
     <modules>
         <module>dist</module>
+        <module>docs</module>
         <module>impl</module>
         <module>util</module>
         <module>tests</module>
