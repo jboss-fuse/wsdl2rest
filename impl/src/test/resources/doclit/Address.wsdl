@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="AddressService" targetNamespace="http://doclit.test.wsdl2rest.slosc.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://doclit.test.wsdl2rest.slosc.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="AddressService" targetNamespace="http://doclit.test.wsdl2rest.fuse.jboss.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://doclit.test.wsdl2rest.fuse.jboss.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-<xs:schema xmlns:tns="http://doclit.test.wsdl2rest.slosc.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://doclit.test.wsdl2rest.slosc.org/" version="1.0">
+<xs:schema xmlns:tns="http://doclit.test.wsdl2rest.fuse.jboss.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://doclit.test.wsdl2rest.fuse.jboss.org/" version="1.0">
 
   <xs:element name="addAddress" type="tns:addAddress"/>
 

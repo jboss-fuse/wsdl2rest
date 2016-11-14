@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.slosc.wsdl2rest</groupId>
+        <groupId>org.jboss.fuse.wsdl2rest</groupId>
         <artifactId>wsdl2rest</artifactId>
         <version>0.5-SNAPSHOT</version>
     </parent>
@@ -11,7 +11,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.slosc.wsdl2rest</groupId>
+            <groupId>org.jboss.fuse.wsdl2rest</groupId>
             <artifactId>wsdl2rest-util</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -69,7 +69,7 @@
                         <id>rpclit</id>
                         <phase>process-test-classes</phase>
                         <configuration>
-                            <className>org.slosc.wsdl2rest.test.rpclit.Address</className>
+                            <className>org.jboss.fuse.wsdl2rest.test.rpclit.Address</className>
                             <outputFile>${basedir}/src/test/resources/rpclit/Address.wsdl</outputFile>
                             <classpath>${basedir}/target/test-classes</classpath>
                         </configuration>
@@ -81,7 +81,7 @@
                         <id>doclit</id>
                         <phase>process-test-classes</phase>
                         <configuration>
-                            <className>org.slosc.wsdl2rest.test.doclit.Address</className>
+                            <className>org.jboss.fuse.wsdl2rest.test.doclit.Address</className>
                             <outputFile>${basedir}/src/test/resources/doclit/Address.wsdl</outputFile>
                             <classpath>${project.build.directory}/test-classes</classpath>
                         </configuration>

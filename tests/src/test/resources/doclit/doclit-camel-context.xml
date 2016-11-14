@@ -8,13 +8,13 @@
         
     <cxf:rsServer id="cxfConsumer" 
         address="http://localhost:8080/doclit" 
-        serviceClass="org.slosc.wsdl2rest.test.doclit.Address">
+        serviceClass="org.jboss.fuse.wsdl2rest.test.doclit.Address">
         <cxf:providers>
             <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
         </cxf:providers>
     </cxf:rsServer>
         
-    <bean id="addressBean" class="org.slosc.wsdl2rest.test.doclit.AddressBean"/>
+    <bean id="addressBean" class="org.jboss.fuse.wsdl2rest.test.doclit.AddressBean"/>
     
     <camelContext id="cxfrs" xmlns="http://camel.apache.org/schema/spring">
         <route id="consumerRoute">
