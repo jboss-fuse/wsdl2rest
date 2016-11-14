@@ -1,70 +1,45 @@
 package org.jboss.fuse.wsdl2rest.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
+import java.net.URL;
+import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
-
-import javax.wsdl.WSDLException;
 
 import org.jboss.fuse.wsdl2rest.ClassGenerator;
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.ResourceMapper;
 import org.jboss.fuse.wsdl2rest.WSDLProcessor;
 import org.jboss.fuse.wsdl2rest.impl.codegen.ClassGeneratorFactory;
-import org.jboss.fuse.wsdl2rest.impl.writer.MessageWriter;
-import org.jboss.fuse.wsdl2rest.impl.writer.MessageWriterFactory;
+import org.jboss.fuse.wsdl2rest.impl.codegen.JavaTypeGenerator;
+import org.jboss.fuse.wsdl2rest.util.IllegalArgumentAssertion;
 
 public class Wsdl2Rest {
 
-    private MessageWriter msgWriter = MessageWriterFactory.getMessageWriter();
-    private List<EndpointInfo> endpointInfos;
+    private final URL wsdlUrl;
+    private final Path outpath;
 
-    public void process(URI wsdlURI) throws WSDLException {
+    public Wsdl2Rest(URL wsdlUrl, Path outpath) {
+        IllegalArgumentAssertion.assertNotNull(wsdlUrl, "wsdlUrl");
+        IllegalArgumentAssertion.assertNotNull(outpath, "outpath");
+        this.wsdlUrl = wsdlUrl;
+        this.outpath = outpath;
+    }
+
+    public List<EndpointInfo> process() throws Exception {
         
         WSDLProcessor wsdlProcessor = new WSDLProcessorImpl();
-        wsdlProcessor.process(wsdlURI);
+        wsdlProcessor.process(wsdlUrl);
         
-        endpointInfos = wsdlProcessor.getClassDefinitions();
-
+        List<EndpointInfo> clazzDefs = wsdlProcessor.getClassDefinitions();
         ResourceMapper resMapper = new ResourceMapperImpl();
-        resMapper.assignResources(endpointInfos);
-    }
+        resMapper.assignResources(clazzDefs);
 
-    public List<EndpointInfo> getSvcClasses() {
-        return endpointInfos;
-    }
-
-    public void generateClasses(String toLocation) throws IOException {
+        JavaTypeGenerator typeGen = new JavaTypeGenerator(outpath, wsdlUrl);
+        typeGen.execute();
         
-        if (toLocation == null || toLocation.length() == 0)
-            return;
-
-        File outdir = new File(toLocation);
-        if (!outdir.exists())
-            msgWriter.write(MessageWriter.TYPE.WARN, "Existing files will be over writtern ...");
+        ClassGenerator classGen = ClassGeneratorFactory.getClassGenerator(outpath);
+        classGen.generateClasses(clazzDefs);
         
-        outdir.delete();
-        outdir.mkdirs();
-
-        ClassGenerator gen = ClassGeneratorFactory.getClassGenerator(outdir.toPath());
-        gen.generateClasses(endpointInfos);
-    }
-
-    private static void usage() {
-        System.out.println("Usage: java -cp <classpath> org.slosc.wsdl2rest.Wsdl2Rest <wsdl-uri> <outputpath>");
-    }
-
-    public static void main(String[] args) throws Exception {
-
-        if (args.length < 2) {
-            usage();
-            System.exit(-1);
-        }
-
-        Wsdl2Rest wsdl2rest = new Wsdl2Rest();
-        wsdl2rest.process(new URI(args[0]));
-        wsdl2rest.generateClasses(args[1]);
-
+        return Collections.unmodifiableList(clazzDefs);
     }
 }

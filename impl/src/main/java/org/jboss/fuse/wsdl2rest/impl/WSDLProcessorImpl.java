@@ -3,6 +3,7 @@ package org.jboss.fuse.wsdl2rest.impl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -84,13 +85,13 @@ public class WSDLProcessorImpl implements WSDLProcessor {
         typeRegistry.put(new QName(jaxbArrayURI, "intArray"), "int[]");
     }
 
-    public void process(URI wsdlURI) throws WSDLException {
+    public void process(URL wsdlURL) throws WSDLException {
 
         WSDLFactory factory = WSDLFactory.newInstance();
         WSDLReader reader = factory.newWSDLReader();
         reader.setFeature("javax.wsdl.verbose", true);
         reader.setFeature("javax.wsdl.importDocuments", true);
-        Definition def = reader.readWSDL(null, wsdlURI.toString());
+        Definition def = reader.readWSDL(null, wsdlURL.toString());
 
         processSchemaTypes(def);
         processServices(def);

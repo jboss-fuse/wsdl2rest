@@ -43,7 +43,7 @@ public class GenerateDocLitTest {
         Path outpath = new File("../tests/src/test/java").toPath();
         
         WSDLProcessor wsdlProcessor = new WSDLProcessorImpl();
-        wsdlProcessor.process(wsdlFile.toURI());
+        wsdlProcessor.process(wsdlFile.toURI().toURL());
 
         List<EndpointInfo> clazzDefs = wsdlProcessor.getClassDefinitions();
         Assert.assertEquals(1, clazzDefs.size());

@@ -21,15 +21,10 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.jboss.fuse.wsdl2rest.ClassGenerator;
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.MethodInfo;
-import org.jboss.fuse.wsdl2rest.ResourceMapper;
-import org.jboss.fuse.wsdl2rest.WSDLProcessor;
-import org.jboss.fuse.wsdl2rest.impl.ResourceMapperImpl;
-import org.jboss.fuse.wsdl2rest.impl.WSDLProcessorImpl;
-import org.jboss.fuse.wsdl2rest.impl.codegen.ClassGeneratorFactory;
-import org.jboss.fuse.wsdl2rest.impl.codegen.JavaTypeGenerator;
+import org.jboss.fuse.wsdl2rest.impl.Main;
+import org.jboss.fuse.wsdl2rest.impl.Wsdl2Rest;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -42,10 +37,9 @@ public class GenerateRpcLitTest {
         File wsdlFile = new File("src/test/resources/rpclit/Address.wsdl");
         Path outpath = new File("../tests/src/test/java").toPath();
         
-        WSDLProcessor wsdlProcessor = new WSDLProcessorImpl();
-        wsdlProcessor.process(wsdlFile.toURI());
-
-        List<EndpointInfo> clazzDefs = wsdlProcessor.getClassDefinitions();
+        Wsdl2Rest tool = new Wsdl2Rest(wsdlFile.toURI().toURL(), outpath);
+        
+        List<EndpointInfo> clazzDefs = tool.process();
         Assert.assertEquals(1, clazzDefs.size());
         EndpointInfo clazzDef = clazzDefs.get(0);
         Assert.assertEquals("org.jboss.fuse.wsdl2rest.test.rpclit", clazzDef.getPackageName());
@@ -53,14 +47,22 @@ public class GenerateRpcLitTest {
 
         List<MethodInfo> methods = clazzDef.getMethods();
         Assert.assertEquals(5, methods.size());
-        
-        ResourceMapper resMapper = new ResourceMapperImpl();
-        resMapper.assignResources(clazzDefs);
+    }
 
-        JavaTypeGenerator typeGen = new JavaTypeGenerator(outpath, wsdlFile.toURI().toURL());
-        typeGen.execute();
+
+    @Test
+    public void testMain() throws Exception {
+
         
-        ClassGenerator gen = ClassGeneratorFactory.getClassGenerator(outpath);
-        gen.generateClasses(clazzDefs);
+        String[] args = new String[] {"--wsdl=file:src/test/resources/rpclit/Address.wsdl", "--out=../tests/src/test/java"};
+        List<EndpointInfo> clazzDefs = new Main().mainInternal(args);
+
+        Assert.assertEquals(1, clazzDefs.size());
+        EndpointInfo clazzDef = clazzDefs.get(0);
+        Assert.assertEquals("org.jboss.fuse.wsdl2rest.test.rpclit", clazzDef.getPackageName());
+        Assert.assertEquals("Address", clazzDef.getClassName());
+
+        List<MethodInfo> methods = clazzDef.getMethods();
+        Assert.assertEquals(5, methods.size());
     }
 }

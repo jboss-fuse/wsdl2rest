@@ -4,10 +4,14 @@
     <groupId>org.jboss.fuse.wsdl2rest</groupId>
     <artifactId>wsdl2rest</artifactId>
     <version>0.5-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
+    <url>https://github.com/tdiesler/wsdl2rest</url>
+    
     <properties>
         <version.apache.camel>2.18.0</version.apache.camel>
         <version.apache.cxf>3.1.7</version.apache.cxf>
+        <version.args4j>2.0.31</version.args4j>
         <version.javaparser>2.5.1</version.javaparser>
         <version.javax.ws.rs.api>2.0.1</version.javax.ws.rs.api>
         <version.junit>4.11</version.junit>
@@ -15,12 +19,33 @@
         
         <!-- Plugin versions -->
         <version-maven-compiler-plugin>3.1</version-maven-compiler-plugin>
+        <version-maven-jar-plugin>2.6</version-maven-jar-plugin>
+        <version-maven-javadoc-plugin>2.9.1</version-maven-javadoc-plugin>
+        <version-maven-release-plugin>2.5</version-maven-release-plugin>
+        <version-maven-source-plugin>2.3</version-maven-source-plugin>
     </properties>
     
-    <packaging>pom</packaging>
+    <!-- Source Control -->
+    <scm>
+        <connection>scm:git:https://github.com/tdiesler/wsdl2rest.git</connection>
+        <developerConnection>scm:git:https://github.com/tdiesler/wsdl2rest.git</developerConnection>
+        <url>http://github.com/tdiesler/wsdl2rest</url>
+        <tag>HEAD</tag>
+    </scm>
+    
+    <!-- Issue Management -->
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/tdiesler/wsdl2rest/issues</url>
+    </issueManagement>
     
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>args4j</groupId>
+                <artifactId>args4j</artifactId>
+                <version>${version.args4j}</version>
+            </dependency>
             <dependency>
                 <groupId>com.github.javaparser</groupId>
                 <artifactId>javaparser-core</artifactId>
@@ -67,12 +92,14 @@
     </dependencyManagement>
 
     <modules>
+        <module>dist</module>
         <module>impl</module>
         <module>util</module>
         <module>tests</module>
     </modules>    
 
     <build>
+        <!-- Plugin Management -->
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -93,7 +120,82 @@
                         <target>1.8</target>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${version-maven-jar-plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${version-maven-javadoc-plugin}</version>
+                    <configuration>
+                        <excludePackageNames>org.jboss.fuse.wsdl2rest.impl</excludePackageNames>
+                        <quiet>true</quiet>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${version-maven-release-plugin}</version>
+                    <configuration>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${version-maven-source-plugin}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
+        
+        <!-- Plugins -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <inherited>true</inherited>
+            </plugin>
+        </plugins>
     </build>    
+
+    <!-- Licenses -->
+    <licenses>
+        <license>
+            <name>apache_v2</name>
+            <url>http://repository.jboss.org/licenses/apache-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <!-- Developers -->
+    <developers>
+        <developer>
+            <name>Fuse Committers</name>
+        </developer>
+    </developers>
+
+    <!-- Distribution Management -->
+    <distributionManagement>
+        <repository>
+            <id>jboss-releases-repository</id>
+            <name>JBoss Releases Repository</name>
+            <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>jboss-snapshots-repository</id>
+            <name>JBoss Snapshots Repository</name>
+            <url>https://repository.jboss.org/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
