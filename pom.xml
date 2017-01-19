@@ -18,6 +18,7 @@
         <version.wsdl4j>1.6.3</version.wsdl4j>
         
         <!-- Plugin versions -->
+        <version-maven-antrun-plugin>1.8</version-maven-antrun-plugin>
         <version-maven-compiler-plugin>3.1</version-maven-compiler-plugin>
         <version-maven-jar-plugin>2.6</version-maven-jar-plugin>
         <version-maven-javadoc-plugin>2.9.1</version-maven-javadoc-plugin>
@@ -111,6 +112,11 @@
                         <attachWsdl>false</attachWsdl>
                         <genWsdl>true</genWsdl>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${version-maven-antrun-plugin}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

@@ -31,11 +31,14 @@ import org.junit.Test;
 
 public class GenerateRpcLitTest {
 
+    static final String WSDL_LOCATION = "src/test/resources/rpclit/Address.wsdl";
+    static final String OUTPUT_PATH = "target/generated-sources/wsdl2rest";
+
     @Test
     public void testGenerate() throws Exception {
 
-        File wsdlFile = new File("src/test/resources/rpclit/Address.wsdl");
-        Path outpath = new File("../tests/src/test/java").toPath();
+        File wsdlFile = new File(WSDL_LOCATION);
+        Path outpath = new File(OUTPUT_PATH).toPath();
         
         Wsdl2Rest tool = new Wsdl2Rest(wsdlFile.toURI().toURL(), outpath);
         
@@ -54,7 +57,7 @@ public class GenerateRpcLitTest {
     public void testMain() throws Exception {
 
         
-        String[] args = new String[] {"--wsdl=file:src/test/resources/rpclit/Address.wsdl", "--out=../tests/src/test/java"};
+        String[] args = new String[] {"--wsdl=file:" + WSDL_LOCATION, "--out=" + OUTPUT_PATH};
         List<EndpointInfo> clazzDefs = new Main().mainInternal(args);
 
         Assert.assertEquals(1, clazzDefs.size());

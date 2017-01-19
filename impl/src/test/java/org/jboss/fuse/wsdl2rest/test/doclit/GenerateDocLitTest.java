@@ -36,11 +36,14 @@ import org.junit.Test;
 
 public class GenerateDocLitTest {
 
+    static final String WSDL_LOCATION = "src/test/resources/doclit/Address.wsdl";
+    static final String OUTPUT_PATH = "target/generated-sources/wsdl2rest";
+
     @Test
     public void testGenerate() throws Exception {
 
-        File wsdlFile = new File("src/test/resources/doclit/Address.wsdl");
-        Path outpath = new File("../tests/src/test/java").toPath();
+        File wsdlFile = new File(WSDL_LOCATION);
+        Path outpath = new File(OUTPUT_PATH).toPath();
         
         WSDLProcessor wsdlProcessor = new WSDLProcessorImpl();
         wsdlProcessor.process(wsdlFile.toURI().toURL());
