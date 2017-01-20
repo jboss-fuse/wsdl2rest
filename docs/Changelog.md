@@ -1,5 +1,22 @@
 ### Changelog
 
+#### WSDL2Rest 0.6
+
+**Features**
+
+* [#12][12] Generate camel routes for generated endpoints
+
+For details see [0.6 features](https://github.com/wildfly-extras/fuse-patch/issues?q=milestone%3A"0.6"+label%3Afeature)
+
+**Tasks**
+
+* [#13][13] Generate types as part of maven build
+
+For details see [0.6 tasks](https://github.com/wildfly-extras/fuse-patch/issues?q=milestone%3A"0.6"+label%3Atask)
+
+[12]: https://github.com/tdiesler/wsdl2rest/issues/12
+[13]: https://github.com/tdiesler/wsdl2rest/issues/13
+
 #### WSDL2Rest 0.5
 
 **Features**
