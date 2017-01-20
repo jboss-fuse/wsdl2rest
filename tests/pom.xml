@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jboss.fuse.wsdl2rest</groupId>
         <artifactId>wsdl2rest</artifactId>
-        <version>0.6-SNAPSHOT</version>
+        <version>0.6</version>
     </parent>
 
     <artifactId>wsdl2rest-tests</artifactId>
@@ -72,7 +72,7 @@
                         <phase>generate-test-sources</phase>
                         <configuration>
                             <target>
-                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true" >
+                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
                                     <arg value="--wsdl=file:${basedir}/../impl/src/test/resources/rpclit/Address.wsdl" />
                                     <arg value="--out=${basedir}/target/generated-wsdl2rest" />
                                     <arg value="--target-context=rpclit-camel-context.xml" />
@@ -90,7 +90,7 @@
                         <phase>generate-test-sources</phase>
                         <configuration>
                             <target>
-                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true" >
+                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
                                     <arg value="--wsdl=file:${basedir}/../impl/src/test/resources/doclit/Address.wsdl" />
                                     <arg value="--out=${basedir}/target/generated-wsdl2rest" />
                                     <arg value="--target-context=doclit-camel-context.xml" />
