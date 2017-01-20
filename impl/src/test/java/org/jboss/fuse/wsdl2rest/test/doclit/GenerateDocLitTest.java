@@ -18,16 +18,17 @@ package org.jboss.fuse.wsdl2rest.test.doclit;
  */
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.jboss.fuse.wsdl2rest.ClassGenerator;
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.MethodInfo;
 import org.jboss.fuse.wsdl2rest.ResourceMapper;
-import org.jboss.fuse.wsdl2rest.WSDLProcessor;
 import org.jboss.fuse.wsdl2rest.impl.ResourceMapperImpl;
-import org.jboss.fuse.wsdl2rest.impl.WSDLProcessorImpl;
+import org.jboss.fuse.wsdl2rest.impl.Wsdl2Rest;
 import org.jboss.fuse.wsdl2rest.impl.codegen.ClassGeneratorFactory;
 import org.jboss.fuse.wsdl2rest.impl.codegen.JavaTypeGenerator;
 import org.junit.Assert;
@@ -45,10 +46,12 @@ public class GenerateDocLitTest {
         File wsdlFile = new File(WSDL_LOCATION);
         Path outpath = new File(OUTPUT_PATH).toPath();
         
-        WSDLProcessor wsdlProcessor = new WSDLProcessorImpl();
-        wsdlProcessor.process(wsdlFile.toURI().toURL());
+        Wsdl2Rest tool = new Wsdl2Rest(wsdlFile.toURI().toURL(), outpath);
+        tool.setTargetContext(Paths.get("doclit-camel-context.xml"));
+        tool.setTargetAddress(new URL("http://localhost:8080/doclit"));
+        tool.setTargetBean(AddressBean.class.getName());
 
-        List<EndpointInfo> clazzDefs = wsdlProcessor.getClassDefinitions();
+        List<EndpointInfo> clazzDefs = tool.process();
         Assert.assertEquals(1, clazzDefs.size());
         EndpointInfo clazzDef = clazzDefs.get(0);
         Assert.assertEquals("org.jboss.fuse.wsdl2rest.test.doclit", clazzDef.getPackageName());

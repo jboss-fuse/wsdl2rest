@@ -20,6 +20,7 @@
 
 package org.jboss.fuse.wsdl2rest.test.doclit;
 
+import java.io.File;
 import java.net.URL;
 
 import javax.ws.rs.client.Client;
@@ -44,7 +45,7 @@ public class CamelRestDocLitTest {
 
     @Test
     public void testRestEndpoint() throws Exception {
-        URL resourceUrl = getClass().getResource("/doclit/doclit-camel-context.xml");
+        URL resourceUrl = new File("target/generated-wsdl2rest/doclit-camel-context.xml").toURI().toURL();
         CamelContext camelctx = SpringCamelContextFactory.createSingleCamelContext(resourceUrl, null);
         camelctx.start();
         try {
@@ -53,8 +54,8 @@ public class CamelRestDocLitTest {
             Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
             
             XMLGregorianCalendar dob = DatatypeFactory.newInstance().newXMLGregorianCalendarDate(1968, 11, 11, 0);
-            Item kermit = new ItemBuilder().name("Kermit").dateOfBirth(dob).build();
-            Item frog = new ItemBuilder().id(1).name("Frog").dateOfBirth(dob).build();
+            Item kermit = new ItemBuilder().id(100).name("Kermit").dateOfBirth(dob).build();
+            Item frog = new ItemBuilder().id(100).name("Frog").dateOfBirth(dob).build();
             
             // GET @Address#listAddresses()
             ListAddressesResponse res1 = client.target(CONTEXT_URL + "/addresses").request().get(ListAddressesResponse.class);
@@ -65,10 +66,10 @@ public class CamelRestDocLitTest {
             req2.setArg0(kermit);
             String payload = new ObjectMapper().writeValueAsString(req2);
             AddAddressResponse res2 = client.target(CONTEXT_URL + "/address").request().post(Entity.entity(payload, MediaType.APPLICATION_JSON), AddAddressResponse.class);
-            Assert.assertEquals(new Integer(1), res2.getReturn());
+            Assert.assertEquals(new Integer(100), res2.getReturn());
             
             // GET @Address#getAddress(int)
-            GetAddressResponse res3 = client.target(CONTEXT_URL + "/address/1").request().get(GetAddressResponse.class);
+            GetAddressResponse res3 = client.target(CONTEXT_URL + "/address/100").request().get(GetAddressResponse.class);
             Assert.assertEquals("Kermit", res3.getReturn().getName());
 
             // PUT @Address#updAddress(int, String)
@@ -76,10 +77,10 @@ public class CamelRestDocLitTest {
             req4.setArg0(frog);
             payload = new ObjectMapper().writeValueAsString(req4);
             UpdAddressResponse res4 = client.target(CONTEXT_URL + "/address").request().put(Entity.entity(payload, MediaType.APPLICATION_JSON), UpdAddressResponse.class);
-            Assert.assertEquals(new Integer(1), res4.getReturn());
+            Assert.assertEquals(new Integer(100), res4.getReturn());
 
             // DEL @Address#delAddress(int)
-            DelAddressResponse res5 = client.target(CONTEXT_URL + "/address/1").request().delete(DelAddressResponse.class);
+            DelAddressResponse res5 = client.target(CONTEXT_URL + "/address/100").request().delete(DelAddressResponse.class);
             Assert.assertEquals("Frog", res5.getReturn().getName());
         } finally {
             camelctx.stop();

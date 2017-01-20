@@ -21,11 +21,10 @@ package org.jboss.fuse.wsdl2rest.test.doclit;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class AddressBean implements Address {
+public class AddressBean {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();
     
-    @Override
     public ListAddressesResponse listAddresses() {
         ListAddressesResponse res = new ListAddressesResponse();
         synchronized (map) {
@@ -34,7 +33,6 @@ public class AddressBean implements Address {
         return res;
     }
 
-    @Override
     public GetAddressResponse getAddress(Integer id) {
         GetAddressResponse res = new GetAddressResponse();
         synchronized (map) {
@@ -43,18 +41,16 @@ public class AddressBean implements Address {
         return res;
     }
 
-    @Override
     public AddAddressResponse addAddress(AddAddress req) {
         AddAddressResponse res = new AddAddressResponse();
         synchronized (map) {
-            int id = map.size() + 1;
+            Integer id = req.getArg0().getId();
             res.setReturn(id);
-            map.put(res.getReturn(), new ItemBuilder().copy(req.getArg0()).id(id).build());
+            map.put(res.getReturn(), new ItemBuilder().copy(req.getArg0()).build());
         }
         return res;
     }
 
-    @Override
     public UpdAddressResponse updAddress(UpdAddress req) {
         UpdAddressResponse res = new UpdAddressResponse();
         synchronized (map) {
@@ -67,7 +63,6 @@ public class AddressBean implements Address {
         return res;
     }
 
-    @Override
     public DelAddressResponse delAddress(Integer id) {
         DelAddressResponse res = new DelAddressResponse();
         synchronized (map) {

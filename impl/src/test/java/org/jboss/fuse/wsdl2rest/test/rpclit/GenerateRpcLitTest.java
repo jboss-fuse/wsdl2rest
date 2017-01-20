@@ -18,7 +18,9 @@ package org.jboss.fuse.wsdl2rest.test.rpclit;
  */
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
@@ -41,6 +43,9 @@ public class GenerateRpcLitTest {
         Path outpath = new File(OUTPUT_PATH).toPath();
         
         Wsdl2Rest tool = new Wsdl2Rest(wsdlFile.toURI().toURL(), outpath);
+        tool.setTargetContext(Paths.get("rpclit-camel-context.xml"));
+        tool.setTargetAddress(new URL("http://localhost:8080/rpclit"));
+        tool.setTargetBean(AddressBean.class.getName());
         
         List<EndpointInfo> clazzDefs = tool.process();
         Assert.assertEquals(1, clazzDefs.size());
@@ -52,10 +57,8 @@ public class GenerateRpcLitTest {
         Assert.assertEquals(5, methods.size());
     }
 
-
     @Test
     public void testMain() throws Exception {
-
         
         String[] args = new String[] {"--wsdl=file:" + WSDL_LOCATION, "--out=" + OUTPUT_PATH};
         List<EndpointInfo> clazzDefs = new Main().mainInternal(args);

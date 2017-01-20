@@ -2,7 +2,8 @@
 .classpath
 .project
 .settings
-target
 *.iml
+*.log
 .DS_Store
-wsdl2rest.log
+target
+

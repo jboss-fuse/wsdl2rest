@@ -42,7 +42,7 @@ public class AddressBean {
 
     public Integer addAddress(Item item) {
         synchronized (map) {
-            int id = map.size() + 1;
+            Integer id = item.getId();
             map.put(id, new ItemBuilder().copy(item).id(id).build());
             return id;
         }

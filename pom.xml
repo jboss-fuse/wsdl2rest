@@ -11,6 +11,7 @@
     <properties>
         <version.apache.camel>2.18.0</version.apache.camel>
         <version.apache.cxf>3.1.7</version.apache.cxf>
+        <version.apache.velocity>1.7</version.apache.velocity>
         <version.args4j>2.0.31</version.args4j>
         <version.javaparser>2.5.1</version.javaparser>
         <version.javax.ws.rs.api>2.0.1</version.javax.ws.rs.api>
@@ -18,12 +19,14 @@
         <version.wsdl4j>1.6.3</version.wsdl4j>
         
         <!-- Plugin versions -->
+        <version-build-helper-plugin>1.12</version-build-helper-plugin>
         <version-maven-antrun-plugin>1.8</version-maven-antrun-plugin>
         <version-maven-compiler-plugin>3.1</version-maven-compiler-plugin>
         <version-maven-jar-plugin>2.6</version-maven-jar-plugin>
         <version-maven-javadoc-plugin>2.9.1</version-maven-javadoc-plugin>
         <version-maven-release-plugin>2.5</version-maven-release-plugin>
         <version-maven-source-plugin>2.3</version-maven-source-plugin>
+        <version-maven-surefire-plugin>2.19.1</version-maven-surefire-plugin>
     </properties>
     
     <!-- Source Control -->
@@ -85,6 +88,11 @@
                 <version>${version.apache.cxf}</version>
              </dependency>
             <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${version.apache.velocity}</version>
+            </dependency>
+            <dependency>
                 <groupId>wsdl4j</groupId>
                 <artifactId>wsdl4j</artifactId>
                 <version>${version.wsdl4j}</version>
@@ -96,7 +104,6 @@
         <module>dist</module>
         <module>docs</module>
         <module>impl</module>
-        <module>util</module>
         <module>tests</module>
     </modules>    
 
@@ -154,6 +161,19 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${version-maven-source-plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${version-maven-surefire-plugin}</version>
+                    <configuration>
+                        <failIfNoTests>false</failIfNoTests>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${version-build-helper-plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -16,10 +16,12 @@ public class ClassDefinitionImpl extends MetaInfoImpl implements EndpointInfo {
     private String className;
     private Map<String, MethodInfo> methods = new LinkedHashMap<>();
 
+    @Override
     public String getPackageName() {
         return packageName;
     }
 
+    @Override
     public List<String> getImports() {
         return imports;
     }
@@ -32,6 +34,7 @@ public class ClassDefinitionImpl extends MetaInfoImpl implements EndpointInfo {
         this.packageName = packageName;
     }
 
+    @Override
     public String getClassName() {
         return className;
     }
@@ -40,11 +43,13 @@ public class ClassDefinitionImpl extends MetaInfoImpl implements EndpointInfo {
         this.className = className;
     }
 
+    @Override
     public List<MethodInfo> getMethods() {
         ArrayList<MethodInfo> result = new ArrayList<>(methods.values());
         return Collections.unmodifiableList(result);
     }
 
+    @Override
    public MethodInfo getMethod(String methodName) {
         return methods.get(methodName);
     }
@@ -52,8 +57,14 @@ public class ClassDefinitionImpl extends MetaInfoImpl implements EndpointInfo {
     public void addMethod(MethodInfo method) {
         methods.put(method.getMethodName(), method);
     }
-
-    public String toString() {
+    
+    @Override
+    public String getFQN() {
         return packageName + "." + className;
+    }
+
+    @Override
+    public String toString() {
+        return getFQN();
     }
 }

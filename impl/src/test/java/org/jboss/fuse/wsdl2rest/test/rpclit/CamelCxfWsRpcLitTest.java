@@ -50,14 +50,14 @@ public class CamelCxfWsRpcLitTest {
             Assert.assertNotNull("Address not null", port);
 
             Date dob = DATE_FORMAT.parse("11.11.1968");
-            Item kermit = new ItemBuilder().name("Kermit").dateOfBirth(dob).build();
-            Item frog = new ItemBuilder().id(1).name("Frog").dateOfBirth(dob).build();
+            Item kermit = new ItemBuilder().id(100).name("Kermit").dateOfBirth(dob).build();
+            Item frog = new ItemBuilder().id(100).name("Frog").dateOfBirth(dob).build();
             
             Assert.assertNull(port.listAddresses());
-            Assert.assertEquals(1, (int) port.addAddress(kermit));
-            Assert.assertEquals("Kermit", port.getAddress(1).getName());
-            Assert.assertEquals(1, (int) port.updAddress(frog));
-            Assert.assertEquals("Frog", port.delAddress(1).getName());
+            Assert.assertEquals(100, (int) port.addAddress(kermit));
+            Assert.assertEquals("Kermit", port.getAddress(100).getName());
+            Assert.assertEquals(100, (int) port.updAddress(frog));
+            Assert.assertEquals("Frog", port.delAddress(100).getName());
         } finally {
             camelctx.stop();
         }

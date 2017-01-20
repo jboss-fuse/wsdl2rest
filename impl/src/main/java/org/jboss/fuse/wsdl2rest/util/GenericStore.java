@@ -1,4 +1,4 @@
-package org.jboss.fuse.wsdl2rest.test.rpclit;
+package org.jboss.fuse.wsdl2rest.util;
 /*
  * Copyright (c) 2008 SL_OpenSource Consortium
  * All Rights Reserved.
@@ -17,62 +17,52 @@ package org.jboss.fuse.wsdl2rest.test.rpclit;
  *
  */
 
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.jboss.fuse.wsdl2rest.test.Item;
-import org.jboss.fuse.wsdl2rest.test.ItemBuilder;
+public class GenericStore {
 
-public class AddressBean {
+    private Map<Integer, Object> map = new LinkedHashMap<>();
 
-    private Map<Integer, Item> map = new LinkedHashMap<>();
-    
-    public Integer[] listAddresses() {
+    public Integer[] list() {
         synchronized (map) {
             Set<Integer> keySet = map.keySet();
             return new ArrayList<>(keySet).toArray(new Integer[keySet.size()]);
         }
     }
 
-    public Item getAddress(Integer id) {
-        Item result = null;
+    public Object get(Integer id) {
         synchronized (map) {
-            Item aux = map.get(id);
-            if (aux != null) {
-                result = new ItemBuilder().copy(aux).build();
-            }
+            return map.get(id);
         }
-        return result;
     }
 
-    public Integer addAddress(Item item) {
+    public Integer add(Object obj) {
         synchronized (map) {
-            Integer id = item.getId();
-            map.put(id, new ItemBuilder().copy(item).build());
+            int id = map.size() + 1;
+            map.put(id, obj);
             return id;
         }
     }
 
-    public Integer updAddress(Item item) {
-        Integer result;
+    public Integer update(Integer id, Object obj) {
+        Integer result = null;
         synchronized (map) {
-            Integer id = item.getId();
-            result = map.containsKey(id) ? id : null;
-            if (result != null) {
-                map.put(id, new ItemBuilder().copy(item).build());
+            if (map.get(id) != null) {
+                map.put(id, obj);
+                result = id;
             }
         }
         return result;
     }
 
-    public Item delAddress(Integer id) {
-        Item result;
+    public Object delete(Integer id) {
+        Object result;
         synchronized (map) {
             result = map.remove(id);
         }
         return result;
-   }
+    }
 }

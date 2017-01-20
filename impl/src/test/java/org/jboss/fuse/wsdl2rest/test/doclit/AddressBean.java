@@ -25,11 +25,10 @@ import java.util.Set;
 import org.jboss.fuse.wsdl2rest.test.Item;
 import org.jboss.fuse.wsdl2rest.test.ItemBuilder;
 
-public class AddressBean implements Address {
+public class AddressBean {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();
     
-    @Override
     public String listAddresses() {
         synchronized (map) {
             Set<Integer> keySet = map.keySet();
@@ -37,7 +36,6 @@ public class AddressBean implements Address {
         }
     }
 
-    @Override
     public Item getAddress(Integer id) {
         Item result = null;
         synchronized (map) {
@@ -49,16 +47,14 @@ public class AddressBean implements Address {
         return result;
     }
 
-    @Override
     public Integer addAddress(Item item) {
         synchronized (map) {
-            int id = map.size() + 1;
-            map.put(id, new ItemBuilder().copy(item).id(id).build());
+            Integer id = item.getId();
+            map.put(id, new ItemBuilder().copy(item).build());
             return id;
         }
     }
 
-    @Override
     public Integer updAddress(Item item) {
         Integer result;
         synchronized (map) {
@@ -71,7 +67,6 @@ public class AddressBean implements Address {
         return result;
     }
 
-    @Override
     public Item delAddress(Integer id) {
         Item result;
         synchronized (map) {

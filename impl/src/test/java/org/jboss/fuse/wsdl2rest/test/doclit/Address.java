@@ -52,7 +52,7 @@ public interface Address {
 
     /**
      * Update a resource for the given id with the given value.
-     * @return The updated resource id or null
+     * @return The resource id or null
      */
     @WebMethod
     Integer updAddress(Item item);

@@ -35,4 +35,6 @@ public interface EndpointInfo extends MetaInfo {
     MethodInfo getMethod(String operation);
 
     List<MethodInfo> getMethods();
+
+    String getFQN();
 }

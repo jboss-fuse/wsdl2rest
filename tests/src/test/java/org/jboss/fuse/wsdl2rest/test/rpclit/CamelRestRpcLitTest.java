@@ -20,6 +20,7 @@
 
 package org.jboss.fuse.wsdl2rest.test.rpclit;
 
+import java.io.File;
 import java.net.URL;
 
 import javax.ws.rs.client.Client;
@@ -46,7 +47,7 @@ public class CamelRestRpcLitTest {
 
     @Test
     public void testRestEndpoint() throws Exception {
-        URL resourceUrl = getClass().getResource("/rpclit/rpclit-camel-context.xml");
+        URL resourceUrl = new File("target/generated-wsdl2rest/rpclit-camel-context.xml").toURI().toURL();
         CamelContext camelctx = SpringCamelContextFactory.createSingleCamelContext(resourceUrl, null);
         camelctx.start();
         try {
@@ -55,8 +56,8 @@ public class CamelRestRpcLitTest {
             Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
             
             XMLGregorianCalendar dob = DatatypeFactory.newInstance().newXMLGregorianCalendarDate(1968, 11, 11, 0);
-            Item kermit = new ItemBuilder().name("Kermit").dateOfBirth(dob).build();
-            Item frog = new ItemBuilder().id(1).name("Frog").dateOfBirth(dob).build();
+            Item kermit = new ItemBuilder().id(100).name("Kermit").dateOfBirth(dob).build();
+            Item frog = new ItemBuilder().id(100).name("Frog").dateOfBirth(dob).build();
             
             // GET @Address#listAddresses()
             String res1 = client.target(CONTEXT_URL + "/addresses").request().get(String.class);
@@ -65,19 +66,19 @@ public class CamelRestRpcLitTest {
             // POST @Address#addAddress(Item)
             String payload = new ObjectMapper().writeValueAsString(kermit);
             Integer res2 = client.target(CONTEXT_URL + "/address").request().post(Entity.entity(payload, MediaType.APPLICATION_JSON), Integer.class);
-            Assert.assertEquals(new Integer(1), res2);
+            Assert.assertEquals(new Integer(100), res2);
 
             // GET @Address#getAddress(int)
-            Item res3 = client.target(CONTEXT_URL + "/address/1").request().get(Item.class);
+            Item res3 = client.target(CONTEXT_URL + "/address/" + res2).request().get(Item.class);
             Assert.assertEquals("Kermit", res3.getName());
 
             // PUT @Address#updAddress(Item)
             payload = new ObjectMapper().writeValueAsString(frog);
             Integer res4 = client.target(CONTEXT_URL + "/address").request().put(Entity.entity(payload, MediaType.APPLICATION_JSON), Integer.class);
-            Assert.assertEquals(new Integer(1), res4);
+            Assert.assertEquals(new Integer(100), res4);
 
             // DEL @Address#delAddress(int)
-            Item res5 = client.target(CONTEXT_URL + "/address/1").request().delete(Item.class);
+            Item res5 = client.target(CONTEXT_URL + "/address/100").request().delete(Item.class);
             Assert.assertEquals("Frog", res5.getName());
         } finally {
             camelctx.stop();

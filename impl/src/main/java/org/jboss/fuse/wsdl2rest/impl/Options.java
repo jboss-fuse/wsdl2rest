@@ -29,9 +29,18 @@ final class Options {
 	@Option(name = "--help", help = true)
 	boolean help;
 
-    @Option(name = "--wsdl", required = true, usage = "URL to the input WSDL")
+    @Option(name = "--wsdl", required = true, usage = "URL to the input WSDL (required)")
     URL wsdlUrl;
     
-	@Option(name = "--out", required = true, usage = "Output path for generated types/services")
-	Path outpath;
+    @Option(name = "--out", required = true, usage = "Output path for generated artefacts (required)")
+    Path outpath;
+
+    @Option(name = "--target-context", usage = "Path to the generated camel context")
+    Path targetContext;
+
+    @Option(name = "--target-address", usage = "Address for the generated camel endpoint")
+    URL targetAddress;
+
+    @Option(name = "--target-bean", usage = "Classname for the bean that camel delegates to")
+    String targetBean;
 }

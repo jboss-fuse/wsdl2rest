@@ -74,7 +74,10 @@
                             <target>
                                 <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true" >
                                     <arg value="--wsdl=file:${basedir}/../impl/src/test/resources/rpclit/Address.wsdl" />
-                                    <arg value="--out=${basedir}/src/test/java" />
+                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
+                                    <arg value="--target-context=rpclit-camel-context.xml" />
+                                    <arg value="--target-address=http://localhost:8080/rpclit" />
+                                    <arg value="--target-bean=org.jboss.fuse.wsdl2rest.test.rpclit.AddressBean" />
                                 </java>
                             </target>
                         </configuration>
@@ -89,9 +92,29 @@
                             <target>
                                 <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true" >
                                     <arg value="--wsdl=file:${basedir}/../impl/src/test/resources/doclit/Address.wsdl" />
-                                    <arg value="--out=${basedir}/src/test/java" />
+                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
+                                    <arg value="--target-context=doclit-camel-context.xml" />
+                                    <arg value="--target-address=http://localhost:8080/doclit" />
+                                    <arg value="--target-bean=org.jboss.fuse.wsdl2rest.test.doclit.AddressBean" />
                                 </java>
                             </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>
+                                <source>${basedir}/target/generated-wsdl2rest</source>
+                            </sources>
                         </configuration>
                     </execution>
                 </executions>
