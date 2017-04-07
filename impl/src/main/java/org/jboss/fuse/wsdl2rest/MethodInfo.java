@@ -24,6 +24,8 @@ public interface MethodInfo extends MetaInfo {
     
     String getStyle();
     
+    String getPath();
+    
     String getMethodName();
 
     String getReturnType();
@@ -31,4 +33,8 @@ public interface MethodInfo extends MetaInfo {
     List<ParamInfo> getParams();
 
     String getExceptionType();
+
+    String getHttpMethod();
+
+    List<String> getResources();
 }

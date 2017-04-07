@@ -26,21 +26,17 @@ class MetaInfoImpl implements MetaInfo {
     
     private List<String> resources;
     private String preferredResource;
-    private String httpMethod;
-    private String mimeType;
-	
-    public String getHttpMethod() {
-		return httpMethod;
+
+    @Override
+	public List<String> getResources() {
+		return resources;
 	}
 
-    public void setHttpMethod(String httpMethod) {
-		this.httpMethod = httpMethod;
+    public void setResources(List<String> resources) {
+		this.resources = resources;
 	}
 
-	public String getMimeType() {
-		return mimeType;
-	}
-
+    @Override
     public String getPreferredResource() {
         return preferredResource;
     }
@@ -49,15 +45,4 @@ class MetaInfoImpl implements MetaInfo {
         this.preferredResource = defaultResource;
     }
 
-    public void setMimeType(String mimeType) {
-		this.mimeType = mimeType;
-	}
-
-	public List<String> getResources() {
-		return resources;
-	}
-
-    public void setResources(List<String> resources) {
-		this.resources = resources;
-	}
 }

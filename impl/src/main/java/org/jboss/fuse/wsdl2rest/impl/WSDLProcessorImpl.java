@@ -181,12 +181,13 @@ public class WSDLProcessorImpl implements WSDLProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    private void processMessages(Definition def, PortType portType, Message message, String operation, int type) {
+    private void processMessages(Definition def, PortType portType, Message message, String opname, int type) {
         log.info("\t\t\tMessage: {}", message.getQName().getLocalPart());
         if (!message.isUndefined() && message.getParts() != null) {
             List<Part> parts = message.getOrderedParts(null);
             List<String> imports = new ArrayList<String>();
             List<ParamInfo> params = new ArrayList<>();
+            int index = 0;
             for (Part part : parts) {
                 QName elmtQName = part.getElementName();
                 if (elmtQName == null) {
@@ -202,20 +203,23 @@ public class WSDLProcessorImpl implements WSDLProcessor {
                     javaType = javaType.substring(10);
                 }
                 log.info("\t\t\t\tParams: {} {}", javaType, elmtQName);
-                params.add(new ParamImpl(elmtQName.getLocalPart(), javaType));
+                params.add(new ParamImpl("arg" + index++, javaType));
             }
             if (parts.size() > 0) {
                 ClassDefinitionImpl svcDef = (ClassDefinitionImpl) portTypeMap.get(portType.getQName());
-                MethodInfoImpl mInf = (MethodInfoImpl) svcDef.getMethod(operation);
+                MethodInfoImpl minfo = (MethodInfoImpl) svcDef.getMethod(opname);
                 switch (type) {
                     case 0:
-                        mInf.setParams(params);
+                        // no params on doclit methods that list stuff
+                        if (!("document".equals(minfo.getStyle()) && opname.toLowerCase().startsWith("list"))) {
+                            minfo.setParams(params);
+                        }
                         break;
                     case 1:
-                        mInf.setReturnType(params.get(0).getParamType());
+                        minfo.setReturnType(params.get(0).getParamType());
                         break;
                     case 2:
-                        mInf.setExceptionType(params.get(0).getParamType());
+                        minfo.setExceptionType(params.get(0).getParamType());
                 }
                 svcDef.setImports(imports);
             }

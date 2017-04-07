@@ -21,12 +21,9 @@ package org.jboss.fuse.wsdl2rest;
 import java.util.List;
 
 public interface MetaInfo {
-    
-    String getHttpMethod();
-
-    String getMimeType();
 
     List<String> getResources();
 
     String getPreferredResource();
+    
 }

@@ -17,14 +17,9 @@ package org.jboss.fuse.wsdl2rest;
  * limitations under the License.
  *
  */
-
-import java.util.List;
-
 public interface ParamInfo extends MetaInfo {
     
     String getParamType();
 
     String getParamName();
-
-    List<String> getResources();
 }

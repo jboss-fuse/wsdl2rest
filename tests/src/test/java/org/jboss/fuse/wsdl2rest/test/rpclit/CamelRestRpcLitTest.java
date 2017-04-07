@@ -22,6 +22,7 @@ package org.jboss.fuse.wsdl2rest.test.rpclit;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -43,7 +44,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 public class CamelRestRpcLitTest {
 
-    static String CONTEXT_URL = "http://localhost:8080/rpclit/address";
+    static String CONTEXT_URL = "http://localhost:8080";
 
     @Test
     public void testRestEndpoint() throws Exception {
@@ -68,18 +69,30 @@ public class CamelRestRpcLitTest {
             Integer res2 = client.target(CONTEXT_URL + "/address").request().post(Entity.entity(payload, MediaType.APPLICATION_JSON), Integer.class);
             Assert.assertEquals(new Integer(100), res2);
 
+            // GET @Address#listAddresses()
+            List<?> res3 = client.target(CONTEXT_URL + "/addresses").request().get(List.class);
+            Assert.assertEquals("[100]", res3.toString());
+
             // GET @Address#getAddress(int)
-            Item res3 = client.target(CONTEXT_URL + "/address/" + res2).request().get(Item.class);
-            Assert.assertEquals("Kermit", res3.getName());
+            Item res4 = client.target(CONTEXT_URL + "/address/100").request().get(Item.class);
+            Assert.assertEquals("Kermit", res4.getName());
 
             // PUT @Address#updAddress(Item)
             payload = new ObjectMapper().writeValueAsString(frog);
-            Integer res4 = client.target(CONTEXT_URL + "/address").request().put(Entity.entity(payload, MediaType.APPLICATION_JSON), Integer.class);
-            Assert.assertEquals(new Integer(100), res4);
+            Integer res5 = client.target(CONTEXT_URL + "/address").request().put(Entity.entity(payload, MediaType.APPLICATION_JSON), Integer.class);
+            Assert.assertEquals(new Integer(100), res5);
+
+            // GET @Address#getAddress(int)
+            Item res6 = client.target(CONTEXT_URL + "/address/100").request().get(Item.class);
+            Assert.assertEquals("Frog", res6.getName());
 
             // DEL @Address#delAddress(int)
-            Item res5 = client.target(CONTEXT_URL + "/address/100").request().delete(Item.class);
-            Assert.assertEquals("Frog", res5.getName());
+            client.target(CONTEXT_URL + "/address/100").request().delete();
+            
+            // GET @Address#listAddresses()
+            String res7 = client.target(CONTEXT_URL + "/addresses").request().get(String.class);
+            Assert.assertEquals("[]", res7);
+
         } finally {
             camelctx.stop();
         }

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
@@ -49,20 +48,11 @@ public class JSR311ClassGenerator extends ClassGeneratorImpl {
     @Override
     protected void writeMethods(PrintWriter writer, List<? extends MethodInfo> methods) {
         for (MethodInfo minfo : methods) {
-            List<String> resources = minfo.getResources();
-            if (minfo.getPreferredResource() != null) {
-                resources = new ArrayList<String>();
-                resources.add(minfo.getPreferredResource());
-            }
-            if (resources != null) {
+            String path = minfo.getPath();
+            if (path != null) {
                 String httpMethod = minfo.getHttpMethod();
                 writer.println("\t@" + httpMethod);
-                StringBuilder path = new StringBuilder();
-                int loc = resources.size() >= 2 ? 1 : 0;
-                for (int i = loc; i < resources.size(); i++) {
-                    path.append(resources.get(i));
-                }
-                writer.print("\t@Path(\"" + path.toString().toLowerCase());
+                writer.print("\t@Path(\"" + path);
 
                 // Add path param
                 if (minfo.getParams().size() > 0) {

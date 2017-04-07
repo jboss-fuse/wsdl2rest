@@ -28,8 +28,6 @@ public interface EndpointInfo extends MetaInfo {
 
     String getClassName();
 
-    List<String> getResources();
-
     void setResources(List<String> resources);
 
     MethodInfo getMethod(String operation);

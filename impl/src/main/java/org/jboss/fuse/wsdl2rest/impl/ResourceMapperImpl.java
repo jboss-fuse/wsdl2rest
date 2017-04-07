@@ -90,25 +90,25 @@ public class ResourceMapperImpl implements ResourceMapper {
                 if (!foundHttpMethod) {
                     httpMethodMatcher = httpGetWordsPattern.matcher(resourceMatcher.group());
                     if (httpMethodMatcher.find() && !httpMethodMatcher.group().equals("")) {
-                        this.httpMethod = "GET";
+                        httpMethod = "GET";
                         foundHttpMethod = true;
                         continue;
                     }
                     httpMethodMatcher.usePattern(httpPostWordsPattern);
                     if (httpMethodMatcher.find() && !httpMethodMatcher.group().equals("")) {
-                        this.httpMethod = "POST";
+                        httpMethod = "POST";
                         foundHttpMethod = true;
                         continue;
                     }
                     httpMethodMatcher.usePattern(httpDeleteWordsPattern);
                     if (httpMethodMatcher.find() && !httpMethodMatcher.group().equals("")) {
-                        this.httpMethod = "DELETE";
+                        httpMethod = "DELETE";
                         foundHttpMethod = true;
                         continue;
                     }
                     httpMethodMatcher.usePattern(httpPutWordsPattern);
                     if (httpMethodMatcher.find() && !httpMethodMatcher.group().equals("")) {
-                        this.httpMethod = "PUT";
+                        httpMethod = "PUT";
                         foundHttpMethod = true;
                         continue;
                     }

@@ -6,8 +6,6 @@ import java.util.List;
 import org.jboss.fuse.wsdl2rest.MethodInfo;
 import org.jboss.fuse.wsdl2rest.ParamInfo;
 
-
-
 public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
 
     private String style;
@@ -15,11 +13,13 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
     private String methodName;
     private List<ParamInfo> params = new ArrayList<>();
     private String exceptionType;
+    private String httpMethod;
 
     public MethodInfoImpl(String methodName) {
         this.methodName = methodName;
     }
 
+    @Override
     public String getMethodName() {
         return methodName;
     }
@@ -28,6 +28,16 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
         this.methodName = methodName;
     }
 
+    @Override
+    public String getHttpMethod() {
+        return httpMethod;
+    }
+
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
+    }
+
+    @Override
     public String getReturnType() {
         return returnType;
     }
@@ -36,6 +46,7 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
         this.returnType = returnType;
     }
 
+    @Override
     public List<ParamInfo> getParams() {
         return params;
     }
@@ -44,6 +55,7 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
         this.params = params;
     }
 
+    @Override
     public String getExceptionType() {
         return exceptionType;
     }
@@ -52,6 +64,7 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
         this.exceptionType = exceptionType;
     }
 
+    @Override
     public String getStyle() {
         return style;
     }
@@ -59,8 +72,42 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
     public void setStyle(String style) {
         this.style = style;
     }
-    
-    public String toString() {
-        return methodName+"(): "+returnType;
+
+    @Override
+    public String getPath() {
+        String result = null;
+        List<String> resources = getResources();
+        if (getPreferredResource() != null) {
+            resources = new ArrayList<String>();
+            resources.add(getPreferredResource());
+        }
+        if (resources != null) {
+            int loc = resources.size() >= 2 ? 1 : 0;
+            StringBuilder path = new StringBuilder();
+            for (int i = loc; i < resources.size(); i++) {
+                path.append(resources.get(i));
+            }
+            result = path.toString().toLowerCase();
+
+        }
+        if (result != null && getParams().size() > 0) {
+            ParamInfo pinfo = getParams().get(0);
+            if (hasPathParam(pinfo)) {
+                result += "/{" + pinfo.getParamName() + "}";
+            }
+        }
+        return result;
     }
+
+    private boolean hasPathParam(ParamInfo pinfo) {
+        String httpMethod = getHttpMethod();
+        boolean pathParam = httpMethod.equals("GET") || httpMethod.equals("DELETE");
+        return pathParam && pinfo.getParamType() != null;
+    }
+
+    @Override
+    public String toString() {
+        return methodName + "(): " + returnType;
+    }
+
 }
