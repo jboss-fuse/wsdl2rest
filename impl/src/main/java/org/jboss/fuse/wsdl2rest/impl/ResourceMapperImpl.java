@@ -71,12 +71,7 @@ public class ResourceMapperImpl implements ResourceMapper {
     }
 
     private boolean resourceExists(String resource) {
-        for (String str : this.resources) {
-            if (str.equals(resource)) {
-                return true;
-            }
-        }
-        return false;
+    	return resources.contains(resource);
     }
 
     private void mapResources(String resourceName) {
