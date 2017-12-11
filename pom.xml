@@ -15,7 +15,7 @@
         <version.apache.cxf>3.2.1</version.apache.cxf>
         <version.apache.velocity>1.7</version.apache.velocity>
         <version.eclipse.jetty>9.4.6.v20170531</version.eclipse.jetty>
-        <version.args4j>2.0.31</version.args4j>
+        <version.args4j>2.33</version.args4j>
         <version.javaparser>2.5.1</version.javaparser>
         <version.javax.ws.rs.api>2.1</version.javax.ws.rs.api>
         <version.junit>4.12</version.junit>
