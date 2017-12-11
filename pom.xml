@@ -9,6 +9,8 @@
     <url>https://github.com/jboss-fuse/wsdl2rest</url>
     
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <version.apache.camel>2.20.1</version.apache.camel>
         <version.apache.cxf>3.2.1</version.apache.cxf>
         <version.apache.velocity>1.7</version.apache.velocity>
