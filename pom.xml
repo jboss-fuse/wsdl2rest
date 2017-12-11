@@ -19,9 +19,9 @@
         <version.wsdl4j>1.6.3</version.wsdl4j>
         
         <!-- Plugin versions -->
-        <version-build-helper-plugin>1.12</version-build-helper-plugin>
+        <version-build-helper-plugin>3.0.0</version-build-helper-plugin>
         <version-maven-antrun-plugin>1.8</version-maven-antrun-plugin>
-        <version-maven-compiler-plugin>3.1</version-maven-compiler-plugin>
+        <version-maven-compiler-plugin>3.7.0</version-maven-compiler-plugin>
         <version-maven-jar-plugin>2.6</version-maven-jar-plugin>
         <version-maven-javadoc-plugin>2.9.1</version-maven-javadoc-plugin>
         <version-maven-release-plugin>2.5</version-maven-release-plugin>
