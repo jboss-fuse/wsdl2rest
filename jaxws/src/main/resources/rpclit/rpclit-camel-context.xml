@@ -7,12 +7,55 @@
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
         
     <cxf:cxfEndpoint id="cxfConsumer" 
-        address="http://localhost:8080/rpclit/AddressService" 
+        address="http://0.0.0.0:8080/rpclit/AddressService" 
         serviceClass="org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address" />
         
     <bean id="addressBean" class="org.jboss.fuse.wsdl2rest.jaxws.rpclit.AddressBean"/>
     
     <camelContext id="cxfws" xmlns="http://camel.apache.org/schema/spring">
+    
+        <restConfiguration component="jetty" host="0.0.0.0" port="8081" bindingMode="json">
+        </restConfiguration>
+
+        <rest path="/jaxrs">
+
+          <get uri="/address/{arg0}" 
+            type="int"
+            outType="org.jboss.fuse.wsdl2rest.jaxws.Item" 
+            >
+            <to uri="direct:getAddress"/>
+          </get>
+
+          <get uri="/addresses" 
+            outType="int[]" 
+            >
+            <to uri="direct:listAddresses"/>
+          </get>
+
+          <put uri="/address" 
+            type="org.jboss.fuse.wsdl2rest.jaxws.Item"
+            outType="int" 
+            consumes="application/json" 
+            >
+            <to uri="direct:updAddress"/>
+          </put>
+
+          <delete uri="/address/{arg0}" 
+            type="int"
+            outType="org.jboss.fuse.wsdl2rest.jaxws.Item" 
+            >
+            <to uri="direct:delAddress"/>
+          </delete>
+
+          <post uri="/address" 
+            type="org.jboss.fuse.wsdl2rest.jaxws.Item"
+            outType="int" 
+            consumes="application/json" 
+            >
+            <to uri="direct:addAddress"/>
+          </post>
+        </rest>
+
         <route id="consumerRoute">
             <from uri="cxf:bean:cxfConsumer" />
             <log loggingLevel="INFO" message="${header.operationName}"/>

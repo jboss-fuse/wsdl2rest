@@ -7,7 +7,7 @@
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
         
     <cxf:cxfEndpoint id="cxfConsumer" 
-        address="http://localhost:8080/doclit/AddressService" 
+        address="http://0.0.0.0:8080/doclit/AddressService" 
         serviceClass="org.jboss.fuse.wsdl2rest.jaxws.doclit.Address" />
         
     <bean id="addressBean" class="org.jboss.fuse.wsdl2rest.jaxws.doclit.AddressBean"/>
