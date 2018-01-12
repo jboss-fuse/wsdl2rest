@@ -20,10 +20,14 @@
 
 package org.jboss.fuse.wsdl2rest.util;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.spring.SpringCamelContext;
@@ -90,7 +94,14 @@ public final class SpringCamelContextFactory {
         xmlReader.loadBeanDefinitions(resource);
 
         SpringCamelContext.setNoStart(true);
-        appContext.refresh();
+        ProxyUtils.invokeProxied(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                appContext.refresh();
+                return null;
+            }
+        }, classLoader);
+        SpringCamelContext.setNoStart(false);
 
         List<SpringCamelContext> result = new ArrayList<>();
         for (String name : appContext.getBeanNamesForType(SpringCamelContext.class)) {
@@ -120,4 +131,35 @@ public final class SpringCamelContextFactory {
             }
         }
     }
-}
+
+    /**
+     * A utility class to run arbitrary code via a {@link Proxy} instance.
+     */
+    private static class ProxyUtils {
+
+        private ProxyUtils() {
+            // Hide ctor
+        }
+
+        /**
+         * Runs a {@link Callable} within a {@link Proxy} instance. See the following issues for information
+         * around its primary use case.
+         *
+         * https://issues.jboss.org/browse/ENTESB-7117
+         * https://github.com/wildfly-extras/wildfly-camel/issues/1919
+         *
+         * @param callable A callable instance to invoke within a {@link Proxy} instance
+         * @param classLoader The ClassLoader used to create the {@link Proxy} instance
+         * @throws Exception
+         */
+        public static void invokeProxied(final Callable<?> callable, final ClassLoader classLoader) throws Exception {
+            Callable<?> callableProxy = (Callable) Proxy.newProxyInstance(classLoader, new Class<?>[] { Callable.class }, new InvocationHandler() {
+                @Override
+                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                    callable.call();
+                    return null;
+                }
+            });
+            callableProxy.call();
+        }
+    }}
