@@ -1,4 +1,4 @@
-package org.jboss.fuse.wsdl2rest.test.rpclit;
+package org.jboss.fuse.wsdl2rest.jaxws.rpclit;
 /*
  * Copyright (c) 2008 SL_OpenSource Consortium
  * All Rights Reserved.
@@ -23,7 +23,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
-import org.jboss.fuse.wsdl2rest.test.Item;
+import org.jboss.fuse.wsdl2rest.jaxws.Item;
 
 @WebService
 @SOAPBinding(style = Style.RPC)

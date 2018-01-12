@@ -1,4 +1,4 @@
-package org.jboss.fuse.wsdl2rest.test.rpclit;
+package org.jboss.fuse.wsdl2rest.jaxws.rpclit;
 /*
  * Copyright (c) 2008 SL_OpenSource Consortium
  * All Rights Reserved.
@@ -23,8 +23,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.jboss.fuse.wsdl2rest.test.Item;
-import org.jboss.fuse.wsdl2rest.test.ItemBuilder;
+import org.jboss.fuse.wsdl2rest.jaxws.Item;
+import org.jboss.fuse.wsdl2rest.jaxws.ItemBuilder;
 
 public class AddressBean {
 

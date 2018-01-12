@@ -10,6 +10,20 @@
     <artifactId>wsdl2rest-tests</artifactId>
 
     <dependencies>
+    
+        <!-- Test -->
+        <dependency>
+            <groupId>org.jboss.fuse.wsdl2rest</groupId>
+            <artifactId>wsdl2rest-impl</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.fuse.wsdl2rest</groupId>
+            <artifactId>wsdl2rest-jaxws</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.jboss.fuse.wsdl2rest</groupId>
             <artifactId>wsdl2rest-impl</artifactId>
@@ -78,7 +92,7 @@
                         <configuration>
                             <target>
                                 <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
-                                    <arg value="--wsdl=file:${basedir}/../impl/src/test/resources/rpclit/Address.wsdl" />
+                                    <arg value="--wsdl=file:${basedir}/../jaxws/src/main/resources/rpclit/Address.wsdl" />
                                     <arg value="--out=${basedir}/target/generated-wsdl2rest" />
                                     <arg value="--target-context=rpclit-camel-context.xml" />
                                     <arg value="--target-address=http://localhost:8080/rpclit" />
@@ -96,7 +110,7 @@
                         <configuration>
                             <target>
                                 <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
-                                    <arg value="--wsdl=file:${basedir}/../impl/src/test/resources/doclit/Address.wsdl" />
+                                    <arg value="--wsdl=file:${basedir}/../jaxws/src/main/resources/doclit/Address.wsdl" />
                                     <arg value="--out=${basedir}/target/generated-wsdl2rest" />
                                     <arg value="--target-context=doclit-camel-context.xml" />
                                     <arg value="--target-address=http://localhost:8080/doclit" />

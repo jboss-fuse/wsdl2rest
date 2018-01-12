@@ -7,10 +7,10 @@
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
         
     <cxf:cxfEndpoint id="cxfConsumer" 
-        address="http://localhost:8080/doclit/AddressService" 
-        serviceClass="org.jboss.fuse.wsdl2rest.test.doclit.Address" />
+        address="http://localhost:8080/rpclit/AddressService" 
+        serviceClass="org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address" />
         
-    <bean id="addressBean" class="org.jboss.fuse.wsdl2rest.test.doclit.AddressBean"/>
+    <bean id="addressBean" class="org.jboss.fuse.wsdl2rest.jaxws.rpclit.AddressBean"/>
     
     <camelContext id="cxfws" xmlns="http://camel.apache.org/schema/spring">
         <route id="consumerRoute">
@@ -40,6 +40,32 @@
                 </when>
             </choice>
         </route>
+        
+        <route id="listAddressesRoute">
+            <from uri="direct:listAddresses" />
+            <log loggingLevel="INFO" message="direct:listAddresses"/>
+            <log loggingLevel="INFO" message="${body}"/>
+            <!-- transform>
+                <simple>null</simple>
+            </transform -->
+            <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=listAddresses"/>
+        </route>
+        
+        <route id="addAddressRoute">
+            <from uri="direct:addAddress" />
+            <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=addAddress"/>
+        </route>
+        
+        <route id="getAddressRoute">
+            <from uri="direct:getAddress" />
+            <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=getAddress"/>
+        </route>
+        
+        <route id="updAddressRoute">
+            <from uri="direct:updAddress" />
+            <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=updAddress"/>
+        </route>
+        
     </camelContext>
 
 </beans>

@@ -23,6 +23,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item;
+
 public class AddressBean {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();

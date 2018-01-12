@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="AddressService" targetNamespace="http://doclit.test.wsdl2rest.fuse.jboss.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://doclit.test.wsdl2rest.fuse.jboss.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="AddressService" targetNamespace="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-<xs:schema xmlns:tns="http://doclit.test.wsdl2rest.fuse.jboss.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://doclit.test.wsdl2rest.fuse.jboss.org/" version="1.0">
+<xs:schema xmlns:tns="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" version="1.0">
 
   <xs:element name="addAddress" type="tns:addAddress"/>
 
@@ -91,26 +91,6 @@
 
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="updAddressResponse">
-    <wsdl:part name="parameters" element="tns:updAddressResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="delAddressResponse">
-    <wsdl:part name="parameters" element="tns:delAddressResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="listAddresses">
-    <wsdl:part name="parameters" element="tns:listAddresses">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="updAddress">
-    <wsdl:part name="parameters" element="tns:updAddress">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getAddress">
-    <wsdl:part name="parameters" element="tns:getAddress">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="delAddress">
     <wsdl:part name="parameters" element="tns:delAddress">
     </wsdl:part>
@@ -129,6 +109,26 @@
   </wsdl:message>
   <wsdl:message name="listAddressesResponse">
     <wsdl:part name="parameters" element="tns:listAddressesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updAddressResponse">
+    <wsdl:part name="parameters" element="tns:updAddressResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="delAddressResponse">
+    <wsdl:part name="parameters" element="tns:delAddressResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listAddresses">
+    <wsdl:part name="parameters" element="tns:listAddresses">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updAddress">
+    <wsdl:part name="parameters" element="tns:updAddress">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAddress">
+    <wsdl:part name="parameters" element="tns:getAddress">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="Address">

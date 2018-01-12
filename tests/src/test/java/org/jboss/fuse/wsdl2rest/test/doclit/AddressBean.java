@@ -21,6 +21,16 @@ package org.jboss.fuse.wsdl2rest.test.doclit;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.AddAddress;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.AddAddressResponse;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.DelAddressResponse;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.GetAddressResponse;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.Item;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.ListAddressesResponse;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.UpdAddress;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.UpdAddressResponse;
+
+
 public class AddressBean {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();

@@ -11,6 +11,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.jboss.fuse.wsdl2rest</groupId>
+            <artifactId>wsdl2rest-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>args4j</groupId>
             <artifactId>args4j</artifactId>
         </dependency>
@@ -50,6 +55,12 @@
 
         <!-- Test -->
         <dependency>
+            <groupId>org.jboss.fuse.wsdl2rest</groupId>
+            <artifactId>wsdl2rest-jaxws</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-cxf</artifactId>
             <scope>test</scope>
@@ -79,36 +90,6 @@
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-java2ws-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>rpclit</id>
-                        <phase>process-test-classes</phase>
-                        <configuration>
-                            <className>org.jboss.fuse.wsdl2rest.test.rpclit.Address</className>
-                            <outputFile>${basedir}/src/test/resources/rpclit/Address.wsdl</outputFile>
-                            <classpath>${basedir}/target/test-classes</classpath>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>doclit</id>
-                        <phase>process-test-classes</phase>
-                        <configuration>
-                            <className>org.jboss.fuse.wsdl2rest.test.doclit.Address</className>
-                            <outputFile>${basedir}/src/test/resources/doclit/Address.wsdl</outputFile>
-                            <classpath>${project.build.directory}/test-classes</classpath>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

@@ -27,13 +27,14 @@ import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.MethodInfo;
 import org.jboss.fuse.wsdl2rest.impl.Main;
 import org.jboss.fuse.wsdl2rest.impl.Wsdl2Rest;
+import org.jboss.fuse.wsdl2rest.jaxws.rpclit.AddressBean;
 import org.junit.Assert;
 import org.junit.Test;
 
 
 public class GenerateRpcLitTest {
 
-    static final String WSDL_LOCATION = "src/test/resources/rpclit/Address.wsdl";
+    static final String WSDL_LOCATION = "../jaxws/src/main/resources/rpclit/Address.wsdl";
     static final String OUTPUT_PATH = "target/generated-sources/wsdl2rest";
 
     @Test
@@ -50,7 +51,7 @@ public class GenerateRpcLitTest {
         List<EndpointInfo> clazzDefs = tool.process();
         Assert.assertEquals(1, clazzDefs.size());
         EndpointInfo clazzDef = clazzDefs.get(0);
-        Assert.assertEquals("org.jboss.fuse.wsdl2rest.test.rpclit", clazzDef.getPackageName());
+        Assert.assertEquals("org.jboss.fuse.wsdl2rest.jaxws.rpclit", clazzDef.getPackageName());
         Assert.assertEquals("Address", clazzDef.getClassName());
 
         List<MethodInfo> methods = clazzDef.getMethods();
@@ -65,7 +66,7 @@ public class GenerateRpcLitTest {
 
         Assert.assertEquals(1, clazzDefs.size());
         EndpointInfo clazzDef = clazzDefs.get(0);
-        Assert.assertEquals("org.jboss.fuse.wsdl2rest.test.rpclit", clazzDef.getPackageName());
+        Assert.assertEquals("org.jboss.fuse.wsdl2rest.jaxws.rpclit", clazzDef.getPackageName());
         Assert.assertEquals("Address", clazzDef.getClassName());
 
         List<MethodInfo> methods = clazzDef.getMethods();

@@ -2,6 +2,8 @@ package org.jboss.fuse.wsdl2rest.test.rpclit;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item;
+
 public class ItemBuilder {
 
     private Item result = new Item();

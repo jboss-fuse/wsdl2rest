@@ -32,6 +32,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ServiceStatus;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.AddAddress;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.AddAddressResponse;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.GetAddressResponse;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.Item;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.ListAddressesResponse;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.UpdAddress;
+import org.jboss.fuse.wsdl2rest.jaxws.doclit.UpdAddressResponse;
 import org.jboss.fuse.wsdl2rest.util.SpringCamelContextFactory;
 import org.junit.Assert;
 import org.junit.Test;

@@ -33,8 +33,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ServiceStatus;
-import org.jboss.fuse.wsdl2rest.test.doclit.Item;
-import org.jboss.fuse.wsdl2rest.test.doclit.ItemBuilder;
+import org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item;
 import org.jboss.fuse.wsdl2rest.util.SpringCamelContextFactory;
 import org.junit.Assert;
 import org.junit.Test;

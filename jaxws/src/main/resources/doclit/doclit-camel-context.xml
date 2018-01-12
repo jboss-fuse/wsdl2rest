@@ -7,10 +7,10 @@
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
         
     <cxf:cxfEndpoint id="cxfConsumer" 
-        address="http://localhost:8080/rpclit/AddressService" 
-        serviceClass="org.jboss.fuse.wsdl2rest.test.rpclit.Address" />
+        address="http://localhost:8080/doclit/AddressService" 
+        serviceClass="org.jboss.fuse.wsdl2rest.jaxws.doclit.Address" />
         
-    <bean id="addressBean" class="org.jboss.fuse.wsdl2rest.test.rpclit.AddressBean"/>
+    <bean id="addressBean" class="org.jboss.fuse.wsdl2rest.jaxws.doclit.AddressBean"/>
     
     <camelContext id="cxfws" xmlns="http://camel.apache.org/schema/spring">
         <route id="consumerRoute">
@@ -39,6 +39,26 @@
                     <to uri="bean:addressBean?method=delAddress"/>
                 </when>
             </choice>
+        </route>
+        
+        <route id="listAddressesRoute">
+            <from uri="direct:listAddresses" />
+            <to uri="cxf://http://localhost:8080/doclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.doclit.Address&amp;defaultOperationName=listAddresses"/>
+        </route>
+        
+        <route id="addAddressRoute">
+            <from uri="direct:addAddress" />
+            <to uri="cxf://http://localhost:8080/doclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.doclit.Address&amp;defaultOperationName=addAddress"/>
+        </route>
+        
+        <route id="getAddressRoute">
+            <from uri="direct:getAddress" />
+            <to uri="cxf://http://localhost:8080/doclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.doclit.Address&amp;defaultOperationName=getAddress"/>
+        </route>
+        
+        <route id="updAddressRoute">
+            <from uri="direct:updAddress" />
+            <to uri="cxf://http://localhost:8080/doclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.doclit.Address&amp;defaultOperationName=updAddress"/>
         </route>
     </camelContext>
 

@@ -1,4 +1,4 @@
-package org.jboss.fuse.wsdl2rest.test;
+package org.jboss.fuse.wsdl2rest.jaxws;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

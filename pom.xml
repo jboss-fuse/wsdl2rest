@@ -122,10 +122,12 @@
     </dependencyManagement>
 
     <modules>
-        <module>dist</module>
-        <module>docs</module>
         <module>impl</module>
+        <module>jaxws</module>
+        <module>util</module>
         <module>tests</module>
+        <module>docs</module>
+        <module>dist</module>
     </modules>    
 
     <build>
