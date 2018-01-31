@@ -124,6 +124,7 @@
     <modules>
         <module>impl</module>
         <module>jaxws</module>
+        <module>jaxws-client-proxy</module>
         <module>util</module>
         <module>tests</module>
         <module>docs</module>
