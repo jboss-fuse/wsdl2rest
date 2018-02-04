@@ -3,7 +3,7 @@
 
     <groupId>org.jboss.fuse.wsdl2rest</groupId>
     <artifactId>wsdl2rest</artifactId>
-    <version>0.7-SNAPSHOT</version>
+    <version>0.7.0.fuse-000019</version>
     <packaging>pom</packaging>
 
     <url>https://github.com/tdiesler/wsdl2rest</url>
