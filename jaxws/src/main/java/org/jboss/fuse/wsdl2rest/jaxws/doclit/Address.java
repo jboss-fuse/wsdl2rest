@@ -32,9 +32,7 @@ public interface Address {
      * List the available resource ids.
      */
     @WebMethod
-    // [#6] Cannot use array type return in doc/lit operation
-    // Integer[] listAddresses();
-    String listAddresses();
+    Integer[] listAddresses();
 
     /**
      * Get the resource value for the given id.

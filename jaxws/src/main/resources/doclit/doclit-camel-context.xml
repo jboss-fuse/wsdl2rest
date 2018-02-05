@@ -41,25 +41,6 @@
             </choice>
         </route>
         
-        <route id="listAddressesRoute">
-            <from uri="direct:listAddresses" />
-            <to uri="cxf://http://localhost:8080/doclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.doclit.Address&amp;defaultOperationName=listAddresses"/>
-        </route>
-        
-        <route id="addAddressRoute">
-            <from uri="direct:addAddress" />
-            <to uri="cxf://http://localhost:8080/doclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.doclit.Address&amp;defaultOperationName=addAddress"/>
-        </route>
-        
-        <route id="getAddressRoute">
-            <from uri="direct:getAddress" />
-            <to uri="cxf://http://localhost:8080/doclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.doclit.Address&amp;defaultOperationName=getAddress"/>
-        </route>
-        
-        <route id="updAddressRoute">
-            <from uri="direct:updAddress" />
-            <to uri="cxf://http://localhost:8080/doclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.doclit.Address&amp;defaultOperationName=updAddress"/>
-        </route>
     </camelContext>
 
 </beans>

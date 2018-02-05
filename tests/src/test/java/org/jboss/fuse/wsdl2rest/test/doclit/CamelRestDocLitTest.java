@@ -41,11 +41,13 @@ import org.jboss.fuse.wsdl2rest.jaxws.doclit.UpdAddress;
 import org.jboss.fuse.wsdl2rest.jaxws.doclit.UpdAddressResponse;
 import org.jboss.fuse.wsdl2rest.util.SpringCamelContextFactory;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+@Ignore
 public class CamelRestDocLitTest {
 
     static String CONTEXT_URL = "http://localhost:8080";

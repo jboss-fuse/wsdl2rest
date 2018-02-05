@@ -75,7 +75,7 @@
                 <executions>
                     <execution>
                         <id>rpclit</id>
-                        <phase>process-test-classes</phase>
+                        <phase>process-classes</phase>
                         <configuration>
                             <className>org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address</className>
                             <outputFile>${basedir}/src/main/resources/rpclit/Address.wsdl</outputFile>
@@ -87,7 +87,7 @@
                     </execution>
                     <execution>
                         <id>doclit</id>
-                        <phase>process-test-classes</phase>
+                        <phase>process-classes</phase>
                         <configuration>
                             <className>org.jboss.fuse.wsdl2rest.jaxws.doclit.Address</className>
                             <outputFile>${basedir}/src/main/resources/doclit/Address.wsdl</outputFile>

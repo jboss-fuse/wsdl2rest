@@ -61,7 +61,7 @@
 
   <xs:complexType name="listAddressesResponse">
     <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:int"/>
     </xs:sequence>
   </xs:complexType>
 

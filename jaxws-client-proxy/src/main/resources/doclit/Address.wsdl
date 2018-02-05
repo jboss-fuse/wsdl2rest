@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="AddressService" targetNamespace="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-<xs:schema xmlns:tns="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" version="1.0">
+<xs:schema xmlns:tns="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://doclit.jaxws.wsdl2rest.fuse.jboss.org/" version="1.0">
 
   <xs:element name="addAddress" type="tns:addAddress"/>
 
@@ -61,7 +61,7 @@
 
   <xs:complexType name="listAddressesResponse">
     <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:int"/>
     </xs:sequence>
   </xs:complexType>
 

@@ -107,36 +107,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-java2ws-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>rpclit</id>
-                        <phase>process-test-classes</phase>
-                        <configuration>
-                            <className>org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address</className>
-                            <outputFile>${basedir}/src/main/resources/rpclit/Address.wsdl</outputFile>
-                            <classpath>${basedir}/target/classes</classpath>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>doclit</id>
-                        <phase>process-test-classes</phase>
-                        <configuration>
-                            <className>org.jboss.fuse.wsdl2rest.jaxws.doclit.Address</className>
-                            <outputFile>${basedir}/src/main/resources/doclit/Address.wsdl</outputFile>
-                            <classpath>${project.build.directory}/classes</classpath>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 </project>

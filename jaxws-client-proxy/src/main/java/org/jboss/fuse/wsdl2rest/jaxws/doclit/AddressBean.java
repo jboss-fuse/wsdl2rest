@@ -18,6 +18,7 @@ package org.jboss.fuse.wsdl2rest.jaxws.doclit;
  */
 
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -29,10 +30,10 @@ public class AddressBean {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();
     
-    public String listAddresses() {
+    public Integer[] listAddresses() {
         synchronized (map) {
             Set<Integer> keySet = map.keySet();
-            return keySet.toString();
+            return new ArrayList<>(keySet).toArray(new Integer[keySet.size()]);
         }
     }
 
