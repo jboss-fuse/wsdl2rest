@@ -7,7 +7,7 @@
         <version>0.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>wsdl2rest-jaxws-client-proxy</artifactId>
+    <artifactId>wsdl2rest-jaxws-proxy</artifactId>
 
     <dependencies>
         <dependency>
