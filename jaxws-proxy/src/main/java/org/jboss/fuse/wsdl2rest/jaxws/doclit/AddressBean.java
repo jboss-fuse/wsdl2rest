@@ -30,10 +30,11 @@ public class AddressBean {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();
     
-    public Integer[] listAddresses() {
+    public Integer[] listAddresses(org.apache.camel.Exchange exchange) {
         synchronized (map) {
             Set<Integer> keySet = map.keySet();
-            return new ArrayList<>(keySet).toArray(new Integer[keySet.size()]);
+            Integer[] ret = new ArrayList<>(keySet).toArray(new Integer[keySet.size()]);
+            return ret;
         }
     }
 

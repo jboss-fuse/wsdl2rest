@@ -11,6 +11,8 @@
         serviceClass="org.jboss.fuse.wsdl2rest.jaxws.doclit.Address" />
         
     <bean id="addressBean" class="org.jboss.fuse.wsdl2rest.jaxws.doclit.AddressBean"/>
+
+    <bean id="listProcessor" class="org.jboss.fuse.wsdl2rest.jaxws.doclit.ListProcessor"/>
     
     <camelContext id="cxfws" xmlns="http://camel.apache.org/schema/spring">
         <dataFormats>
@@ -26,7 +28,7 @@
             <to uri="direct:getAddress"/>
           </get>
 
-          <get uri="/addresses"  outType="String" >
+          <get uri="/addresses"  outType="int[]" >
             <to uri="direct:listAddresses"/>
           </get>
 
@@ -51,6 +53,7 @@
                 <when>
                     <simple>${header.operationName} == 'listAddresses'</simple>
                     <to uri="bean:addressBean?method=listAddresses"/>
+                    <to uri="bean:listProcessor"/>
                 </when>
                 <when>
                     <simple>${header.operationName} == 'getAddress'</simple>
@@ -77,6 +80,9 @@
                 <simple>null</simple>
             </setBody>
             <to uri="cxf://http://localhost:8080/doclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.doclit.Address&amp;defaultOperationName=listAddresses"/>
+            <setHeader headerName="Content-Type">
+               <constant>application/json</constant>
+            </setHeader>
             <setBody>
                 <simple>${body[0]}</simple>
             </setBody>

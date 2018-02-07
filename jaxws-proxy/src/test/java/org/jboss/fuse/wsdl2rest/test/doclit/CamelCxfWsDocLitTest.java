@@ -19,6 +19,7 @@ package org.jboss.fuse.wsdl2rest.test.doclit;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -63,10 +64,12 @@ public class CamelCxfWsDocLitTest {
             Item frog = new ItemBuilder().id(100).name("Frog").dateOfBirth(ItemBuilder.asXMLGregorianCalendar(dob)).build();
             
             // [#6] Cannot use array type return in doc/lit operation
-            //Assert.assertEquals("[]", port.listAddresses());
+            Assert.assertEquals(0, port.listAddresses().size());
             
             Assert.assertEquals(100, (int) port.addAddress(kermit));
             Assert.assertEquals("Kermit", port.getAddress(100).getName());
+            Assert.assertEquals(1, port.listAddresses().size());
+            Assert.assertEquals(100, port.listAddresses().get(0).intValue());
             Assert.assertEquals(100, (int) port.updAddress(frog));
             Assert.assertEquals("Frog", port.delAddress(100).getName());
         } finally {
@@ -89,10 +92,11 @@ public class CamelCxfWsDocLitTest {
 
             ProducerTemplate producer = camelctx.createProducerTemplate();
             
-            // [#6] Cannot use array type return in doc/lit operation
-            //Assert.assertEquals("[]", producer.requestBody("direct:listAddresses", null, String.class));
+            Assert.assertEquals(0, producer.requestBody("direct:listAddresses", null, List.class).size());
             
             Assert.assertEquals(100, (int) producer.requestBody("direct:addAddress", kermit, Integer.class));
+            Assert.assertEquals(1, producer.requestBody("direct:listAddresses", null, List.class).size());
+            Assert.assertEquals(100, producer.requestBody("direct:listAddresses", null, List.class).get(0));
             Assert.assertEquals("Kermit", producer.requestBodyAndHeader("direct:getAddress", 100, "arg0", "100", Item.class).getName());
             Assert.assertEquals(100, (int) producer.requestBody("direct:updAddress", frog, Integer.class));
             Assert.assertEquals("Frog", producer.requestBodyAndHeader("direct:getAddress", 100, "arg0", "100", Item.class).getName());
@@ -117,9 +121,8 @@ public class CamelCxfWsDocLitTest {
             Item frog = new ItemBuilder().id(100).name("Frog").dateOfBirth(ItemBuilder.asXMLGregorianCalendar(dob)).build();
             
             // GET @Address#listAddresses()
-            // [#6] Cannot use array type return in doc/lit operation
-            //String res1 = client.target(CONTEXT_URL + "/addresses").request().get(String.class);
-            //Assert.assertEquals("[]", res1);
+            List res1 = client.target(CONTEXT_URL + "/addresses").request().get(List.class);
+            Assert.assertEquals(0, res1.size());
 
             // POST @Address#addAddress(Item)
             String payload = new ObjectMapper().writeValueAsString(kermit);
@@ -128,9 +131,8 @@ public class CamelCxfWsDocLitTest {
             
             
             // GET @Address#listAddresses()
-            // [#6] Cannot use array type return in doc/lit operation
-            //String res3 = client.target(CONTEXT_URL + "/addresses").request().get(String.class);
-            //Assert.assertEquals("[100]", res3);
+            List res3 = client.target(CONTEXT_URL + "/addresses").request().get(List.class);
+            Assert.assertEquals(100, res3.get(0));
 
             
             // GET @Address#getAddress(int)
@@ -150,9 +152,8 @@ public class CamelCxfWsDocLitTest {
             client.target(CONTEXT_URL + "/address/100").request().delete();
             
             // GET @Address#listAddresses()
-            // [#6] Cannot use array type return in doc/lit operation
-            //String res7 = client.target(CONTEXT_URL + "/addresses").request().get(String.class);
-            //Assert.assertEquals("[]", res7);
+            List res7 = client.target(CONTEXT_URL + "/addresses").request().get(List.class);
+            Assert.assertEquals(0, res7.size());
             
 
         } finally {
