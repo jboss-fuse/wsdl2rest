@@ -55,7 +55,6 @@ public class Main {
             Wsdl2Rest tool = new Wsdl2Rest(options.wsdlUrl, options.outpath);
             tool.setTargetContext(options.targetContext);
             tool.setTargetAddress(options.targetAddress);
-            tool.setTargetBean(options.targetBean);
             return tool.process();
         } catch (Throwable th) {
             LOG.error("Error executing command", th);

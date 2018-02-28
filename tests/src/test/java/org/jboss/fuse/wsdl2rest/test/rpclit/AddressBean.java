@@ -23,50 +23,65 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebService;
+
 import org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item;
 
+import net.java.dev.jaxb.array.IntArray;
+
+@WebService(endpointInterface="org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address")
 public class AddressBean {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();
-    
-    public Integer[] listAddresses() {
+
+    public IntArray listAddresses() {
         synchronized (map) {
             Set<Integer> keySet = map.keySet();
-            return new ArrayList<>(keySet).toArray(new Integer[keySet.size()]);
+            IntArray result = new IntArray() {
+                {
+                    item = new ArrayList<>(keySet);
+                }
+            };
+            return result;
         }
     }
 
-    public Item getAddress(Integer id) {
+    public Item getAddress(int id) {
+        Item result = null;
         synchronized (map) {
-            return map.get(id);
-        }
-    }
-
-    public Integer addAddress(Item item) {
-        synchronized (map) {
-            Integer id = item.getId();
-            map.put(id, new ItemBuilder().copy(item).id(id).build());
-            return id;
-        }
-    }
-
-    public Integer updAddress(Item item) {
-        Integer result = null;
-        synchronized (map) {
-            Integer id = item.getId();
-            if (map.get(id) != null) {
-                map.put(id, new ItemBuilder().copy(item).build());
-                result = id;
+            Item aux = map.get(id);
+            if (aux != null) {
+                result = aux;
             }
         }
         return result;
     }
 
-    public Item delAddress(Integer id) {
+    public int addAddress(Item item) {
+        synchronized (map) {
+            Integer id = item.getId();
+            map.put(id, item);
+            return id;
+        }
+    }
+
+    public int updAddress(Item item) {
+        Integer result;
+        synchronized (map) {
+            Integer id = item.getId();
+            result = map.containsKey(id) ? id : null;
+            if (result != null) {
+                map.put(id, item);
+            }
+        }
+        return result;
+    }
+
+    public Item delAddress(int id) {
         Item result;
         synchronized (map) {
             result = map.remove(id);
         }
         return result;
-   }
+    }
 }

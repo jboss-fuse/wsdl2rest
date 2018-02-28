@@ -1,6 +1,7 @@
 package org.jboss.fuse.wsdl2rest.impl.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jboss.fuse.wsdl2rest.MethodInfo;
@@ -11,9 +12,12 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
     private String style;
     private String returnType;
     private String methodName;
-    private List<ParamInfo> params = new ArrayList<>();
     private String exceptionType;
     private String httpMethod;
+    private List<ParamInfo> params = new ArrayList<>();
+    
+    private String wrappedReturnType;
+    private List<ParamInfo> wrappedParams = new ArrayList<>();
 
     public MethodInfoImpl(String methodName) {
         this.methodName = methodName;
@@ -46,13 +50,30 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
         this.returnType = returnType;
     }
 
+    public String getWrappedReturnType() {
+        return wrappedReturnType != null ? wrappedReturnType : returnType;
+    }
+
+    public void setWrappedReturnType(String wrappedReturnType) {
+        this.wrappedReturnType = wrappedReturnType;
+    }
+
+    public List<ParamInfo> getWrappedParams() {
+        List<ParamInfo> result = wrappedParams.size() > 0 ? wrappedParams : params;
+        return Collections.unmodifiableList(result);
+    }
+
+    public void setWrappedParams(List<ParamInfo> wrappedParams) {
+        this.wrappedParams.addAll(wrappedParams);
+    }
+
     @Override
     public List<ParamInfo> getParams() {
-        return params;
+        return Collections.unmodifiableList(params);
     }
 
     public void setParams(List<ParamInfo> params) {
-        this.params = params;
+        this.params.addAll(params);
     }
 
     @Override

@@ -18,66 +18,64 @@ package org.jboss.fuse.wsdl2rest.test.doclit;
  */
 
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.jboss.fuse.wsdl2rest.jaxws.doclit.AddAddress;
-import org.jboss.fuse.wsdl2rest.jaxws.doclit.AddAddressResponse;
-import org.jboss.fuse.wsdl2rest.jaxws.doclit.DelAddressResponse;
-import org.jboss.fuse.wsdl2rest.jaxws.doclit.GetAddressResponse;
+import javax.jws.WebService;
+
 import org.jboss.fuse.wsdl2rest.jaxws.doclit.Item;
-import org.jboss.fuse.wsdl2rest.jaxws.doclit.ListAddressesResponse;
-import org.jboss.fuse.wsdl2rest.jaxws.doclit.UpdAddress;
-import org.jboss.fuse.wsdl2rest.jaxws.doclit.UpdAddressResponse;
 
-
+@WebService(endpointInterface="org.jboss.fuse.wsdl2rest.jaxws.doclit.Address")
 public class AddressBean {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();
     
-    public ListAddressesResponse listAddresses() {
-        ListAddressesResponse res = new ListAddressesResponse();
+    public List<Integer> listAddresses() {
+        List<Integer> result;
         synchronized (map) {
-            res.setReturn(map.keySet().toString());
+            result = new ArrayList<>(map.keySet());
         }
-        return res;
+        return result;
     }
 
-    public GetAddressResponse getAddress(Integer id) {
-        GetAddressResponse res = new GetAddressResponse();
+    public Item getAddress(Integer id) {
+        Item result = null;
         synchronized (map) {
-            res.setReturn(map.get(id));
-        }
-        return res;
-    }
-
-    public AddAddressResponse addAddress(AddAddress req) {
-        AddAddressResponse res = new AddAddressResponse();
-        synchronized (map) {
-            Integer id = req.getArg0().getId();
-            res.setReturn(id);
-            map.put(res.getReturn(), new ItemBuilder().copy(req.getArg0()).build());
-        }
-        return res;
-    }
-
-    public UpdAddressResponse updAddress(UpdAddress req) {
-        UpdAddressResponse res = new UpdAddressResponse();
-        synchronized (map) {
-            Integer id = req.getArg0().getId();
-            if (map.containsKey(id)) {
-                map.put(id, new ItemBuilder().copy(req.getArg0()).build());
-                res.setReturn(id);
+            Item aux = map.get(id);
+            if (aux != null) {
+                result = aux;
             }
         }
-        return res;
+        return result;
     }
 
-    public DelAddressResponse delAddress(Integer id) {
-        DelAddressResponse res = new DelAddressResponse();
+    public Integer addAddress(Item item) {
         synchronized (map) {
-            res.setReturn(map.remove(id));
+            Integer id = item.getId();
+            map.put(id, item);
+            return id;
         }
-        return res;
+    }
+
+    public Integer updAddress(Item item) {
+        Integer result;
+        synchronized (map) {
+            Integer id = item.getId();
+            result = map.containsKey(id) ? id : null;
+            if (result != null) {
+                map.put(id, item);
+            }
+        }
+        return result;
+    }
+
+    public Item delAddress(Integer id) {
+        Item result;
+        synchronized (map) {
+            result = map.remove(id);
+        }
+        return result;
    }
 }

@@ -40,7 +40,4 @@ final class Options {
 
     @Option(name = "--target-address", usage = "Address for the generated camel endpoint")
     URL targetAddress;
-
-    @Option(name = "--target-bean", usage = "Classname for the bean that camel delegates to")
-    String targetBean;
 }

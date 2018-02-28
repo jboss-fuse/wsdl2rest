@@ -62,27 +62,27 @@ public class WSDLProcessorImpl implements WSDLProcessor {
      */
     public WSDLProcessorImpl() {
         typeRegistry.put(new QName(xsdURI, "anyURI"), URI.class.getName());
-        typeRegistry.put(new QName(xsdURI, "base64Binary"), "byte[]");
-        typeRegistry.put(new QName(xsdURI, "boolean"), "boolean");
-        typeRegistry.put(new QName(xsdURI, "byte"), "byte");
+        typeRegistry.put(new QName(xsdURI, "base64Binary"), Byte.class.getName() + "[]");
+        typeRegistry.put(new QName(xsdURI, "boolean"), Boolean.class.getName());
+        typeRegistry.put(new QName(xsdURI, "byte"), Byte.class.getName());
         typeRegistry.put(new QName(xsdURI, "date"), Date.class.getName());
         typeRegistry.put(new QName(xsdURI, "dateTime"), Date.class.getName());
         typeRegistry.put(new QName(xsdURI, "decimal"), BigDecimal.class.getName());
-        typeRegistry.put(new QName(xsdURI, "double"), "double");
-        typeRegistry.put(new QName(xsdURI, "float"), "float");
-        typeRegistry.put(new QName(xsdURI, "hexBinary"), "byte[]");
-        typeRegistry.put(new QName(xsdURI, "int"), "int");
+        typeRegistry.put(new QName(xsdURI, "double"), Double.class.getName());
+        typeRegistry.put(new QName(xsdURI, "float"), Float.class.getName());
+        typeRegistry.put(new QName(xsdURI, "hexBinary"), Byte.class.getName() + "[]");
+        typeRegistry.put(new QName(xsdURI, "int"), Integer.class.getName());
         typeRegistry.put(new QName(xsdURI, "integer"), BigInteger.class.getName());
-        typeRegistry.put(new QName(xsdURI, "long"), "long");
-        typeRegistry.put(new QName(xsdURI, "short"), "short");
+        typeRegistry.put(new QName(xsdURI, "long"), Long.class.getName());
+        typeRegistry.put(new QName(xsdURI, "short"), Short.class.getName());
         typeRegistry.put(new QName(xsdURI, "string"), String.class.getName());
         typeRegistry.put(new QName(xsdURI, "time"), Date.class.getName());
-        typeRegistry.put(new QName(xsdURI, "unsignedByte"), "short");
-        typeRegistry.put(new QName(xsdURI, "unsignedInt"), "long");
-        typeRegistry.put(new QName(xsdURI, "unsignedShort"), "int");
+        typeRegistry.put(new QName(xsdURI, "unsignedByte"), Short.class.getName());
+        typeRegistry.put(new QName(xsdURI, "unsignedInt"), Long.class.getName());
+        typeRegistry.put(new QName(xsdURI, "unsignedShort"), Integer.class.getName());
         typeRegistry.put(new QName(xsdURI, "QName"), QName.class.getName());
         
-        typeRegistry.put(new QName(jaxbArrayURI, "intArray"), "int[]");
+        typeRegistry.put(new QName(jaxbArrayURI, "intArray"), Integer.class.getName() + "[]");
     }
 
     public void process(URL wsdlURL) throws WSDLException {
@@ -199,9 +199,6 @@ public class WSDLProcessorImpl implements WSDLProcessor {
                 if (javaType == null) {
                     javaType = toJavaType(typeQName != null ? typeQName : elmtQName);
                 }
-                if (javaType.startsWith("java.lang.")) {
-                    javaType = javaType.substring(10);
-                }
                 log.info("\t\t\t\tParams: {} {}", javaType, elmtQName);
                 params.add(new ParamImpl("arg" + index++, javaType));
             }
@@ -211,15 +208,22 @@ public class WSDLProcessorImpl implements WSDLProcessor {
                 switch (type) {
                     case 0:
                         // no params on doclit methods that list stuff
-                        if (!("document".equals(minfo.getStyle()) && opname.toLowerCase().startsWith("list"))) {
+                        boolean docListOperation = "document".equals(minfo.getStyle()) && opname.toLowerCase().startsWith("list");
+                        if (!docListOperation) {
                             minfo.setParams(params);
                         }
                         break;
                     case 1:
-                        minfo.setReturnType(params.get(0).getParamType());
+                        String retType = params.get(0).getParamType();
+                        if ("document".equals(minfo.getStyle())) {
+                            
+                            
+                        }
+                        minfo.setReturnType(retType);
                         break;
                     case 2:
-                        minfo.setExceptionType(params.get(0).getParamType());
+                        String faultType = params.get(0).getParamType();
+                        minfo.setExceptionType(faultType);
                 }
                 svcDef.setImports(imports);
             }

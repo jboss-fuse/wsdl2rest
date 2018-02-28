@@ -30,7 +30,11 @@ public interface MethodInfo extends MetaInfo {
 
     String getReturnType();
 
+    String getWrappedReturnType();
+
     List<ParamInfo> getParams();
+
+    List<ParamInfo> getWrappedParams();
 
     String getExceptionType();
 

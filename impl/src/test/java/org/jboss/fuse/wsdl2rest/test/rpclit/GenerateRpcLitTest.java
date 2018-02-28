@@ -27,7 +27,6 @@ import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.MethodInfo;
 import org.jboss.fuse.wsdl2rest.impl.Main;
 import org.jboss.fuse.wsdl2rest.impl.Wsdl2Rest;
-import org.jboss.fuse.wsdl2rest.jaxws.rpclit.AddressBean;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,7 +34,7 @@ import org.junit.Test;
 public class GenerateRpcLitTest {
 
     static final String WSDL_LOCATION = "../jaxws/src/main/resources/rpclit/Address.wsdl";
-    static final String OUTPUT_PATH = "target/generated-sources/wsdl2rest";
+    static final String OUTPUT_PATH = "target/generated-wsdl2rest";
 
     @Test
     public void testGenerate() throws Exception {
@@ -46,7 +45,6 @@ public class GenerateRpcLitTest {
         Wsdl2Rest tool = new Wsdl2Rest(wsdlFile.toURI().toURL(), outpath);
         tool.setTargetContext(Paths.get("rpclit-camel-context.xml"));
         tool.setTargetAddress(new URL("http://localhost:8080/rpclit"));
-        tool.setTargetBean(AddressBean.class.getName());
         
         List<EndpointInfo> clazzDefs = tool.process();
         Assert.assertEquals(1, clazzDefs.size());

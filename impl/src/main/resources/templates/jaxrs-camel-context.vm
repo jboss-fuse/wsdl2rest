@@ -6,21 +6,23 @@
         http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-    <bean id="targetBean" class="$targetBean"/>
-    
     <camelContext id="cxfrs" xmlns="http://camel.apache.org/schema/spring">
 
-        <restConfiguration component="jetty" host="localhost" port="8080" bindingMode="json">
+        <dataFormats>
+            <xmljson id="xmljson"/>
+        </dataFormats>
+        
+        <restConfiguration component="jetty" host="0.0.0.0" port="8081" bindingMode="json">
         </restConfiguration>
 
-        <rest path="/">
+        <rest path="/jaxrs">
 #foreach( $method in $allMethods )
 
           <$method.httpMethod.toLowerCase() uri="/$method.path" 
 #if ( $method.params.size() == 1 )
-            type="$method.params[0].paramType"
+            type="$method.wrappedParams[0].paramType"
 #end    
-            outType="$method.returnType" 
+            outType="$method.wrappedReturnType" 
 #if ( $method.httpMethod.toLowerCase() == 'post' || $method.httpMethod.toLowerCase() == 'put' ) 
             consumes="application/json" 
 #end
@@ -31,18 +33,47 @@
         </rest>
 
 #foreach( $method in $allMethods )
+#if ( $method.params.size() == 1 )
+#set ( $paramType = $method.wrappedParams[0].paramType )
+#else
+#set ( $paramType = "" )
+#end
         <route id="$method.methodName">
             <from uri="direct:$method.methodName" />
             <log loggingLevel="INFO" message="$method.methodName"/>
-#if ( $method.path.contains('arg0') )
-#set( $Param = "(header.arg0)" )
-            <to uri="bean:targetBean?method=$method.methodName$Param"/>
-#else    
-            <to uri="bean:targetBean?method=$method.methodName"/>
+#if ( $paramType.length() > 0 && $paramType.startsWith('java.lang') )
+            <setBody>
+                <simple>${header.arg0}</simple>
+            </setBody>
+            <unmarshal>
+                <json library="Jackson" unmarshalTypeName="$paramType"/>
+            </unmarshal>
+#end    
+#if ( $method.params.size() == 0 )
+            <setBody>
+                <simple>null</simple>
+            </setBody>
+#end    
+            <to uri="cxf://$targetAddress?serviceClass=$serviceClass&amp;defaultOperationName=$method.methodName"/>
+#set ( $returnType = $method.wrappedReturnType )
+#if ( $returnType.startsWith('java.lang') && !$returnType.endsWith('[]'))
+            <setHeader headerName="Content-Type">
+               <constant>text/plain</constant>
+            </setHeader>
+            <setBody>
+                <simple>${body}</simple>
+            </setBody>
+#else
+            <setHeader headerName="Content-Type">
+               <constant>application/json</constant>
+            </setHeader>
+            <setBody>
+                <simple>${body[0]}</simple>
+            </setBody>
 #end    
         </route>
+        
 #end
-
     </camelContext>
 
 </beans>

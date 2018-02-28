@@ -15,6 +15,17 @@
             <artifactId>camel-spring</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-xmljson</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>xom</groupId>
+          <artifactId>xom</artifactId>
+          <version>1.2.5</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
         </dependency>
@@ -71,30 +82,41 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-java2ws-plugin</artifactId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>xerces</groupId>
+                        <artifactId>xercesImpl</artifactId>
+                        <version>2.8.1</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
-                        <id>rpclit</id>
-                        <phase>process-test-classes</phase>
+                        <id>generate-doclit</id>
+                        <phase>generate-sources</phase>
                         <configuration>
-                            <className>org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address</className>
-                            <outputFile>${basedir}/src/main/resources/rpclit/Address.wsdl</outputFile>
-                            <classpath>${basedir}/target/classes</classpath>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>src/main/resources/doclit/Address.wsdl</wsdl>
+                                </wsdlOption>
+                            </wsdlOptions>
                         </configuration>
                         <goals>
-                            <goal>java2ws</goal>
+                            <goal>wsdl2java</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>doclit</id>
-                        <phase>process-test-classes</phase>
+                        <id>generate-rpc-lit</id>
+                        <phase>generate-sources</phase>
                         <configuration>
-                            <className>org.jboss.fuse.wsdl2rest.jaxws.doclit.Address</className>
-                            <outputFile>${basedir}/src/main/resources/doclit/Address.wsdl</outputFile>
-                            <classpath>${project.build.directory}/classes</classpath>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>src/main/resources/rpclit/Address.wsdl</wsdl>
+                                </wsdlOption>
+                            </wsdlOptions>
                         </configuration>
                         <goals>
-                            <goal>java2ws</goal>
+                            <goal>wsdl2java</goal>
                         </goals>
                     </execution>
                 </executions>

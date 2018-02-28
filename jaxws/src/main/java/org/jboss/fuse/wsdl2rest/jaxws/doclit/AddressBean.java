@@ -18,22 +18,24 @@ package org.jboss.fuse.wsdl2rest.jaxws.doclit;
  */
 
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.jboss.fuse.wsdl2rest.jaxws.Item;
-import org.jboss.fuse.wsdl2rest.jaxws.ItemBuilder;
+import javax.jws.WebService;
 
+@WebService(endpointInterface="org.jboss.fuse.wsdl2rest.jaxws.doclit.Address")
 public class AddressBean {
 
     private Map<Integer, Item> map = new LinkedHashMap<>();
     
-    public String listAddresses() {
+    public List<Integer> listAddresses() {
+        List<Integer> result;
         synchronized (map) {
-            Set<Integer> keySet = map.keySet();
-            return keySet.toString();
+            result = new ArrayList<>(map.keySet());
         }
+        return result;
     }
 
     public Item getAddress(Integer id) {
@@ -41,7 +43,7 @@ public class AddressBean {
         synchronized (map) {
             Item aux = map.get(id);
             if (aux != null) {
-                result = new ItemBuilder().copy(aux).build();
+                result = aux;
             }
         }
         return result;
@@ -50,7 +52,7 @@ public class AddressBean {
     public Integer addAddress(Item item) {
         synchronized (map) {
             Integer id = item.getId();
-            map.put(id, new ItemBuilder().copy(item).build());
+            map.put(id, item);
             return id;
         }
     }
@@ -61,7 +63,7 @@ public class AddressBean {
             Integer id = item.getId();
             result = map.containsKey(id) ? id : null;
             if (result != null) {
-                map.put(id, new ItemBuilder().copy(item).build());
+                map.put(id, item);
             }
         }
         return result;

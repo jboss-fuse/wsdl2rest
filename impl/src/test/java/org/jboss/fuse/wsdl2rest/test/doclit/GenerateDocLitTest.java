@@ -23,15 +23,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.jboss.fuse.wsdl2rest.ClassGenerator;
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.MethodInfo;
 import org.jboss.fuse.wsdl2rest.ResourceMapper;
 import org.jboss.fuse.wsdl2rest.impl.ResourceMapperImpl;
 import org.jboss.fuse.wsdl2rest.impl.Wsdl2Rest;
-import org.jboss.fuse.wsdl2rest.impl.codegen.ClassGeneratorFactory;
 import org.jboss.fuse.wsdl2rest.impl.codegen.JavaTypeGenerator;
-import org.jboss.fuse.wsdl2rest.jaxws.doclit.AddressBean;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,7 +36,7 @@ import org.junit.Test;
 public class GenerateDocLitTest {
 
     static final String WSDL_LOCATION = "../jaxws/src/main/resources/doclit/Address.wsdl";
-    static final String OUTPUT_PATH = "target/generated-sources/wsdl2rest";
+    static final String OUTPUT_PATH = "target/generated-wsdl2rest";
 
     @Test
     public void testGenerate() throws Exception {
@@ -50,7 +47,6 @@ public class GenerateDocLitTest {
         Wsdl2Rest tool = new Wsdl2Rest(wsdlFile.toURI().toURL(), outpath);
         tool.setTargetContext(Paths.get("doclit-camel-context.xml"));
         tool.setTargetAddress(new URL("http://localhost:8080/doclit"));
-        tool.setTargetBean(AddressBean.class.getName());
 
         List<EndpointInfo> clazzDefs = tool.process();
         Assert.assertEquals(1, clazzDefs.size());
@@ -66,8 +62,5 @@ public class GenerateDocLitTest {
 
         JavaTypeGenerator typeGen = new JavaTypeGenerator(outpath, wsdlFile.toURI().toURL());
         typeGen.execute();
-        
-        ClassGenerator classGen = ClassGeneratorFactory.getClassGenerator(outpath);
-        classGen.generateClasses(clazzDefs);
     }
 }

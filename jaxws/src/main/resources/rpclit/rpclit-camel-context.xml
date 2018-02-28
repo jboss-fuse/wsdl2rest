@@ -6,107 +6,121 @@
         http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
         
-    <cxf:cxfEndpoint id="cxfConsumer" 
-        address="http://0.0.0.0:8080/rpclit/AddressService" 
-        serviceClass="org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address" />
-        
-    <bean id="addressBean" class="org.jboss.fuse.wsdl2rest.jaxws.rpclit.AddressBean"/>
-    
     <camelContext id="cxfws" xmlns="http://camel.apache.org/schema/spring">
+
+        <dataFormats>
+            <xmljson id="xmljson"/>
+        </dataFormats>
     
-        <restConfiguration component="jetty" host="0.0.0.0" port="8081" bindingMode="json">
-        </restConfiguration>
+        <restConfiguration component="jetty" host="0.0.0.0" port="8081" bindingMode="json"/>
 
         <rest path="/jaxrs">
 
+          <post uri="/address" 
+            type="org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item"
+            outType="java.lang.Integer" 
+            consumes="application/json" 
+            >
+            <to uri="direct:addAddress"/>
+          </post>
+
+          <delete uri="/address/{arg0}" 
+            type="java.lang.Integer"
+            outType="org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item" 
+            >
+            <to uri="direct:delAddress"/>
+          </delete>
+
           <get uri="/address/{arg0}" 
-            type="int"
-            outType="org.jboss.fuse.wsdl2rest.jaxws.Item" 
+            type="java.lang.Integer"
+            outType="org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item" 
             >
             <to uri="direct:getAddress"/>
           </get>
 
           <get uri="/addresses" 
-            outType="int[]" 
+            outType="java.lang.Integer[]" 
             >
             <to uri="direct:listAddresses"/>
           </get>
 
           <put uri="/address" 
-            type="org.jboss.fuse.wsdl2rest.jaxws.Item"
-            outType="int" 
+            type="org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item"
+            outType="java.lang.Integer" 
             consumes="application/json" 
             >
             <to uri="direct:updAddress"/>
           </put>
-
-          <delete uri="/address/{arg0}" 
-            type="int"
-            outType="org.jboss.fuse.wsdl2rest.jaxws.Item" 
-            >
-            <to uri="direct:delAddress"/>
-          </delete>
-
-          <post uri="/address" 
-            type="org.jboss.fuse.wsdl2rest.jaxws.Item"
-            outType="int" 
-            consumes="application/json" 
-            >
-            <to uri="direct:addAddress"/>
-          </post>
         </rest>
 
-        <route id="consumerRoute">
-            <from uri="cxf:bean:cxfConsumer" />
-            <log loggingLevel="INFO" message="${header.operationName}"/>
-            <log loggingLevel="INFO" message="${body}"/>
-            <choice>
-                <when>
-                    <simple>${header.operationName} == 'listAddresses'</simple>
-                    <to uri="bean:addressBean?method=listAddresses"/>
-                </when>
-                <when>
-                    <simple>${header.operationName} == 'getAddress'</simple>
-                    <to uri="bean:addressBean?method=getAddress"/>
-                </when>
-                <when>
-                    <simple>${header.operationName} == 'addAddress'</simple>
-                    <to uri="bean:addressBean?method=addAddress"/>
-                </when>
-                <when>
-                    <simple>${header.operationName} == 'updAddress'</simple>
-                    <to uri="bean:addressBean?method=updAddress"/>
-                </when>
-                <when>
-                    <simple>${header.operationName} == 'delAddress'</simple>
-                    <to uri="bean:addressBean?method=delAddress"/>
-                </when>
-            </choice>
-        </route>
-        
-        <route id="listAddressesRoute">
-            <from uri="direct:listAddresses" />
-            <log loggingLevel="INFO" message="direct:listAddresses"/>
-            <log loggingLevel="INFO" message="${body}"/>
-            <!-- transform>
-                <simple>null</simple>
-            </transform -->
-            <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=listAddresses"/>
-        </route>
-        
-        <route id="addAddressRoute">
+        <route id="addAddress">
             <from uri="direct:addAddress" />
             <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=addAddress"/>
+            <setHeader headerName="Content-Type">
+               <constant>text/plain</constant>
+            </setHeader>
+            <setBody>
+                <simple>${body}</simple>
+            </setBody>
         </route>
         
-        <route id="getAddressRoute">
+        <route id="delAddress">
+            <from uri="direct:delAddress" />
+            <setBody>
+                <simple>${header.arg0}</simple>
+            </setBody>
+            <unmarshal>
+                <json library="Jackson" unmarshalTypeName="java.lang.Integer"/>
+            </unmarshal>
+            <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=delAddress"/>
+            <setHeader headerName="Content-Type">
+               <constant>application/json</constant>
+            </setHeader>
+            <setBody>
+                <simple>${body[0]}</simple>
+            </setBody>
+        </route>
+        
+        <route id="getAddress">
             <from uri="direct:getAddress" />
+            <setBody>
+                <simple>${header.arg0}</simple>
+            </setBody>
+            <unmarshal>
+                <json library="Jackson" unmarshalTypeName="java.lang.Integer"/>
+            </unmarshal>
             <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=getAddress"/>
+            <setHeader headerName="Content-Type">
+               <constant>application/json</constant>
+            </setHeader>
+            <setBody>
+                <simple>${body[0]}</simple>
+            </setBody>
         </route>
         
-        <route id="updAddressRoute">
+        <route id="listAddresses">
+            <from uri="direct:listAddresses" />
+            <setBody>
+                <simple>null</simple>
+            </setBody>
+            <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=listAddresses"/>
+            <setHeader headerName="Content-Type">
+               <constant>application/json</constant>
+            </setHeader>
+            <setBody>
+                <simple>${body[0]}</simple>
+            </setBody>
+        </route>
+        
+        <route id="updAddress">
             <from uri="direct:updAddress" />
             <to uri="cxf://http://localhost:8080/rpclit/AddressService?serviceClass=org.jboss.fuse.wsdl2rest.jaxws.rpclit.Address&amp;defaultOperationName=updAddress"/>
+            <setHeader headerName="Content-Type">
+               <constant>text/plain</constant>
+            </setHeader>
+            <setBody>
+                <simple>${body}</simple>
+            </setBody>
         </route>
         
     </camelContext>

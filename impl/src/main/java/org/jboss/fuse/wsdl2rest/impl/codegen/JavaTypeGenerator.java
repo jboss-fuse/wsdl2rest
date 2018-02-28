@@ -1,13 +1,10 @@
 package org.jboss.fuse.wsdl2rest.impl.codegen;
 
-import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 
 import org.apache.cxf.tools.common.ToolContext;
-import org.apache.cxf.tools.common.model.JavaInterface;
 import org.apache.cxf.tools.common.model.JavaModel;
-import org.apache.cxf.tools.common.model.JavaServiceClass;
 import org.apache.cxf.tools.wsdlto.WSDLToJava;
 
 /**
@@ -29,7 +26,7 @@ public class JavaTypeGenerator {
     }
 
 
-    public void execute() throws Exception {
+    public JavaModel execute() throws Exception {
         
         String args[] = new String[] {
                 "-d", outpath.toString(),
@@ -39,13 +36,6 @@ public class JavaTypeGenerator {
         new WSDLToJava(args).run(ctx);
         
         JavaModel javaModel = ctx.getJavaModel();
-        for (JavaInterface aux : javaModel.getInterfaces().values()) {
-            File auxFile = outpath.resolve(aux.getPackageName().replace('.', '/') + "/" + aux.getName() + ".java").toFile();
-            auxFile.delete();
-        }
-        for (JavaServiceClass aux : javaModel.getServiceClasses().values()) {
-            File auxFile = outpath.resolve(aux.getPackageName().replace('.', '/') + "/" + aux.getName() + ".java").toFile();
-            auxFile.delete();
-        }
+        return javaModel;
     }
 }

@@ -7,13 +7,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cxf.tools.common.model.JavaInterface;
+import org.apache.cxf.tools.common.model.JavaMethod;
+import org.apache.cxf.tools.common.model.JavaModel;
+import org.apache.cxf.tools.common.model.JavaParameter;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
+import org.jboss.fuse.wsdl2rest.MethodInfo;
+import org.jboss.fuse.wsdl2rest.ParamInfo;
+import org.jboss.fuse.wsdl2rest.impl.service.MethodInfoImpl;
+import org.jboss.fuse.wsdl2rest.impl.service.ParamImpl;
 import org.jboss.fuse.wsdl2rest.util.IllegalArgumentAssertion;
 import org.jboss.fuse.wsdl2rest.util.IllegalStateAssertion;
 
@@ -23,7 +32,6 @@ public class CamelContextGenerator {
     
     private Path targetContext;
     private URL targetAddress;
-    private String targetBean;
 
     public CamelContextGenerator(Path outpath) {
         this.outpath = outpath;
@@ -37,16 +45,12 @@ public class CamelContextGenerator {
         this.targetAddress = targetAddress;
     }
 
-    public void setTargetBean(String targetBean) {
-        this.targetBean = targetBean;
-    }
-
-    public void process(List<EndpointInfo> clazzDefs) throws IOException {
+    public void process(List<EndpointInfo> clazzDefs, JavaModel javaModel) throws IOException {
         IllegalArgumentAssertion.assertNotNull(clazzDefs, "clazzDefs");
+        IllegalArgumentAssertion.assertNotNull(javaModel, "javaModel");
         IllegalArgumentAssertion.assertTrue(clazzDefs.size() == 1, "Multiple endpoints not supported");
         
         IllegalStateAssertion.assertNotNull(targetContext, "Camel context file name not set");
-        IllegalStateAssertion.assertNotNull(targetBean, "Target bean not set");
         
         EndpointInfo epinfo = clazzDefs.get(0);
         
@@ -61,13 +65,51 @@ public class CamelContextGenerator {
             VelocityContext context = new VelocityContext();
             context.put("targetAddress", targetAddress != null ? targetAddress : "http://localhost:8080/somepath");
             context.put("serviceClass", epinfo.getFQN());
-            context.put("targetBean", targetBean);
             context.put("allMethods", epinfo.getMethods());
+            
+            addTypeMapping(epinfo, javaModel);
 
             File outfile = outpath.resolve(targetContext).toFile();
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(outfile))) {
                 ve.evaluate(context, writer, tmplPath, reader);
             }
         }
+    }
+    
+    private void addTypeMapping(EndpointInfo epinfo, JavaModel javaModel) {
+        IllegalArgumentAssertion.assertTrue(javaModel.getInterfaces().size() == 1, "Multiple interfaces not supported");
+        JavaInterface javaIntrf = javaModel.getInterfaces().get(epinfo.getClassName());
+        for (MethodInfo method : epinfo.getMethods()) {
+            if ("document".equals(method.getStyle())) {
+                JavaMethod javaMethod = getJavaMethod(javaIntrf, method.getMethodName());
+                List<ParamInfo> wrappedParams = new ArrayList<>();
+                for (ParamInfo param : method.getParams()) {
+                    String paramName = param.getParamName();
+                    JavaParameter javaParam = javaMethod.getParameter(paramName);
+                    wrappedParams.add(new ParamImpl(paramName, normalize(javaParam.getClassName())));
+                }
+                ((MethodInfoImpl) method).setWrappedParams(wrappedParams);
+                ((MethodInfoImpl) method).setWrappedReturnType(normalize(javaMethod.getReturnValue()));
+            }
+        }
+    }
+
+    private String normalize(String typeName) {
+        if (typeName.contains("List<") && typeName.endsWith(">")) {
+            typeName = typeName.substring(typeName.indexOf("<") + 1);
+            typeName = typeName.substring(0, typeName.indexOf(">"));
+            typeName = typeName + "[]";
+        }
+        return typeName;
+    }
+    
+    private JavaMethod getJavaMethod(JavaInterface intrf, String methodName) {
+        JavaMethod result = null;
+        for (JavaMethod method : intrf.getMethods()) {
+            if (method.getName().equals(methodName))
+                result = method;
+        }
+        IllegalStateAssertion.assertNotNull(result, "Cannot obtain java method for: " + methodName);
+        return result;
     }
 }

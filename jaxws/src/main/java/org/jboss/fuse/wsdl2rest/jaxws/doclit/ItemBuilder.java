@@ -1,4 +1,4 @@
-package org.jboss.fuse.wsdl2rest.test.rpclit;
+package org.jboss.fuse.wsdl2rest.jaxws.doclit;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -6,8 +6,6 @@ import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item;
 
 public class ItemBuilder {
 
@@ -33,7 +31,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder dateOfBirth(Date date) {
-        result.setDateOfBirth(toXMLGregorianCalendar(date));
+        result.setDateOfBirth(asXMLGregorianCalendar(date));
         return this;
     }
 
@@ -41,21 +39,13 @@ public class ItemBuilder {
         return result;
     }
 
-    public static XMLGregorianCalendar toXMLGregorianCalendar(Date date) {
-        XMLGregorianCalendar result = null;
-        if (date != null) {
+    private static XMLGregorianCalendar asXMLGregorianCalendar(Date date) {
+        if (date == null) {
+            return null;
+        } else {
             GregorianCalendar gc = new GregorianCalendar();
             gc.setTimeInMillis(date.getTime());
-            result = df.newXMLGregorianCalendar(gc);
+            return df.newXMLGregorianCalendar(gc);
         }
-        return result;
-    }
-
-    public static Date toDate(XMLGregorianCalendar cal) {
-        Date result = null;
-        if (cal != null) {
-            result = cal.toGregorianCalendar().getTime();
-        }
-        return result;
     }
 }

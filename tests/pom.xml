@@ -19,18 +19,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jboss.fuse.wsdl2rest</groupId>
-            <artifactId>wsdl2rest-jaxws</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.fuse.wsdl2rest</groupId>
-            <artifactId>wsdl2rest-impl</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-cxf</artifactId>
             <scope>test</scope>
@@ -84,24 +72,6 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>generate-rpclit</id>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <phase>generate-test-sources</phase>
-                        <configuration>
-                            <target>
-                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
-                                    <arg value="--wsdl=file:${basedir}/../jaxws/src/main/resources/rpclit/Address.wsdl" />
-                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
-                                    <arg value="--target-context=rpclit-camel-context.xml" />
-                                    <arg value="--target-address=http://localhost:8080/rpclit" />
-                                    <arg value="--target-bean=org.jboss.fuse.wsdl2rest.test.rpclit.AddressBean" />
-                                </java>
-                            </target>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>generate-doclit</id>
                         <goals>
                             <goal>run</goal>
@@ -111,10 +81,26 @@
                             <target>
                                 <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
                                     <arg value="--wsdl=file:${basedir}/../jaxws/src/main/resources/doclit/Address.wsdl" />
-                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
+                                    <arg value="--target-address=http://localhost:8080/doclit/AddressService" />
                                     <arg value="--target-context=doclit-camel-context.xml" />
-                                    <arg value="--target-address=http://localhost:8080/doclit" />
-                                    <arg value="--target-bean=org.jboss.fuse.wsdl2rest.test.doclit.AddressBean" />
+                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
+                                </java>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-rpclit</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <target>
+                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
+                                    <arg value="--wsdl=file:${basedir}/../jaxws/src/main/resources/rpclit/Address.wsdl" />
+                                    <arg value="--target-address=http://localhost:8080/rpclit/AddressService" />
+                                    <arg value="--target-context=rpclit-camel-context.xml" />
+                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
                                 </java>
                             </target>
                         </configuration>
@@ -126,6 +112,7 @@
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>add-test-source</id>
                         <goals>
                             <goal>add-test-source</goal>
                         </goals>
@@ -134,6 +121,20 @@
                             <sources>
                                 <source>${basedir}/target/generated-wsdl2rest</source>
                             </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-test-resource</id>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <resources>
+                                <resource>                                     
+                                    <directory>${basedir}/target/generated-wsdl2rest</directory>
+                                </resource>                                
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>

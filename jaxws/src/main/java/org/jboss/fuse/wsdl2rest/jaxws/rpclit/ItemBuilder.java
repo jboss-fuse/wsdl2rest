@@ -1,4 +1,4 @@
-package org.jboss.fuse.wsdl2rest.test.rpclit;
+package org.jboss.fuse.wsdl2rest.jaxws.rpclit;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -6,8 +6,6 @@ import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.jboss.fuse.wsdl2rest.jaxws.rpclit.Item;
 
 public class ItemBuilder {
 
