@@ -12,7 +12,7 @@
             <xmljson id="xmljson"/>
         </dataFormats>
     
-        <restConfiguration component="jetty" host="0.0.0.0" port="8081" bindingMode="json"/>
+        <restConfiguration component="jetty" host="localhost" port="8081" bindingMode="json"/>
 
         <rest path="/jaxrs">
 

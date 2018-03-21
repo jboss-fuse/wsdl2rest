@@ -2,6 +2,8 @@ package org.jboss.fuse.wsdl2rest.impl;
 
 import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class Wsdl2Rest {
     private URL jaxrsAddress;
     private URL jaxwsAddress;
     private Path camelContext;
+    private Path javaOut;
     
     public Wsdl2Rest(URL wsdlUrl, Path outpath) {
         IllegalArgumentAssertion.assertNotNull(wsdlUrl, "wsdlUrl");
@@ -37,8 +40,18 @@ public class Wsdl2Rest {
         this.jaxwsAddress = jaxwsAddress;
     }
 
+    /**
+     * Defaults to [outpath]/camel/wsdl2rest-camel-context.xml
+     */
     public void setCamelContext(Path camelContext) {
         this.camelContext = camelContext;
+    }
+
+    /**
+     * Defaults to [outpath]/java
+     */
+    public void setJavaOut(Path javaOut) {
+        this.javaOut = javaOut;
     }
 
     public List<EndpointInfo> process() throws Exception {
@@ -50,17 +63,38 @@ public class Wsdl2Rest {
         ResourceMapper resMapper = new ResourceMapperImpl();
         resMapper.assignResources(clazzDefs);
 
-        JavaTypeGenerator typeGen = new JavaTypeGenerator(outpath, wsdlUrl);
+        JavaTypeGenerator typeGen = new JavaTypeGenerator(effectiveJavaOut(), wsdlUrl);
         JavaModel javaModel = typeGen.execute();
         
         if (camelContext != null) {
             CamelContextGenerator camelGen = new CamelContextGenerator(outpath);
-            camelGen.setCamelContext(camelContext);
+            camelGen.setCamelContext(effectiveCamelContext());
             camelGen.setJaxrsAddress(jaxrsAddress);
             camelGen.setJaxwsAddress(jaxwsAddress);
             camelGen.process(clazzDefs, javaModel);
         }
         
         return Collections.unmodifiableList(clazzDefs);
+    }
+
+    private Path effectiveJavaOut() {
+        Path resultPath = javaOut;
+        if (resultPath == null) {
+            resultPath = Paths.get("java");
+        }
+        return outpath.resolve(resultPath);
+    }
+
+    private Path effectiveCamelContext() {
+        Path resultPath = camelContext;
+        if (resultPath == null) {
+            resultPath = Paths.get("wsdl2rest-camel-context.xml");
+        }
+        List<Path> pathElements = new ArrayList<>();
+        resultPath.iterator().forEachRemaining(pathElements::add);
+        if (pathElements.size() < 2) {
+            resultPath = Paths.get("camel", resultPath.toString());
+        }
+        return outpath.resolve(resultPath);
     }
 }

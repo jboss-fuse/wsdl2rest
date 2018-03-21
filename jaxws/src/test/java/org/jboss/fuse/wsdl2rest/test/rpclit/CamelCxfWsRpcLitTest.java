@@ -56,7 +56,7 @@ public class CamelCxfWsRpcLitTest {
     static String JAXWS_URI = "http://localhost:8080/rpclit/AddressService";
     static QName SERVICE_QNAME = new QName("http://rpclit.jaxws.wsdl2rest.fuse.jboss.org/", "AddressService");
 
-    static String JAXRS_URL = "http://0.0.0.0:8081/jaxrs";
+    static String JAXRS_URL = "http://localhost:8081/jaxrs";
     
     @BeforeClass
     public static void beforeClass() {

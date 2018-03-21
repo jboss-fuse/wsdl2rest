@@ -56,7 +56,7 @@ public class CamelRestRpcLitTest {
     static String JAXWS_URI = "http://localhost:8080/rpclit/AddressService";
     static QName SERVICE_QNAME = new QName("http://rpclit.jaxws.wsdl2rest.fuse.jboss.org/", "AddressService");
 
-    static String JAXRS_URL = "http://0.0.0.0:8081/jaxrs";
+    static String JAXRS_URL = "http://localhost:8081/jaxrs";
     
     @BeforeClass
     public static void beforeClass() {
@@ -90,7 +90,7 @@ public class CamelRestRpcLitTest {
     @Test
     public void testCamelClient() throws Exception {
 
-        URL resourceUrl = getClass().getResource("/rpclit-camel-context.xml");
+        URL resourceUrl = getClass().getResource("/camel/rpclit-camel-context.xml");
         CamelContext camelctx = SpringCamelContextFactory.createSingleCamelContext(resourceUrl, null);
         camelctx.start();
         try {
@@ -116,7 +116,7 @@ public class CamelRestRpcLitTest {
     @Test
     public void testRestClient() throws Exception {
 
-        URL resourceUrl = getClass().getResource("/rpclit-camel-context.xml");
+        URL resourceUrl = getClass().getResource("/camel/rpclit-camel-context.xml");
         CamelContext camelctx = SpringCamelContextFactory.createSingleCamelContext(resourceUrl, null);
         camelctx.start();
         try {

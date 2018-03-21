@@ -153,7 +153,7 @@ public final class SpringCamelContextFactory {
          * @throws Exception
          */
         public static void invokeProxied(final Callable<?> callable, final ClassLoader classLoader) throws Exception {
-            Callable<?> callableProxy = (Callable) Proxy.newProxyInstance(classLoader, new Class<?>[] { Callable.class }, new InvocationHandler() {
+            Callable<?> callableProxy = (Callable<?>) Proxy.newProxyInstance(classLoader, new Class<?>[] { Callable.class }, new InvocationHandler() {
                 @Override
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                     callable.call();

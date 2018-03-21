@@ -54,7 +54,7 @@ public class CamelRestDocLitTest {
     static String JAXWS_URI = "http://localhost:8080/doclit/AddressService";
     static QName SERVICE_QNAME = new QName("http://doclit.jaxws.wsdl2rest.fuse.jboss.org/", "AddressService");
 
-    static String JAXRS_URL = "http://0.0.0.0:8081/jaxrs";
+    static String JAXRS_URL = "http://localhost:8081/jaxrs";
     
     @BeforeClass
     public static void beforeClass() {
@@ -87,7 +87,7 @@ public class CamelRestDocLitTest {
     @Test
     public void testCamelClient() throws Exception {
 
-        URL resourceUrl = getClass().getResource("/doclit-camel-context.xml");
+        URL resourceUrl = getClass().getResource("/camel/doclit-camel-context.xml");
         CamelContext camelctx = SpringCamelContextFactory.createSingleCamelContext(resourceUrl, null);
         camelctx.start();
         try {
@@ -116,7 +116,7 @@ public class CamelRestDocLitTest {
     @SuppressWarnings("unchecked")
     public void testRestClient() throws Exception {
 
-        URL resourceUrl = getClass().getResource("/doclit-camel-context.xml");
+        URL resourceUrl = getClass().getResource("/camel/doclit-camel-context.xml");
         CamelContext camelctx = SpringCamelContextFactory.createSingleCamelContext(resourceUrl, null);
         camelctx.start();
         try {

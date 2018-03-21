@@ -28,14 +28,11 @@ import org.jboss.fuse.wsdl2rest.util.IllegalStateAssertion;
 
 public class CamelContextGenerator {
 
-    private final Path outpath;
-    
     private Path camelContext;
     private URL jaxrsAddress;
     private URL jaxwsAddress;
 
     public CamelContextGenerator(Path outpath) {
-        this.outpath = outpath;
     }
 
     public void setCamelContext(Path camelContext) {
@@ -53,9 +50,8 @@ public class CamelContextGenerator {
     public void process(List<EndpointInfo> clazzDefs, JavaModel javaModel) throws IOException {
         IllegalArgumentAssertion.assertNotNull(clazzDefs, "clazzDefs");
         IllegalArgumentAssertion.assertNotNull(javaModel, "javaModel");
-        IllegalArgumentAssertion.assertTrue(clazzDefs.size() == 1, "Multiple endpoints not supported");
-        
         IllegalStateAssertion.assertNotNull(camelContext, "Camel context file name not set");
+        IllegalArgumentAssertion.assertTrue(clazzDefs.size() == 1, "Multiple endpoints not supported");
         
         EndpointInfo epinfo = clazzDefs.get(0);
         
@@ -82,7 +78,9 @@ public class CamelContextGenerator {
             
             addTypeMapping(epinfo, javaModel);
 
-            File outfile = outpath.resolve(camelContext).toFile();
+            File outfile = camelContext.toFile();
+            outfile.getParentFile().mkdirs();
+            
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(outfile))) {
                 ve.evaluate(context, writer, tmplPath, reader);
             }
