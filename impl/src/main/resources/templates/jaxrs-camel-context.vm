@@ -12,10 +12,10 @@
             <xmljson id="xmljson"/>
         </dataFormats>
         
-        <restConfiguration component="jetty" host="0.0.0.0" port="8081" bindingMode="json">
+        <restConfiguration component="jetty" host="$jaxrsHost" port="$jaxrsPort" bindingMode="json">
         </restConfiguration>
 
-        <rest path="/jaxrs">
+        <rest path="/$jaxrsPath">
 #foreach( $method in $allMethods )
 
           <$method.httpMethod.toLowerCase() uri="/$method.path" 
@@ -54,7 +54,7 @@
                 <simple>null</simple>
             </setBody>
 #end    
-            <to uri="cxf://$targetAddress?serviceClass=$serviceClass&amp;defaultOperationName=$method.methodName"/>
+            <to uri="cxf://$jaxwsAddress?serviceClass=$serviceClass&amp;defaultOperationName=$method.methodName"/>
 #set ( $returnType = $method.wrappedReturnType )
 #if ( $returnType.startsWith('java.lang') && !$returnType.endsWith('[]'))
             <setHeader headerName="Content-Type">

@@ -81,8 +81,9 @@
                             <target>
                                 <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
                                     <arg value="--wsdl=file:${basedir}/../jaxws/src/main/resources/doclit/Address.wsdl" />
-                                    <arg value="--target-address=http://localhost:8080/doclit/AddressService" />
-                                    <arg value="--target-context=doclit-camel-context.xml" />
+                                    <arg value="--jaxrs=http://localhost:8081/jaxrs" />
+                                    <arg value="--jaxws=http://localhost:8080/doclit/AddressService" />
+                                    <arg value="--camel-context=doclit-camel-context.xml" />
                                     <arg value="--out=${basedir}/target/generated-wsdl2rest" />
                                 </java>
                             </target>
@@ -98,8 +99,9 @@
                             <target>
                                 <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
                                     <arg value="--wsdl=file:${basedir}/../jaxws/src/main/resources/rpclit/Address.wsdl" />
-                                    <arg value="--target-address=http://localhost:8080/rpclit/AddressService" />
-                                    <arg value="--target-context=rpclit-camel-context.xml" />
+                                    <arg value="--jaxrs=http://localhost:8081/jaxrs" />
+                                    <arg value="--jaxws=http://localhost:8080/rpclit/AddressService" />
+                                    <arg value="--camel-context=rpclit-camel-context.xml" />
                                     <arg value="--out=${basedir}/target/generated-wsdl2rest" />
                                 </java>
                             </target>

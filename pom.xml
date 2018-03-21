@@ -24,6 +24,7 @@
         <!-- Plugin versions -->
         <version-build-helper-plugin>3.0.0</version-build-helper-plugin>
         <version-maven-antrun-plugin>1.8</version-maven-antrun-plugin>
+        <version-maven-assembly-plugin>3.1.0</version-maven-assembly-plugin>
         <version-maven-compiler-plugin>3.7.0</version-maven-compiler-plugin>
         <version-maven-jar-plugin>2.6</version-maven-jar-plugin>
         <version-maven-javadoc-plugin>2.9.1</version-maven-javadoc-plugin>
@@ -149,6 +150,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>${version-maven-antrun-plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${version-maven-assembly-plugin}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

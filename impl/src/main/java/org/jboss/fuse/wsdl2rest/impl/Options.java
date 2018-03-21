@@ -35,9 +35,12 @@ final class Options {
     @Option(name = "--out", required = true, usage = "Output path for generated artefacts (required)")
     Path outpath;
 
-    @Option(name = "--target-context", usage = "Path to the generated camel context")
-    Path targetContext;
+    @Option(name = "--camel-context", usage = "Path to the generated camel context file name")
+    Path camelContext;
 
-    @Option(name = "--target-address", usage = "Address for the generated camel endpoint")
-    URL targetAddress;
+    @Option(name = "--jaxrs", usage = "Address of the generated jaxrs endpoint")
+    URL jaxrsAddress;
+
+    @Option(name = "--jaxws", usage = "Address of the target jaxws endpoint")
+    URL jaxwsAddress;
 }

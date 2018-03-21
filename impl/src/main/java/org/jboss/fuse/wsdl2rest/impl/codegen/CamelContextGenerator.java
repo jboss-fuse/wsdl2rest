@@ -30,19 +30,24 @@ public class CamelContextGenerator {
 
     private final Path outpath;
     
-    private Path targetContext;
-    private URL targetAddress;
+    private Path camelContext;
+    private URL jaxrsAddress;
+    private URL jaxwsAddress;
 
     public CamelContextGenerator(Path outpath) {
         this.outpath = outpath;
     }
 
-    public void setTargetContext(Path targetContext) {
-        this.targetContext = targetContext;
+    public void setCamelContext(Path camelContext) {
+        this.camelContext = camelContext;
     }
     
-    public void setTargetAddress(URL targetAddress) {
-        this.targetAddress = targetAddress;
+    public void setJaxrsAddress(URL jaxrsAddress) {
+        this.jaxrsAddress = jaxrsAddress;
+    }
+
+    public void setJaxwsAddress(URL jaxwsAddress) {
+        this.jaxwsAddress = jaxwsAddress;
     }
 
     public void process(List<EndpointInfo> clazzDefs, JavaModel javaModel) throws IOException {
@@ -50,7 +55,7 @@ public class CamelContextGenerator {
         IllegalArgumentAssertion.assertNotNull(javaModel, "javaModel");
         IllegalArgumentAssertion.assertTrue(clazzDefs.size() == 1, "Multiple endpoints not supported");
         
-        IllegalStateAssertion.assertNotNull(targetContext, "Camel context file name not set");
+        IllegalStateAssertion.assertNotNull(camelContext, "Camel context file name not set");
         
         EndpointInfo epinfo = clazzDefs.get(0);
         
@@ -62,14 +67,22 @@ public class CamelContextGenerator {
         String tmplPath = "templates/jaxrs-camel-context.vm";
         try (InputStreamReader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(tmplPath))) {
 
+            jaxrsAddress = jaxrsAddress != null ? jaxrsAddress : new URL("http://localhost:8081/jaxrs");
+            String jaxrsHost = jaxrsAddress.getHost();
+            String jaxrsPort = "" + jaxrsAddress.getPort();
+            String jaxrsPath = jaxrsAddress.getPath();
+            
             VelocityContext context = new VelocityContext();
-            context.put("targetAddress", targetAddress != null ? targetAddress : "http://localhost:8080/somepath");
+            context.put("jaxwsAddress", jaxwsAddress != null ? jaxwsAddress : "http://localhost:8080/somepath");
+            context.put("jaxrsHost", jaxrsHost);
+            context.put("jaxrsPort", jaxrsPort);
+            context.put("jaxrsPath", jaxrsPath);
             context.put("serviceClass", epinfo.getFQN());
             context.put("allMethods", epinfo.getMethods());
             
             addTypeMapping(epinfo, javaModel);
 
-            File outfile = outpath.resolve(targetContext).toFile();
+            File outfile = outpath.resolve(camelContext).toFile();
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(outfile))) {
                 ve.evaluate(context, writer, tmplPath, reader);
             }

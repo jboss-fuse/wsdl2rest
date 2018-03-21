@@ -18,8 +18,9 @@ public class Wsdl2Rest {
     private final URL wsdlUrl;
     private final Path outpath;
 
-    private URL targetAddress;
-    private Path targetContext;
+    private URL jaxrsAddress;
+    private URL jaxwsAddress;
+    private Path camelContext;
     
     public Wsdl2Rest(URL wsdlUrl, Path outpath) {
         IllegalArgumentAssertion.assertNotNull(wsdlUrl, "wsdlUrl");
@@ -28,12 +29,16 @@ public class Wsdl2Rest {
         this.outpath = outpath;
     }
 
-    public void setTargetAddress(URL targetAddress) {
-        this.targetAddress = targetAddress;
+    public void setJaxrsAddress(URL jaxrsAddress) {
+        this.jaxrsAddress = jaxrsAddress;
     }
 
-    public void setTargetContext(Path targetContext) {
-        this.targetContext = targetContext;
+    public void setJaxwsAddress(URL jaxwsAddress) {
+        this.jaxwsAddress = jaxwsAddress;
+    }
+
+    public void setCamelContext(Path camelContext) {
+        this.camelContext = camelContext;
     }
 
     public List<EndpointInfo> process() throws Exception {
@@ -48,10 +53,11 @@ public class Wsdl2Rest {
         JavaTypeGenerator typeGen = new JavaTypeGenerator(outpath, wsdlUrl);
         JavaModel javaModel = typeGen.execute();
         
-        if (targetContext != null) {
+        if (camelContext != null) {
             CamelContextGenerator camelGen = new CamelContextGenerator(outpath);
-            camelGen.setTargetContext(targetContext);
-            camelGen.setTargetAddress(targetAddress);
+            camelGen.setCamelContext(camelContext);
+            camelGen.setJaxrsAddress(jaxrsAddress);
+            camelGen.setJaxwsAddress(jaxwsAddress);
             camelGen.process(clazzDefs, javaModel);
         }
         

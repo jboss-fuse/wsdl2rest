@@ -43,8 +43,8 @@ public class GenerateRpcLitTest {
         Path outpath = new File(OUTPUT_PATH).toPath();
         
         Wsdl2Rest tool = new Wsdl2Rest(wsdlFile.toURI().toURL(), outpath);
-        tool.setTargetContext(Paths.get("rpclit-camel-context.xml"));
-        tool.setTargetAddress(new URL("http://localhost:8080/rpclit"));
+        tool.setCamelContext(Paths.get("rpclit-camel-context.xml"));
+        tool.setJaxwsAddress(new URL("http://localhost:8080/rpclit"));
         
         List<EndpointInfo> clazzDefs = tool.process();
         Assert.assertEquals(1, clazzDefs.size());
