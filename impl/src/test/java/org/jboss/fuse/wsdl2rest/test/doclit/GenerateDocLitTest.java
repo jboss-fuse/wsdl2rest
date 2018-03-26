@@ -46,6 +46,7 @@ public class GenerateDocLitTest {
         
         Wsdl2Rest tool = new Wsdl2Rest(wsdlFile.toURI().toURL(), outpath);
         tool.setCamelContext(Paths.get("doclit-camel-context.xml"));
+        tool.setJaxrsAddress(new URL("http://localhost:8083/myjaxrs"));
         tool.setJaxwsAddress(new URL("http://localhost:8080/doclit"));
 
         List<EndpointInfo> clazzDefs = tool.process();

@@ -15,7 +15,7 @@
         <restConfiguration component="jetty" host="$jaxrsHost" port="$jaxrsPort" bindingMode="json">
         </restConfiguration>
 
-        <rest path="/$jaxrsPath">
+        <rest path="$jaxrsPath">
 #foreach( $method in $allMethods )
 
           <$method.httpMethod.toLowerCase() uri="/$method.path" 
