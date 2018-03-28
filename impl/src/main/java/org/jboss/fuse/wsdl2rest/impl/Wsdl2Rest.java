@@ -82,7 +82,7 @@ public class Wsdl2Rest {
         if (resultPath == null) {
             resultPath = Paths.get("java");
         }
-        return outpath.resolve(resultPath);
+        return resultPath.isAbsolute() ? resultPath : outpath.resolve(resultPath); 
     }
 
     private Path effectiveCamelContext() {
@@ -95,6 +95,6 @@ public class Wsdl2Rest {
         if (pathElements.size() < 2) {
             resultPath = Paths.get("camel", resultPath.toString());
         }
-        return outpath.resolve(resultPath);
+        return resultPath.isAbsolute() ? resultPath : outpath.resolve(resultPath); 
     }
 }
