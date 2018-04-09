@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+     Copyright 2005-2017 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jboss.fuse.wsdl2rest</groupId>
+        <artifactId>wsdl2rest-tests-blueprint</artifactId>
+        <version>0.7-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>wsdl2rest-tests-blueprint-doclit</artifactId>
+    <packaging>bundle</packaging>
+    
+    <description>Creates a web service Rest bridge using wsdl2rest in doclit mode</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.fuse.wsdl2rest</groupId>
+            <artifactId>wsdl2rest-impl</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-doclit</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <target>
+                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
+                                    <arg value="--wsdl=file:${basedir}/../../../jaxws/src/main/resources/doclit/Address.wsdl" />
+                                    <arg value="--jaxrs=http://localhost:8081/jaxrs" />
+                                    <arg value="--jaxws=http://localhost:8080/doclit/AddressService" />
+                                    <arg value="--blueprint-context=wsdl2rest-doclit-blueprint-context.xml" />
+                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
+                                </java>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sources>
+                                <source>${basedir}/target/generated-wsdl2rest/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Include-Resource>/OSGI-INF/blueprint/wsdl2rest-doclit-blueprint-context.xml=${basedir}/target/generated-wsdl2rest/camel/wsdl2rest-doclit-blueprint-context.xml</Include-Resource>
+                    </instructions>
+                </configuration>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

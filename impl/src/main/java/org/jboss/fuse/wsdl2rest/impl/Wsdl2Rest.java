@@ -11,8 +11,10 @@ import org.apache.cxf.tools.common.model.JavaModel;
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.ResourceMapper;
 import org.jboss.fuse.wsdl2rest.WSDLProcessor;
+import org.jboss.fuse.wsdl2rest.impl.codegen.BlueprintContextGenerator;
 import org.jboss.fuse.wsdl2rest.impl.codegen.CamelContextGenerator;
 import org.jboss.fuse.wsdl2rest.impl.codegen.JavaTypeGenerator;
+import org.jboss.fuse.wsdl2rest.impl.codegen.SpringContextGenerator;
 import org.jboss.fuse.wsdl2rest.util.IllegalArgumentAssertion;
 
 public class Wsdl2Rest {
@@ -22,6 +24,7 @@ public class Wsdl2Rest {
 
     private URL jaxrsAddress;
     private URL jaxwsAddress;
+    private Path blueprintContext;
     private Path camelContext;
     private Path javaOut;
     
@@ -38,6 +41,13 @@ public class Wsdl2Rest {
 
     public void setJaxwsAddress(URL jaxwsAddress) {
         this.jaxwsAddress = jaxwsAddress;
+    }
+
+    /**
+     * Defaults to [outpath]/camel/wsdl2rest-camel-context.xml
+     */
+    public void setBlueprintContext(Path blueprintContext) {
+        this.blueprintContext = blueprintContext;
     }
 
     /**
@@ -66,9 +76,17 @@ public class Wsdl2Rest {
         JavaTypeGenerator typeGen = new JavaTypeGenerator(effectiveJavaOut(), wsdlUrl);
         JavaModel javaModel = typeGen.execute();
         
+        if (blueprintContext != null) {
+            Path contextPath = effectiveCamelContext(blueprintContext, Paths.get("wsdl2rest-blueprint-context.xml"));
+            CamelContextGenerator camelGen = new BlueprintContextGenerator(contextPath);
+            camelGen.setJaxrsAddress(jaxrsAddress);
+            camelGen.setJaxwsAddress(jaxwsAddress);
+            camelGen.process(clazzDefs, javaModel);
+        }
+        
         if (camelContext != null) {
-            CamelContextGenerator camelGen = new CamelContextGenerator(outpath);
-            camelGen.setCamelContext(effectiveCamelContext());
+            Path contextPath = effectiveCamelContext(camelContext, Paths.get("wsdl2rest-camel-context.xml"));
+            CamelContextGenerator camelGen = new SpringContextGenerator(contextPath);
             camelGen.setJaxrsAddress(jaxrsAddress);
             camelGen.setJaxwsAddress(jaxwsAddress);
             camelGen.process(clazzDefs, javaModel);
@@ -85,10 +103,10 @@ public class Wsdl2Rest {
         return resultPath.isAbsolute() ? resultPath : outpath.resolve(resultPath); 
     }
 
-    private Path effectiveCamelContext() {
-        Path resultPath = camelContext;
+    private Path effectiveCamelContext(Path givenPath, Path defaultPath) {
+        Path resultPath = givenPath;
         if (resultPath == null) {
-            resultPath = Paths.get("wsdl2rest-camel-context.xml");
+            resultPath = defaultPath;
         }
         List<Path> pathElements = new ArrayList<>();
         resultPath.iterator().forEachRemaining(pathElements::add);

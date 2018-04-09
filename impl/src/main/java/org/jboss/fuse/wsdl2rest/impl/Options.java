@@ -35,7 +35,10 @@ final class Options {
     @Option(name = "--out", required = true, usage = "Output path for generated artefacts (required)")
     Path outpath;
 
-    @Option(name = "--camel-context", usage = "Path to the generated camel context file name")
+    @Option(name = "--blueprint-context", usage = "Path to the generated blueprint camel context file")
+    Path blueprintContext;
+
+    @Option(name = "--camel-context", usage = "Path to the generated spring camel context file")
     Path camelContext;
 
     @Option(name = "--jaxrs", usage = "Address of the generated jaxrs endpoint")
