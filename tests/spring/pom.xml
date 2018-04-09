@@ -1,0 +1,146 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jboss.fuse.wsdl2rest</groupId>
+        <artifactId>wsdl2rest-tests</artifactId>
+        <version>0.7-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>wsdl2rest-tests-spring</artifactId>
+
+    <dependencies>
+    
+        <!-- Test -->
+        <dependency>
+            <groupId>org.jboss.fuse.wsdl2rest</groupId>
+            <artifactId>wsdl2rest-impl</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-cxf</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jetty</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jackson</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jaxb</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-extension-providers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-doclit</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <target>
+                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
+                                    <arg value="--wsdl=file:${basedir}/../../jaxws/src/main/resources/doclit/Address.wsdl" />
+                                    <arg value="--jaxrs=http://localhost:8081/jaxrs" />
+                                    <arg value="--jaxws=http://localhost:8080/doclit/AddressService" />
+                                    <arg value="--camel-context=doclit-camel-context.xml" />
+                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
+                                </java>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-rpclit</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <target>
+                                <java classname="org.jboss.fuse.wsdl2rest.impl.Main" classpathref="maven.test.classpath" failonerror="true">
+                                    <arg value="--wsdl=file:${basedir}/../../jaxws/src/main/resources/rpclit/Address.wsdl" />
+                                    <arg value="--jaxrs=http://localhost:8081/jaxrs" />
+                                    <arg value="--jaxws=http://localhost:8080/rpclit/AddressService" />
+                                    <arg value="--camel-context=rpclit-camel-context.xml" />
+                                    <arg value="--out=${basedir}/target/generated-wsdl2rest" />
+                                </java>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-test-source</id>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>
+                                <source>${basedir}/target/generated-wsdl2rest</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-test-resource</id>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <resources>
+                                <resource>                                     
+                                    <directory>${basedir}/target/generated-wsdl2rest</directory>
+                                </resource>                                
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

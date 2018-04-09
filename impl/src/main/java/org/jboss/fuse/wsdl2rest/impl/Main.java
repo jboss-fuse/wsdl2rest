@@ -53,6 +53,7 @@ public class Main {
 
         try {
             Wsdl2Rest tool = new Wsdl2Rest(options.wsdlUrl, options.outpath);
+            tool.setBlueprintContext(options.blueprintContext);
             tool.setCamelContext(options.camelContext);
             tool.setJaxrsAddress(options.jaxrsAddress);
             tool.setJaxwsAddress(options.jaxwsAddress);

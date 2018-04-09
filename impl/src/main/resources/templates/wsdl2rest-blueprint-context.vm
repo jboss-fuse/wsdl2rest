@@ -1,0 +1,92 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
+           xsi:schemaLocation="
+             http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+             http://camel.apache.org/schema/blueprint/cxf http://camel.apache.org/schema/blueprint/cxf/camel-cxf.xsd
+             http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+    <!-- Setup camel servlet with OSGi HttpService -->
+    <reference id="httpService" interface="org.osgi.service.http.HttpService"/>
+
+    <bean class="org.apache.camel.component.servlet.osgi.OsgiServletRegisterer"
+       init-method="register"
+       destroy-method="unregister">
+      <property name="alias" value="/wsdl2rest"/>
+      <property name="httpService" ref="httpService"/>
+      <property name="servlet" ref="camelServlet"/>
+    </bean>
+
+    <bean id="camelServlet" class="org.apache.camel.component.servlet.CamelHttpTransportServlet"/>
+    
+    <camelContext id="cxfrs" xmlns="http://camel.apache.org/schema/blueprint">
+
+        <dataFormats>
+            <xmljson id="xmljson"/>
+        </dataFormats>
+        
+        <restConfiguration component="servlet" host="$jaxrsHost" port="$jaxrsPort" bindingMode="json">
+        </restConfiguration>
+
+        <rest path="$jaxrsPath">
+#foreach( $method in $allMethods )
+
+          <$method.httpMethod.toLowerCase() uri="/$method.path" 
+#if ( $method.params.size() == 1 )
+            type="$method.wrappedParams[0].paramType"
+#end    
+            outType="$method.wrappedReturnType" 
+#if ( $method.httpMethod.toLowerCase() == 'post' || $method.httpMethod.toLowerCase() == 'put' ) 
+            consumes="application/json" 
+#end
+            >
+            <to uri="direct:$method.methodName"/>
+          </$method.httpMethod.toLowerCase()>
+#end
+        </rest>
+
+#foreach( $method in $allMethods )
+#if ( $method.params.size() == 1 )
+#set ( $paramType = $method.wrappedParams[0].paramType )
+#else
+#set ( $paramType = "" )
+#end
+        <route id="$method.methodName">
+            <from uri="direct:$method.methodName" />
+            <log loggingLevel="INFO" message="$method.methodName"/>
+#if ( $paramType.length() > 0 && $paramType.startsWith('java.lang') )
+            <setBody>
+                <simple>${header.arg0}</simple>
+            </setBody>
+            <unmarshal>
+                <json library="Jackson" unmarshalTypeName="$paramType"/>
+            </unmarshal>
+#end    
+#if ( $method.params.size() == 0 )
+            <setBody>
+                <simple>null</simple>
+            </setBody>
+#end    
+            <to uri="cxf://$jaxwsAddress?serviceClass=$serviceClass&amp;defaultOperationName=$method.methodName"/>
+#set ( $returnType = $method.wrappedReturnType )
+#if ( $returnType.startsWith('java.lang') && !$returnType.endsWith('[]'))
+            <setHeader headerName="Content-Type">
+               <constant>text/plain</constant>
+            </setHeader>
+            <setBody>
+                <simple>${body}</simple>
+            </setBody>
+#else
+            <setHeader headerName="Content-Type">
+               <constant>application/json</constant>
+            </setHeader>
+            <setBody>
+                <simple>${body[0]}</simple>
+            </setBody>
+#end    
+        </route>
+        
+#end
+    </camelContext>
+
+</blueprint>

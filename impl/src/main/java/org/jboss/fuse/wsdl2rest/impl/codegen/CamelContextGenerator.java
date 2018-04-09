@@ -26,19 +26,16 @@ import org.jboss.fuse.wsdl2rest.impl.service.ParamImpl;
 import org.jboss.fuse.wsdl2rest.util.IllegalArgumentAssertion;
 import org.jboss.fuse.wsdl2rest.util.IllegalStateAssertion;
 
-public class CamelContextGenerator {
+public abstract class CamelContextGenerator {
 
-    private Path camelContext;
+    private Path contextPath;
     private URL jaxrsAddress;
     private URL jaxwsAddress;
 
-    public CamelContextGenerator(Path outpath) {
+    CamelContextGenerator(Path contextPath) {
+        this.contextPath = contextPath;
     }
 
-    public void setCamelContext(Path camelContext) {
-        this.camelContext = camelContext;
-    }
-    
     public void setJaxrsAddress(URL jaxrsAddress) {
         this.jaxrsAddress = jaxrsAddress;
     }
@@ -50,7 +47,7 @@ public class CamelContextGenerator {
     public void process(List<EndpointInfo> clazzDefs, JavaModel javaModel) throws IOException {
         IllegalArgumentAssertion.assertNotNull(clazzDefs, "clazzDefs");
         IllegalArgumentAssertion.assertNotNull(javaModel, "javaModel");
-        IllegalStateAssertion.assertNotNull(camelContext, "Camel context file name not set");
+        IllegalStateAssertion.assertNotNull(contextPath, "Camel context file name not set");
         IllegalArgumentAssertion.assertTrue(clazzDefs.size() == 1, "Multiple endpoints not supported");
         
         EndpointInfo epinfo = clazzDefs.get(0);
@@ -60,7 +57,7 @@ public class CamelContextGenerator {
         ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         ve.init();
 
-        String tmplPath = "templates/jaxrs-camel-context.vm";
+        String tmplPath = getTemplatePath();
         try (InputStreamReader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(tmplPath))) {
 
             jaxrsAddress = jaxrsAddress != null ? jaxrsAddress : new URL("http://localhost:8081/jaxrs");
@@ -78,7 +75,7 @@ public class CamelContextGenerator {
             
             addTypeMapping(epinfo, javaModel);
 
-            File outfile = camelContext.toFile();
+            File outfile = contextPath.toFile();
             outfile.getParentFile().mkdirs();
             
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(outfile))) {
@@ -86,6 +83,8 @@ public class CamelContextGenerator {
             }
         }
     }
+
+    protected abstract String getTemplatePath();
     
     private void addTypeMapping(EndpointInfo epinfo, JavaModel javaModel) {
         IllegalArgumentAssertion.assertTrue(javaModel.getInterfaces().size() == 1, "Multiple interfaces not supported");

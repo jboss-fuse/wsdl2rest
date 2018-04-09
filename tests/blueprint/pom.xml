@@ -22,16 +22,16 @@
 
     <parent>
         <groupId>org.jboss.fuse.wsdl2rest</groupId>
-        <artifactId>wsdl2rest</artifactId>
+        <artifactId>wsdl2rest-tests</artifactId>
         <version>0.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>wsdl2rest-tests</artifactId>
+    <artifactId>wsdl2rest-tests-blueprint</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring</module>
-        <module>blueprint</module>
+        <module>doclit</module>
+        <module>rpclit</module>
     </modules>
     
 </project>
