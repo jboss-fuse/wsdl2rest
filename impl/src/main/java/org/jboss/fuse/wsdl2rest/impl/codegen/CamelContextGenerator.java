@@ -62,7 +62,7 @@ public abstract class CamelContextGenerator {
 
             jaxrsAddress = jaxrsAddress != null ? jaxrsAddress : new URL("http://localhost:8081/jaxrs");
             String jaxrsHost = jaxrsAddress.getHost();
-            String jaxrsPort = "" + jaxrsAddress.getPort();
+            String jaxrsPort = Integer.toString(jaxrsAddress.getPort());
             String jaxrsPath = jaxrsAddress.getPath();
             
             VelocityContext context = new VelocityContext();
