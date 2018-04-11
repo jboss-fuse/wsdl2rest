@@ -105,8 +105,8 @@ public abstract class CamelContextGenerator {
 
     private String normalize(String typeName) {
         if (typeName.contains("List<") && typeName.endsWith(">")) {
-            typeName = typeName.substring(typeName.indexOf("<") + 1);
-            typeName = typeName.substring(0, typeName.indexOf(">"));
+            typeName = typeName.substring(typeName.indexOf('<') + 1);
+            typeName = typeName.substring(0, typeName.indexOf('>'));
             typeName = typeName + "[]";
         }
         return typeName;
