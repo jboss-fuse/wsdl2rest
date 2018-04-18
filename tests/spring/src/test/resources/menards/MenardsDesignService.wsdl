@@ -1,0 +1,987 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://design.service.menards.com" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="DesignService" targetNamespace="http://design.service.menards.com">
+    <wsdl:documentation>DesignService - Version 11.1.0 – Add getAlive operation.  (MCR 223174)</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://design.service.menards.com" elementFormDefault="unqualified" targetNamespace="http://design.service.menards.com" version="1.0">
+            <xs:element name="deletePreConfiguredDesignAttribute" type="tns:deletePreConfiguredDesignAttribute" />
+            <xs:element name="deletePreConfiguredDesignAttributeResponse" type="tns:deletePreConfiguredDesignAttributeResponse" />
+            <xs:element name="designAssembly" type="tns:designAssembly" />
+            <xs:element name="designAttribute" type="tns:designAttribute" />
+            <xs:element name="designAttributeList" type="tns:designAttributeList" />
+            <xs:element name="designBlob" type="tns:designBlob" />
+            <xs:element name="designDeleted" type="tns:designDeleted" />
+            <xs:element name="designId" type="tns:designId" />
+            <xs:element name="designList" type="tns:designList" />
+            <xs:element name="getAlive" type="tns:getAlive" />
+            <xs:element name="getAliveResponse" type="tns:getAliveResponse" />
+            <xs:element name="getDesignBlobByDesignId" type="tns:getDesignBlobByDesignId" />
+            <xs:element name="getDesignBlobByDesignIdResponse" type="tns:getDesignBlobByDesignIdResponse" />
+            <xs:element name="getDesignByDesignId" type="tns:getDesignByDesignId" />
+            <xs:element name="getDesignByDesignIdResponse" type="tns:getDesignByDesignIdResponse" />
+            <xs:element name="getDesignByGuestAccountId" type="tns:getDesignByGuestAccountId" />
+            <xs:element name="getDesignByGuestAccountIdResponse" type="tns:getDesignByGuestAccountIdResponse" />
+            <xs:element name="getDesignByProgramDesignId" type="tns:getDesignByProgramDesignId" />
+            <xs:element name="getDesignByProgramDesignIdResponse" type="tns:getDesignByProgramDesignIdResponse" />
+            <xs:element name="getDesignByProgramEstimate" type="tns:getDesignByProgramEstimate" />
+            <xs:element name="getDesignByProgramEstimateResponse" type="tns:getDesignByProgramEstimateResponse" />
+            <xs:element name="getDesignByProgramEstimateStore" type="tns:getDesignByProgramEstimateStore" />
+            <xs:element name="getDesignByProgramEstimateStoreResponse" type="tns:getDesignByProgramEstimateStoreResponse" />
+            <xs:element name="getDesignByProgramGuestAccountId" type="tns:getDesignByProgramGuestAccountId" />
+            <xs:element name="getDesignByProgramGuestAccountIdResponse" type="tns:getDesignByProgramGuestAccountIdResponse" />
+            <xs:element name="getDesignByProgramSoc" type="tns:getDesignByProgramSoc" />
+            <xs:element name="getDesignByProgramSocResponse" type="tns:getDesignByProgramSocResponse" />
+            <xs:element name="getDesignByProgramSocStore" type="tns:getDesignByProgramSocStore" />
+            <xs:element name="getDesignByProgramSocStoreResponse" type="tns:getDesignByProgramSocStoreResponse" />
+            <xs:element name="getNextDesignId" type="tns:getNextDesignId" />
+            <xs:element name="getNextDesignIdResponse" type="tns:getNextDesignIdResponse" />
+            <xs:element name="getPreConfiguredDesignByProgramAttribute" type="tns:getPreConfiguredDesignByProgramAttribute" />
+            <xs:element name="getPreConfiguredDesignByProgramAttributeActive" type="tns:getPreConfiguredDesignByProgramAttributeActive" />
+            <xs:element name="getPreConfiguredDesignByProgramAttributeActiveResponse" type="tns:getPreConfiguredDesignByProgramAttributeActiveResponse" />
+            <xs:element name="getPreConfiguredDesignByProgramAttributeDeleted" type="tns:getPreConfiguredDesignByProgramAttributeDeleted" />
+            <xs:element name="getPreConfiguredDesignByProgramAttributeDeletedResponse" type="tns:getPreConfiguredDesignByProgramAttributeDeletedResponse" />
+            <xs:element name="getPreConfiguredDesignByProgramAttributeResponse" type="tns:getPreConfiguredDesignByProgramAttributeResponse" />
+            <xs:element name="getPreConfiguredDesignByProgramDesignId" type="tns:getPreConfiguredDesignByProgramDesignId" />
+            <xs:element name="getPreConfiguredDesignByProgramDesignIdResponse" type="tns:getPreConfiguredDesignByProgramDesignIdResponse" />
+            <xs:element name="guest" type="tns:guest" />
+            <xs:element name="preconfiguredDesign" type="tns:preconfiguredDesign" />
+            <xs:element name="preconfiguredDesignList" type="tns:preconfiguredDesignList" />
+            <xs:element name="setDesign" type="tns:setDesign" />
+            <xs:element name="setDesignDeletedFlag" type="tns:setDesignDeletedFlag" />
+            <xs:element name="setDesignDeletedFlagResponse" type="tns:setDesignDeletedFlagResponse" />
+            <xs:element name="setDesignResponse" type="tns:setDesignResponse" />
+            <xs:element name="setFollowUpClosedFlag" type="tns:setFollowUpClosedFlag" />
+            <xs:element name="setFollowUpClosedFlagResponse" type="tns:setFollowUpClosedFlagResponse" />
+            <xs:element name="setGuestAccountDesignAssociation" type="tns:setGuestAccountDesignAssociation" />
+            <xs:element name="setGuestAccountDesignAssociationResponse" type="tns:setGuestAccountDesignAssociationResponse" />
+            <xs:element name="setPreConfiguredDesign" type="tns:setPreConfiguredDesign" />
+            <xs:element name="setPreConfiguredDesignActiveFlag" type="tns:setPreConfiguredDesignActiveFlag" />
+            <xs:element name="setPreConfiguredDesignActiveFlagResponse" type="tns:setPreConfiguredDesignActiveFlagResponse" />
+            <xs:element name="setPreConfiguredDesignDeletedFlag" type="tns:setPreConfiguredDesignDeletedFlag" />
+            <xs:element name="setPreConfiguredDesignDeletedFlagResponse" type="tns:setPreConfiguredDesignDeletedFlagResponse" />
+            <xs:element name="setPreConfiguredDesignResponse" type="tns:setPreConfiguredDesignResponse" />
+            <xs:complexType name="getPreConfiguredDesignByProgramDesignId">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element minOccurs="0" name="designId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPreConfiguredDesignByProgramDesignIdResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="preconfiguredDesignList" type="tns:preconfiguredDesignList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="preconfiguredDesignList">
+                <xs:sequence>
+                    <xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="preconfiguredDesign" nillable="true" type="tns:preconfiguredDesign" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="preconfiguredDesign">
+                <xs:sequence>
+                    <xs:element form="qualified" name="designId" type="xs:long" />
+                    <xs:element form="qualified" name="programId" type="xs:int" />
+                    <xs:element form="qualified" name="programVersion" type="xs:string" />
+                    <xs:element form="qualified" name="teamMemberName" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="createdTimestamp" type="xs:dateTime" />
+                    <xs:element form="qualified" minOccurs="0" name="modifiedTimestamp" type="xs:dateTime" />
+                    <xs:element form="qualified" minOccurs="0" name="accessedTimestamp" type="xs:dateTime" />
+                    <xs:element form="qualified" name="designActive" type="xs:boolean" />
+                    <xs:element form="qualified" name="designDeleted" type="xs:boolean" />
+                    <xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="preconfiguredDesignAttribute" nillable="true" type="tns:preconfiguredDesignAttribute" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="preconfiguredDesignAttribute">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="designId" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="attributeId" type="xs:long" />
+                    <xs:element form="qualified" name="attributeName" type="xs:string" />
+                    <xs:element form="qualified" name="attributeValue" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignBlobByDesignId">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="designId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignBlobByDesignIdResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designBlob" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designBlob">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="designId" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="designBlob" type="xs:base64Binary" />
+                    <xs:element form="qualified" minOccurs="0" name="blobMimeType" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getAlive">
+                <xs:sequence />
+            </xs:complexType>
+            <xs:complexType name="getAliveResponse">
+                <xs:sequence>
+                    <xs:element name="return" type="xs:boolean" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setDesign">
+                <xs:sequence>
+                    <xs:element name="sendToEstimateFollowUpSystem" type="xs:boolean" />
+                    <xs:element name="designAssembly" type="tns:designAssembly" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designAssembly">
+                <xs:sequence>
+                    <xs:element minOccurs="0" ref="tns:guest" />
+                    <xs:element form="qualified" name="design" type="tns:design" />
+                    <xs:element form="qualified" minOccurs="0" name="attachment" type="tns:attachment" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="guest">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="guestAccountId" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="guestAccountAddressId" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="businessName" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="firstName" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="lastName" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="middleName" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="nameSuffix" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="primaryPhone" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="secondaryPhone" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="email" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="addressLine1" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="addressLine2" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="cityName" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="stateCode" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="postalCode" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="design">
+                <xs:sequence>
+                    <xs:element form="qualified" name="designId" type="xs:long" />
+                    <xs:element form="qualified" name="programId" type="xs:int" />
+                    <xs:element form="qualified" name="programVersion" type="xs:string" />
+                    <xs:element form="qualified" name="storeNumber" type="xs:int" />
+                    <xs:element form="qualified" minOccurs="0" name="teamMemberNumber" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="specialNotes" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="estimateNumber" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="estimateTypeId" type="xs:int" />
+                    <xs:element form="qualified" minOccurs="0" name="estimatePrice" type="xs:double" />
+                    <xs:element form="qualified" minOccurs="0" name="jobDescription" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="requestedTimestamp" type="xs:dateTime" />
+                    <xs:element form="qualified" minOccurs="0" name="createdTimestamp" type="xs:dateTime" />
+                    <xs:element form="qualified" minOccurs="0" name="accessedTimestamp" type="xs:dateTime" />
+                    <xs:element form="qualified" minOccurs="0" name="modifiedTimestamp" type="xs:dateTime" />
+                    <xs:element form="qualified" minOccurs="0" name="designDeleted" type="xs:boolean" />
+                    <xs:element form="qualified" minOccurs="0" name="followUpId" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="followUpClosed" type="xs:boolean" />
+                    <xs:element form="qualified" minOccurs="0" name="midwestDesigner" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="midwestTrackingNumber" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="midwestDescription" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="guestAccountId" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="guestAccountAddressId" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="anonymousDesign" type="xs:boolean" />
+                    <xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="specialOrder" nillable="true" type="tns:specialOrder" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="specialOrder">
+                <xs:sequence>
+                    <xs:element form="qualified" name="socNumber" type="xs:long" />
+                    <xs:element form="qualified" name="storeNumber" type="xs:int" />
+                    <xs:element form="qualified" minOccurs="0" name="designId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="attachment">
+                <xs:sequence>
+                    <xs:element form="qualified" name="blobMimeType" type="xs:string" />
+                    <xs:element form="qualified" name="designBlob" type="xs:base64Binary" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setDesignResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designStatus">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="operationStatus" type="tns:operationStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="operationStatus">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="successful" type="xs:boolean" />
+                    <xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="operationStatusFault" type="tns:operationStatusFault" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="operationStatusFault">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="faultDescription" type="xs:string" />
+                    <xs:element form="qualified" minOccurs="0" name="faultId" type="xs:int" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setPreConfiguredDesign">
+                <xs:sequence>
+                    <xs:element name="preConfiguredDesignAssembly" type="tns:preConfiguredDesignAssembly" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="preConfiguredDesignAssembly">
+                <xs:sequence>
+                    <xs:element form="qualified" name="preConfiguredDesign" type="tns:preconfiguredDesign" />
+                    <xs:element form="qualified" minOccurs="0" name="attachment" type="tns:attachment" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setPreConfiguredDesignResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setPreConfiguredDesignActiveFlag">
+                <xs:sequence>
+                    <xs:element name="designActiveAssembly" type="tns:designActiveAssembly" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designActiveAssembly">
+                <xs:sequence>
+                    <xs:element form="qualified" name="designActive" type="tns:designActive" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designActive">
+                <xs:sequence>
+                    <xs:element form="qualified" name="designId" type="xs:long" />
+                    <xs:element form="qualified" name="activeFlag" type="xs:boolean" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setPreConfiguredDesignActiveFlagResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designActiveStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designActiveStatus">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="operationStatus" type="tns:operationStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setPreConfiguredDesignDeletedFlag">
+                <xs:sequence>
+                    <xs:element name="designDeletedAssembly" type="tns:designDeletedAssembly" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designDeletedAssembly">
+                <xs:sequence>
+                    <xs:element ref="tns:designDeleted" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designDeleted">
+                <xs:sequence>
+                    <xs:element form="qualified" name="designId" type="xs:long" />
+                    <xs:element form="qualified" name="deleteFlag" type="xs:boolean" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setPreConfiguredDesignDeletedFlagResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designDeletedStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designDeletedStatus">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="operationStatus" type="tns:operationStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByGuestAccountId">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="guestAccountId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByGuestAccountIdResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designList">
+                <xs:sequence>
+                    <xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="design" nillable="true" type="tns:design" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramSocStore">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element minOccurs="0" name="socNumber" type="xs:long" />
+                    <xs:element minOccurs="0" name="storeNumber" type="xs:int" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramSocStoreResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramEstimateStore">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element minOccurs="0" name="estimateNumber" type="xs:long" />
+                    <xs:element minOccurs="0" name="storeNumber" type="xs:int" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramEstimateStoreResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPreConfiguredDesignByProgramAttributeActive">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element name="designActive" type="xs:boolean" />
+                    <xs:element minOccurs="0" name="designAttributeList" type="tns:designAttributeList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designAttributeList">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" ref="tns:designAttribute" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designAttribute">
+                <xs:sequence>
+                    <xs:element form="qualified" name="attributeName" type="xs:string" />
+                    <xs:element form="qualified" name="attributeValue" type="xs:string" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPreConfiguredDesignByProgramAttributeActiveResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="preconfiguredDesignList" type="tns:preconfiguredDesignList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramSoc">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element minOccurs="0" name="socNumber" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramSocResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deletePreConfiguredDesignAttribute">
+                <xs:sequence>
+                    <xs:element name="deleteAttributeList" type="tns:deleteAttributeList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deleteAttributeList">
+                <xs:sequence>
+                    <xs:element form="qualified" maxOccurs="unbounded" name="deleteAttribute" type="tns:deleteAttribute" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deleteAttribute">
+                <xs:sequence>
+                    <xs:element form="qualified" name="designId" type="xs:long" />
+                    <xs:element form="qualified" name="attributeId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deletePreConfiguredDesignAttributeResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:deleteAttributeStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deleteAttributeStatus">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="operationStatus" type="tns:operationStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setDesignDeletedFlag">
+                <xs:sequence>
+                    <xs:element name="designDeletedAssembly" type="tns:designDeletedAssembly" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setDesignDeletedFlagResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designDeletedStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByDesignId">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="designId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByDesignIdResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setGuestAccountDesignAssociation">
+                <xs:sequence>
+                    <xs:element name="accountDesignAssociation" type="tns:accountDesignAssociation" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="accountDesignAssociation">
+                <xs:sequence>
+                    <xs:element form="qualified" name="accountDesign" type="tns:accountDesign" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="accountDesign">
+                <xs:sequence>
+                    <xs:element form="qualified" name="designId" type="xs:long" />
+                    <xs:element form="qualified" name="guestAccountId" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="guestAccountAddressId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setGuestAccountDesignAssociationResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:accountDesignAssociationStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="accountDesignAssociationStatus">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="operationStatus" type="tns:operationStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPreConfiguredDesignByProgramAttributeDeleted">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element name="designDeleted" type="xs:boolean" />
+                    <xs:element minOccurs="0" name="designAttributeList" type="tns:designAttributeList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPreConfiguredDesignByProgramAttributeDeletedResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="preconfiguredDesignList" type="tns:preconfiguredDesignList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramEstimate">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element minOccurs="0" name="estimateNumber" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramEstimateResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramDesignId">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element minOccurs="0" name="designId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramDesignIdResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramGuestAccountId">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element minOccurs="0" name="guestAccountId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getDesignByProgramGuestAccountIdResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="designList" type="tns:designList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getNextDesignId">
+                <xs:sequence>
+                    <xs:element name="storeNumber" type="xs:int" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getNextDesignIdResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:designId" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="designId">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="recordId" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="sourceId" type="xs:int" />
+                    <xs:element form="qualified" minOccurs="0" name="sequenceNumber" type="xs:long" />
+                    <xs:element form="qualified" minOccurs="0" name="designId" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setFollowUpClosedFlag">
+                <xs:sequence>
+                    <xs:element name="followUpClosedAssembly" type="tns:followUpClosedAssembly" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="followUpClosedAssembly">
+                <xs:sequence>
+                    <xs:element form="qualified" name="followUpClosed" type="tns:followUpClosed" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="followUpClosed">
+                <xs:sequence>
+                    <xs:element form="qualified" name="followUpId" type="xs:long" />
+                    <xs:element form="qualified" name="storeNumber" type="xs:int" />
+                    <xs:element form="qualified" name="estimateNumber" type="xs:string" />
+                    <xs:element form="qualified" name="estimateClosedDateTime" type="xs:dateTime" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setFollowUpClosedFlagResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:followUpClosedStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="followUpClosedStatus">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="operationStatus" type="tns:operationStatus" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPreConfiguredDesignByProgramAttribute">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="programId" type="xs:int" />
+                    <xs:element name="designActive" type="xs:boolean" />
+                    <xs:element name="designDeleted" type="xs:boolean" />
+                    <xs:element minOccurs="0" name="designAttributeList" type="tns:designAttributeList" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPreConfiguredDesignByProgramAttributeResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="preconfiguredDesignList" type="tns:preconfiguredDesignList" />
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getPreConfiguredDesignByProgramDesignIdResponse">
+        <wsdl:part element="tns:getPreConfiguredDesignByProgramDesignIdResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignBlobByDesignId">
+        <wsdl:part element="tns:getDesignBlobByDesignId" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setPreConfiguredDesign">
+        <wsdl:part element="tns:setPreConfiguredDesign" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setGuestAccountDesignAssociationResponse">
+        <wsdl:part element="tns:setGuestAccountDesignAssociationResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAliveResponse">
+        <wsdl:part element="tns:getAliveResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramEstimateStoreResponse">
+        <wsdl:part element="tns:getDesignByProgramEstimateStoreResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setPreConfiguredDesignDeletedFlag">
+        <wsdl:part element="tns:setPreConfiguredDesignDeletedFlag" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByGuestAccountIdResponse">
+        <wsdl:part element="tns:getDesignByGuestAccountIdResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPreConfiguredDesignByProgramAttributeActiveResponse">
+        <wsdl:part element="tns:getPreConfiguredDesignByProgramAttributeActiveResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setFollowUpClosedFlagResponse">
+        <wsdl:part element="tns:setFollowUpClosedFlagResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deletePreConfiguredDesignAttribute">
+        <wsdl:part element="tns:deletePreConfiguredDesignAttribute" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setDesignDeletedFlag">
+        <wsdl:part element="tns:setDesignDeletedFlag" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setDesignDeletedFlagResponse">
+        <wsdl:part element="tns:setDesignDeletedFlagResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramSocResponse">
+        <wsdl:part element="tns:getDesignByProgramSocResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPreConfiguredDesignByProgramAttributeDeleted">
+        <wsdl:part element="tns:getPreConfiguredDesignByProgramAttributeDeleted" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramEstimate">
+        <wsdl:part element="tns:getDesignByProgramEstimate" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByDesignIdResponse">
+        <wsdl:part element="tns:getDesignByDesignIdResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramDesignId">
+        <wsdl:part element="tns:getDesignByProgramDesignId" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramGuestAccountId">
+        <wsdl:part element="tns:getDesignByProgramGuestAccountId" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getNextDesignId">
+        <wsdl:part element="tns:getNextDesignId" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPreConfiguredDesignByProgramAttribute">
+        <wsdl:part element="tns:getPreConfiguredDesignByProgramAttribute" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPreConfiguredDesignByProgramDesignId">
+        <wsdl:part element="tns:getPreConfiguredDesignByProgramDesignId" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAlive">
+        <wsdl:part element="tns:getAlive" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setDesign">
+        <wsdl:part element="tns:setDesign" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPreConfiguredDesignByProgramAttributeResponse">
+        <wsdl:part element="tns:getPreConfiguredDesignByProgramAttributeResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getNextDesignIdResponse">
+        <wsdl:part element="tns:getNextDesignIdResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignBlobByDesignIdResponse">
+        <wsdl:part element="tns:getDesignBlobByDesignIdResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setPreConfiguredDesignActiveFlag">
+        <wsdl:part element="tns:setPreConfiguredDesignActiveFlag" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setPreConfiguredDesignActiveFlagResponse">
+        <wsdl:part element="tns:setPreConfiguredDesignActiveFlagResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramDesignIdResponse">
+        <wsdl:part element="tns:getDesignByProgramDesignIdResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setPreConfiguredDesignResponse">
+        <wsdl:part element="tns:setPreConfiguredDesignResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByGuestAccountId">
+        <wsdl:part element="tns:getDesignByGuestAccountId" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setPreConfiguredDesignDeletedFlagResponse">
+        <wsdl:part element="tns:setPreConfiguredDesignDeletedFlagResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramSocStore">
+        <wsdl:part element="tns:getDesignByProgramSocStore" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramEstimateStore">
+        <wsdl:part element="tns:getDesignByProgramEstimateStore" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPreConfiguredDesignByProgramAttributeActive">
+        <wsdl:part element="tns:getPreConfiguredDesignByProgramAttributeActive" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramSoc">
+        <wsdl:part element="tns:getDesignByProgramSoc" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPreConfiguredDesignByProgramAttributeDeletedResponse">
+        <wsdl:part element="tns:getPreConfiguredDesignByProgramAttributeDeletedResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramEstimateResponse">
+        <wsdl:part element="tns:getDesignByProgramEstimateResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setDesignResponse">
+        <wsdl:part element="tns:setDesignResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByDesignId">
+        <wsdl:part element="tns:getDesignByDesignId" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramGuestAccountIdResponse">
+        <wsdl:part element="tns:getDesignByProgramGuestAccountIdResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setGuestAccountDesignAssociation">
+        <wsdl:part element="tns:setGuestAccountDesignAssociation" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deletePreConfiguredDesignAttributeResponse">
+        <wsdl:part element="tns:deletePreConfiguredDesignAttributeResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setFollowUpClosedFlag">
+        <wsdl:part element="tns:setFollowUpClosedFlag" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getDesignByProgramSocStoreResponse">
+        <wsdl:part element="tns:getDesignByProgramSocStoreResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="DesignService">
+        <wsdl:operation name="getPreConfiguredDesignByProgramDesignId">
+            <wsdl:input message="tns:getPreConfiguredDesignByProgramDesignId" name="getPreConfiguredDesignByProgramDesignId"></wsdl:input>
+            <wsdl:output message="tns:getPreConfiguredDesignByProgramDesignIdResponse" name="getPreConfiguredDesignByProgramDesignIdResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignBlobByDesignId">
+            <wsdl:input message="tns:getDesignBlobByDesignId" name="getDesignBlobByDesignId"></wsdl:input>
+            <wsdl:output message="tns:getDesignBlobByDesignIdResponse" name="getDesignBlobByDesignIdResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getAlive">
+            <wsdl:input message="tns:getAlive" name="getAlive"></wsdl:input>
+            <wsdl:output message="tns:getAliveResponse" name="getAliveResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setDesign">
+            <wsdl:input message="tns:setDesign" name="setDesign"></wsdl:input>
+            <wsdl:output message="tns:setDesignResponse" name="setDesignResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setPreConfiguredDesign">
+            <wsdl:input message="tns:setPreConfiguredDesign" name="setPreConfiguredDesign"></wsdl:input>
+            <wsdl:output message="tns:setPreConfiguredDesignResponse" name="setPreConfiguredDesignResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setPreConfiguredDesignActiveFlag">
+            <wsdl:input message="tns:setPreConfiguredDesignActiveFlag" name="setPreConfiguredDesignActiveFlag"></wsdl:input>
+            <wsdl:output message="tns:setPreConfiguredDesignActiveFlagResponse" name="setPreConfiguredDesignActiveFlagResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setPreConfiguredDesignDeletedFlag">
+            <wsdl:input message="tns:setPreConfiguredDesignDeletedFlag" name="setPreConfiguredDesignDeletedFlag"></wsdl:input>
+            <wsdl:output message="tns:setPreConfiguredDesignDeletedFlagResponse" name="setPreConfiguredDesignDeletedFlagResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByGuestAccountId">
+            <wsdl:input message="tns:getDesignByGuestAccountId" name="getDesignByGuestAccountId"></wsdl:input>
+            <wsdl:output message="tns:getDesignByGuestAccountIdResponse" name="getDesignByGuestAccountIdResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramSocStore">
+            <wsdl:input message="tns:getDesignByProgramSocStore" name="getDesignByProgramSocStore"></wsdl:input>
+            <wsdl:output message="tns:getDesignByProgramSocStoreResponse" name="getDesignByProgramSocStoreResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramEstimateStore">
+            <wsdl:input message="tns:getDesignByProgramEstimateStore" name="getDesignByProgramEstimateStore"></wsdl:input>
+            <wsdl:output message="tns:getDesignByProgramEstimateStoreResponse" name="getDesignByProgramEstimateStoreResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPreConfiguredDesignByProgramAttributeActive">
+            <wsdl:input message="tns:getPreConfiguredDesignByProgramAttributeActive" name="getPreConfiguredDesignByProgramAttributeActive"></wsdl:input>
+            <wsdl:output message="tns:getPreConfiguredDesignByProgramAttributeActiveResponse" name="getPreConfiguredDesignByProgramAttributeActiveResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramSoc">
+            <wsdl:input message="tns:getDesignByProgramSoc" name="getDesignByProgramSoc"></wsdl:input>
+            <wsdl:output message="tns:getDesignByProgramSocResponse" name="getDesignByProgramSocResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deletePreConfiguredDesignAttribute">
+            <wsdl:input message="tns:deletePreConfiguredDesignAttribute" name="deletePreConfiguredDesignAttribute"></wsdl:input>
+            <wsdl:output message="tns:deletePreConfiguredDesignAttributeResponse" name="deletePreConfiguredDesignAttributeResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setDesignDeletedFlag">
+            <wsdl:input message="tns:setDesignDeletedFlag" name="setDesignDeletedFlag"></wsdl:input>
+            <wsdl:output message="tns:setDesignDeletedFlagResponse" name="setDesignDeletedFlagResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByDesignId">
+            <wsdl:input message="tns:getDesignByDesignId" name="getDesignByDesignId"></wsdl:input>
+            <wsdl:output message="tns:getDesignByDesignIdResponse" name="getDesignByDesignIdResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setGuestAccountDesignAssociation">
+            <wsdl:input message="tns:setGuestAccountDesignAssociation" name="setGuestAccountDesignAssociation"></wsdl:input>
+            <wsdl:output message="tns:setGuestAccountDesignAssociationResponse" name="setGuestAccountDesignAssociationResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPreConfiguredDesignByProgramAttributeDeleted">
+            <wsdl:input message="tns:getPreConfiguredDesignByProgramAttributeDeleted" name="getPreConfiguredDesignByProgramAttributeDeleted"></wsdl:input>
+            <wsdl:output message="tns:getPreConfiguredDesignByProgramAttributeDeletedResponse" name="getPreConfiguredDesignByProgramAttributeDeletedResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramEstimate">
+            <wsdl:input message="tns:getDesignByProgramEstimate" name="getDesignByProgramEstimate"></wsdl:input>
+            <wsdl:output message="tns:getDesignByProgramEstimateResponse" name="getDesignByProgramEstimateResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramDesignId">
+            <wsdl:input message="tns:getDesignByProgramDesignId" name="getDesignByProgramDesignId"></wsdl:input>
+            <wsdl:output message="tns:getDesignByProgramDesignIdResponse" name="getDesignByProgramDesignIdResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramGuestAccountId">
+            <wsdl:input message="tns:getDesignByProgramGuestAccountId" name="getDesignByProgramGuestAccountId"></wsdl:input>
+            <wsdl:output message="tns:getDesignByProgramGuestAccountIdResponse" name="getDesignByProgramGuestAccountIdResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getNextDesignId">
+            <wsdl:input message="tns:getNextDesignId" name="getNextDesignId"></wsdl:input>
+            <wsdl:output message="tns:getNextDesignIdResponse" name="getNextDesignIdResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setFollowUpClosedFlag">
+            <wsdl:input message="tns:setFollowUpClosedFlag" name="setFollowUpClosedFlag"></wsdl:input>
+            <wsdl:output message="tns:setFollowUpClosedFlagResponse" name="setFollowUpClosedFlagResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPreConfiguredDesignByProgramAttribute">
+            <wsdl:input message="tns:getPreConfiguredDesignByProgramAttribute" name="getPreConfiguredDesignByProgramAttribute"></wsdl:input>
+            <wsdl:output message="tns:getPreConfiguredDesignByProgramAttributeResponse" name="getPreConfiguredDesignByProgramAttributeResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="DesignServiceSoapBinding" type="tns:DesignService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="getPreConfiguredDesignByProgramDesignId">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getPreConfiguredDesignByProgramDesignId">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getPreConfiguredDesignByProgramDesignIdResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignBlobByDesignId">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getDesignBlobByDesignId">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getDesignBlobByDesignIdResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getAlive">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getAlive">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getAliveResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setDesign">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="setDesign">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="setDesignResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setPreConfiguredDesign">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="setPreConfiguredDesign">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="setPreConfiguredDesignResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setPreConfiguredDesignActiveFlag">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="setPreConfiguredDesignActiveFlag">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="setPreConfiguredDesignActiveFlagResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setPreConfiguredDesignDeletedFlag">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="setPreConfiguredDesignDeletedFlag">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="setPreConfiguredDesignDeletedFlagResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByGuestAccountId">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getDesignByGuestAccountId">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getDesignByGuestAccountIdResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramSocStore">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getDesignByProgramSocStore">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getDesignByProgramSocStoreResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramEstimateStore">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getDesignByProgramEstimateStore">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getDesignByProgramEstimateStoreResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPreConfiguredDesignByProgramAttributeActive">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getPreConfiguredDesignByProgramAttributeActive">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getPreConfiguredDesignByProgramAttributeActiveResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramSoc">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getDesignByProgramSoc">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getDesignByProgramSocResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deletePreConfiguredDesignAttribute">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="deletePreConfiguredDesignAttribute">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="deletePreConfiguredDesignAttributeResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setDesignDeletedFlag">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="setDesignDeletedFlag">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="setDesignDeletedFlagResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByDesignId">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getDesignByDesignId">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getDesignByDesignIdResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setGuestAccountDesignAssociation">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="setGuestAccountDesignAssociation">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="setGuestAccountDesignAssociationResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPreConfiguredDesignByProgramAttributeDeleted">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getPreConfiguredDesignByProgramAttributeDeleted">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getPreConfiguredDesignByProgramAttributeDeletedResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramEstimate">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getDesignByProgramEstimate">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getDesignByProgramEstimateResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramDesignId">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getDesignByProgramDesignId">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getDesignByProgramDesignIdResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDesignByProgramGuestAccountId">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getDesignByProgramGuestAccountId">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getDesignByProgramGuestAccountIdResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getNextDesignId">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getNextDesignId">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getNextDesignIdResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setFollowUpClosedFlag">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="setFollowUpClosedFlag">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="setFollowUpClosedFlagResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPreConfiguredDesignByProgramAttribute">
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input name="getPreConfiguredDesignByProgramAttribute">
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output name="getPreConfiguredDesignByProgramAttributeResponse">
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="DesignService">
+        <wsdl:port binding="tns:DesignServiceSoapBinding" name="DesignServiceSoapPort">
+            <soap:address location="https://host:port/cxf/DesignService/v11/ws" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

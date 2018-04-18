@@ -93,9 +93,8 @@ public abstract class CamelContextGenerator {
             if ("document".equals(method.getStyle())) {
                 JavaMethod javaMethod = getJavaMethod(javaIntrf, method.getMethodName());
                 List<ParamInfo> wrappedParams = new ArrayList<>();
-                for (ParamInfo param : method.getParams()) {
-                    String paramName = param.getParamName();
-                    JavaParameter javaParam = javaMethod.getParameter(paramName);
+                for (JavaParameter javaParam : javaMethod.getParameters()) {
+                    String paramName = javaParam.getName();
                     wrappedParams.add(new ParamImpl(paramName, normalize(javaParam.getClassName())));
                 }
                 ((MethodInfoImpl) method).setWrappedParams(wrappedParams);

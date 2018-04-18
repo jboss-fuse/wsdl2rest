@@ -19,4 +19,8 @@ public class ParamImpl extends MetaInfoImpl implements ParamInfo {
     public String getParamName() {
         return paramName;
     }
+    
+    public String toString () {
+        return "[name=" + paramName + ",type=" + paramType + "]";
+    }
 }
