@@ -6,7 +6,7 @@
         http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-    <camelContext id="cxfrs" xmlns="http://camel.apache.org/schema/spring">
+    <camelContext id="cxfrs-$id.next" xmlns="http://camel.apache.org/schema/spring">
 
         <dataFormats>
             <xmljson id="xmljson"/>
@@ -15,10 +15,10 @@
         <restConfiguration component="jetty" host="$jaxrsHost" port="$jaxrsPort" bindingMode="json">
         </restConfiguration>
 
-        <rest path="$jaxrsPath">
+        <rest id="id-$id.next" path="$jaxrsPath">
 #foreach( $method in $allMethods )
 
-          <$method.httpMethod.toLowerCase() uri="/$method.path" 
+          <$method.httpMethod.toLowerCase() id="id-$id.next" uri="/$method.path" 
 #if ( $method.params.size() == 1 )
             type="$method.wrappedParams[0].paramType"
 #end    

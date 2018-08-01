@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.cxf.tools.common.model.JavaInterface;
 import org.apache.cxf.tools.common.model.JavaMethod;
@@ -72,6 +73,7 @@ public abstract class CamelContextGenerator {
             context.put("jaxrsPath", jaxrsPath);
             context.put("serviceClass", epinfo.getFQN());
             context.put("allMethods", epinfo.getMethods());
+            context.put("id", new IDGenerator());
             
             addTypeMapping(epinfo, javaModel);
 
@@ -120,5 +122,12 @@ public abstract class CamelContextGenerator {
         }
         IllegalStateAssertion.assertNotNull(result, "Cannot obtain java method for: " + methodName);
         return result;
+    }
+    
+    public static class IDGenerator {
+        
+        public String getNext() {
+            return UUID.randomUUID().toString();
+        }
     }
 }
