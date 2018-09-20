@@ -32,6 +32,7 @@ public abstract class CamelContextGenerator {
     private Path contextPath;
     private URL jaxrsAddress;
     private URL jaxwsAddress;
+    private boolean noVelocityLog = false;
 
     CamelContextGenerator(Path contextPath) {
         this.contextPath = contextPath;
@@ -45,6 +46,10 @@ public abstract class CamelContextGenerator {
         this.jaxwsAddress = jaxwsAddress;
     }
 
+    public void setNoVelocityLog(boolean flag) {
+    	this.noVelocityLog = flag;
+    }
+    
     public void process(List<EndpointInfo> clazzDefs, JavaModel javaModel) throws IOException {
         IllegalArgumentAssertion.assertNotNull(clazzDefs, "clazzDefs");
         IllegalArgumentAssertion.assertNotNull(javaModel, "javaModel");
@@ -56,6 +61,9 @@ public abstract class CamelContextGenerator {
         VelocityEngine ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        if (this.noVelocityLog) {
+        	ve.setProperty("runtime.log.logsystem.class", org.apache.velocity.runtime.log.NullLogChute.class.getName());
+        }
         ve.init();
 
         String tmplPath = getTemplatePath();
