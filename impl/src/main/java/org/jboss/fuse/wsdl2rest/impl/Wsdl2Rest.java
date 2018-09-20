@@ -27,6 +27,7 @@ public class Wsdl2Rest {
     private Path blueprintContext;
     private Path camelContext;
     private Path javaOut;
+    private boolean noVelocityLog = false;
     
     public Wsdl2Rest(URL wsdlUrl, Path outpath) {
         IllegalArgumentAssertion.assertNotNull(wsdlUrl, "wsdlUrl");
@@ -63,6 +64,14 @@ public class Wsdl2Rest {
     public void setJavaOut(Path javaOut) {
         this.javaOut = javaOut;
     }
+    
+    /**
+     * Defaults to false
+     * @param flag
+     */
+    public void setNoVelocityLog(boolean flag) {
+    	this.noVelocityLog = flag;
+    }
 
     public List<EndpointInfo> process() throws Exception {
         
@@ -81,6 +90,7 @@ public class Wsdl2Rest {
             CamelContextGenerator camelGen = new BlueprintContextGenerator(contextPath);
             camelGen.setJaxrsAddress(jaxrsAddress);
             camelGen.setJaxwsAddress(jaxwsAddress);
+            camelGen.setNoVelocityLog(noVelocityLog);
             camelGen.process(clazzDefs, javaModel);
         }
         
@@ -89,6 +99,7 @@ public class Wsdl2Rest {
             CamelContextGenerator camelGen = new SpringContextGenerator(contextPath);
             camelGen.setJaxrsAddress(jaxrsAddress);
             camelGen.setJaxwsAddress(jaxwsAddress);
+            camelGen.setNoVelocityLog(noVelocityLog);
             camelGen.process(clazzDefs, javaModel);
         }
         
