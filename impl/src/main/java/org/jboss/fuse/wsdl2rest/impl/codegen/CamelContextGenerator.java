@@ -117,7 +117,8 @@ public abstract class CamelContextGenerator {
     private JavaMethod getJavaMethod(JavaInterface intrf, String methodName) {
         JavaMethod result = null;
         for (JavaMethod method : intrf.getMethods()) {
-            if (method.getName().equals(methodName))
+        	// sometimes the method name and the operation name differ by case, so default to case insensitive
+            if (method.getName().equalsIgnoreCase(methodName))
                 result = method;
         }
         IllegalStateAssertion.assertNotNull(result, "Cannot obtain java method for: " + methodName);
