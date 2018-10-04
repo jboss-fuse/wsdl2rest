@@ -59,7 +59,7 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
     }
 
     public List<ParamInfo> getWrappedParams() {
-        List<ParamInfo> result = wrappedParams.size() > 0 ? wrappedParams : params;
+        List<ParamInfo> result = !wrappedParams.isEmpty() ? wrappedParams : params;
         return Collections.unmodifiableList(result);
     }
 
@@ -99,7 +99,7 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
         String result = null;
         List<String> resources = getResources();
         if (getPreferredResource() != null) {
-            resources = new ArrayList<String>();
+            resources = new ArrayList<>();
             resources.add(getPreferredResource());
         }
         if (resources != null) {
@@ -111,7 +111,7 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
             result = path.toString().toLowerCase();
 
         }
-        if (result != null && getParams().size() > 0) {
+        if (result != null && !getParams().isEmpty()) {
             ParamInfo pinfo = getParams().get(0);
             if (hasPathParam(pinfo)) {
                 result += "/{" + pinfo.getParamName() + "}";

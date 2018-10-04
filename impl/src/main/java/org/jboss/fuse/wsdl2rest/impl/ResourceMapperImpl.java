@@ -46,7 +46,7 @@ public class ResourceMapperImpl implements ResourceMapper {
                     MethodInfoImpl minfo = (MethodInfoImpl) m;
                     if (minfo.getMethodName() != null) {
                         // Parse the method name
-                        resources = new ArrayList<String>();
+                        resources = new ArrayList<>();
                         mapResources(minfo.getMethodName());
                         minfo.setResources(resources);
                         minfo.setHttpMethod(httpMethod);

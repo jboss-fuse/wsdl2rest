@@ -28,14 +28,13 @@ public class JavaTypeGenerator {
 
     public JavaModel execute() throws Exception {
         
-        String args[] = new String[] {
+        String[] args = new String[] {
                 "-d", outpath.toString(),
                 wsdlURL.toExternalForm(),
         };
         ToolContext ctx = new ToolContext();
         new WSDLToJava(args).run(ctx);
         
-        JavaModel javaModel = ctx.getJavaModel();
-        return javaModel;
+        return ctx.getJavaModel();
     }
 }
