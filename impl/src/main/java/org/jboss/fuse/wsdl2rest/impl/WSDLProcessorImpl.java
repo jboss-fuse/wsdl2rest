@@ -159,7 +159,7 @@ public class WSDLProcessorImpl implements WSDLProcessor {
                 if (in.getName() == null) {
                     in.setName(opName);
                 }
-                processMessages(def, portType, in.getMessage(), opName, 0);
+                processMessages(portType, in.getMessage(), opName, 0);
             }
 
             log.info("\t\t\tOutput: ");
@@ -167,25 +167,25 @@ public class WSDLProcessorImpl implements WSDLProcessor {
                 if (out.getName() == null) {
                     out.setName(opName + "Response");
                 }
-                processMessages(def, portType, out.getMessage(), opName, 1);
+                processMessages(portType, out.getMessage(), opName, 1);
             }
 
             log.info("\t\t\tFaults: ");
             if (f != null) {
                 for (Object o : f.values()) {
                     Fault fault = (Fault) o;
-                    processMessages(def, portType, fault.getMessage(), opName, 2);
+                    processMessages(portType, fault.getMessage(), opName, 2);
                 }
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void processMessages(Definition def, PortType portType, Message message, String opname, int type) {
+    private void processMessages(PortType portType, Message message, String opname, int type) {
         log.info("\t\t\tMessage: {}", message.getQName().getLocalPart());
         if (!message.isUndefined() && message.getParts() != null) {
             List<Part> parts = message.getOrderedParts(null);
-            List<String> imports = new ArrayList<String>();
+            List<String> imports = new ArrayList<>();
             List<ParamInfo> params = new ArrayList<>();
             int index = 0;
             for (Part part : parts) {
@@ -202,7 +202,7 @@ public class WSDLProcessorImpl implements WSDLProcessor {
                 log.info("\t\t\t\tParams: {} {}", javaType, elmtQName);
                 params.add(new ParamImpl("arg" + index++, javaType));
             }
-            if (parts.size() > 0) {
+            if (!parts.isEmpty()) {
                 ClassDefinitionImpl svcDef = (ClassDefinitionImpl) portTypeMap.get(portType.getQName());
                 MethodInfoImpl minfo = (MethodInfoImpl) svcDef.getMethod(opname);
                 switch (type) {
@@ -249,7 +249,7 @@ public class WSDLProcessorImpl implements WSDLProcessor {
         if (nsuri.startsWith("http://")) {
             nsuri = nsuri.substring(7);
             nsuri = nsuri.endsWith("/") ? nsuri.substring(0, nsuri.length() - 1) : nsuri;
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             for (String tok : nsuri.split("\\.")) {
                 buffer.insert(0, tok + ".");
             }

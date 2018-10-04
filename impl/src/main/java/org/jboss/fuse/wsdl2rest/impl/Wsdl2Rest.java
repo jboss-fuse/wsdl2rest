@@ -94,7 +94,7 @@ public class Wsdl2Rest {
             camelGen.process(clazzDefs, javaModel);
         }
         
-        if (camelContext != null || camelContext == null && blueprintContext == null) {
+        if (camelContext != null || blueprintContext == null) {
             Path contextPath = effectiveCamelContext(camelContext, Paths.get("wsdl2rest-camel-context.xml"));
             CamelContextGenerator camelGen = new SpringContextGenerator(contextPath);
             camelGen.setJaxrsAddress(jaxrsAddress);

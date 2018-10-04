@@ -34,12 +34,11 @@ public class AddressBean implements Address {
     public IntArray listAddresses() {
         synchronized (map) {
             Set<Integer> keySet = map.keySet();
-            IntArray result = new IntArray() {
+            return new IntArray() {
                 {
                     item = new ArrayList<>(keySet);
                 }
             };
-            return result;
         }
     }
 
