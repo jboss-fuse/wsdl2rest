@@ -36,7 +36,7 @@ public class CalculatorDocLitTest {
     @Test
     public void testJavaClient() throws Exception {
         
-        File wsdlFile = new File("src/test/resources/calculator/Calculator.wsdl");
+        File wsdlFile = new File("src/test/resources/calculator/calculator.wsdl");
         Assert.assertTrue(wsdlFile.exists());
         
         Path outpath = Paths.get("target/wsdl2rest/calculator");
