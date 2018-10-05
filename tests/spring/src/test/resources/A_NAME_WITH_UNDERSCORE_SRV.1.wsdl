@@ -1,0 +1,725 @@
+<?xml version="1.0"?>
+<wsdl:definitions name="A_NAME_WITH_UNDERSCORE_SRV.1"
+	targetNamespace="http://xmlns.oracle.com/Enterprise/HCM/services/A_NAME_WITH_UNDERSCORE_SRV.1"
+	xmlns:A_THIRD_NAME_WITH_UNDERSCORE_MSG.v1="http://xmlns.oracle.com/Enterprise/Tools/schemas/A_THIRD_NAME_WITH_UNDERSCORE_MSG.v1"
+	xmlns:A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ.v1="http://xmlns.oracle.com/Enterprise/Tools/schemas/A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ.v1"
+	xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://xmlns.oracle.com/Enterprise/HCM/services/A_NAME_WITH_UNDERSCORE_SRV.1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wsp="http://schemas.xmlsoap.org/ws/2002/12/policy">
+	<wsp:UsagePolicy wsdl:Required="true" />
+	<plnk:partnerLinkType
+		name="A_NAME_WITH_UNDERSCORE_SRV_PartnerLinkType">
+		<plnk:role name="A_NAME_WITH_UNDERSCORE_SRV_Provider">
+			<plnk:portType name="tns:A_NAME_WITH_UNDERSCORE_SRV_PortType" />
+		</plnk:role>
+	</plnk:partnerLinkType>
+	<wsdl:types>
+		<xsd:schema elementFormDefault="qualified"
+			targetNamespace="http://xmlns.oracle.com/Enterprise/Tools/schemas/A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ.v1"
+			xmlns="http://xmlns.oracle.com/Enterprise/Tools/schemas/A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ.v1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ"
+				type="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ_TypeShape" />
+			<xsd:complexType name="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ_TypeShape">
+				<xsd:sequence>
+					<xsd:element name="FieldTypes"
+						type="FieldTypes_TypeShape" />
+					<xsd:element name="MsgData" type="MsgData_TypeShape" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypes_TypeShape">
+				<xsd:all>
+					<xsd:element name="EMAIL_ADDRESSES"
+						type="FieldTypesEMAIL_ADDRESSES_TypeShape" />
+					<xsd:element name="PSCAMA"
+						type="FieldTypesPSCAMA_TypeShape" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType
+				name="FieldTypesEMAIL_ADDRESSES_TypeShape">
+				<xsd:sequence>
+					<xsd:element name="EMPLID"
+						type="FieldTypesCharFieldType" />
+					<xsd:element name="E_ADDR_TYPE"
+						type="FieldTypesCharFieldType" />
+					<xsd:element name="EMAIL_ADDR"
+						type="FieldTypesCharFieldType" />
+					<xsd:element name="PREF_EMAIL_FLAG"
+						type="FieldTypesCharFieldType" />
+				</xsd:sequence>
+				<xsd:attribute fixed="R" name="class"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesPSCAMA_TypeShape">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="LANGUAGE_CD"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="AUDIT_ACTN"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="BASE_LANGUAGE_CD"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="MSG_SEQ_FLG"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="PROCESS_INSTANCE"
+						type="FieldTypesNumberFieldType" />
+					<xsd:element minOccurs="0" name="PUBLISH_RULE_ID"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="MSGNODENAME"
+						type="FieldTypesCharFieldType" />
+				</xsd:sequence>
+				<xsd:attribute fixed="R" name="class"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesCharFieldType">
+				<xsd:attribute fixed="CHAR" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesNumberFieldType">
+				<xsd:attribute fixed="NUMBER" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesDateFieldType">
+				<xsd:attribute fixed="DATE" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesTimeFieldType">
+				<xsd:attribute fixed="TIME" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesDateTimeFieldType">
+				<xsd:attribute fixed="DATETIME" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesImageRefFieldType">
+				<xsd:attribute fixed="IMAGEREFERENCE" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="MsgData_TypeShape">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0"
+						name="Transaction" type="Transaction_TypeShape" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Transaction_TypeShape">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="EMAIL_ADDRESSES"
+						type="EMAIL_ADDRESSESMsgDataRecord_TypeShape" />
+					<xsd:element name="PSCAMA"
+						type="PSCAMAMsgDataRecord_TypeShape" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType
+				name="EMAIL_ADDRESSESMsgDataRecord_TypeShape">
+				<xsd:sequence>
+					<xsd:element name="EMPLID" type="EMPLID_TypeShape" />
+					<xsd:element name="E_ADDR_TYPE"
+						type="E_ADDR_TYPE_TypeShape" />
+					<xsd:element name="EMAIL_ADDR"
+						type="EMAIL_ADDR_TypeShape" />
+					<xsd:element name="PREF_EMAIL_FLAG"
+						type="PREF_EMAIL_FLAG_TypeShape" />
+				</xsd:sequence>
+				<xsd:attribute fixed="R" name="class"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="EMPLID_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="EMPLID_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="E_ADDR_TYPE_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="E_ADDR_TYPE_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="EMAIL_ADDR_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="EMAIL_ADDR_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="PREF_EMAIL_FLAG_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="PREF_EMAIL_FLAG_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:simpleType name="EMPLID_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Employee ID</xsd:documentation>
+					<xsd:documentation>EMPLID is a character of length 11. Allows
+						Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="11" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="E_ADDR_TYPE_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>E_ADDR_TYPE is a character of length 4
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="BUSN" />
+					<xsd:enumeration value="CAMP" />
+					<xsd:enumeration value="DORM" />
+					<xsd:enumeration value="HOME" />
+					<xsd:enumeration value="OTHR" />
+					<xsd:enumeration value="BUS2" />
+					<xsd:enumeration value="BSN2" />
+					<xsd:enumeration value="BUS2" />
+					<xsd:enumeration value="BSN2" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="EMAIL_ADDR_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>EMAIL_ADDR is a character of length 70
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="70" />
+					<xsd:whiteSpace value="preserve" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="PREF_EMAIL_FLAG_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>PREF_EMAIL_FLAG is a character of length 1.
+						Allows Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="1" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="PSCAMAMsgDataRecord_TypeShape">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="LANGUAGE_CD"
+						type="LANGUAGE_CD_TypeShape" />
+					<xsd:element minOccurs="0" name="AUDIT_ACTN"
+						type="AUDIT_ACTN_TypeShape" />
+					<xsd:element minOccurs="0" name="BASE_LANGUAGE_CD"
+						type="BASE_LANGUAGE_CD_TypeShape" />
+					<xsd:element minOccurs="0" name="MSG_SEQ_FLG"
+						type="MSG_SEQ_FLG_TypeShape" />
+					<xsd:element minOccurs="0" name="PROCESS_INSTANCE"
+						type="PROCESS_INSTANCE_TypeShape" />
+					<xsd:element minOccurs="0" name="PUBLISH_RULE_ID"
+						type="PUBLISH_RULE_ID_TypeShape" />
+					<xsd:element minOccurs="0" name="MSGNODENAME"
+						type="MSGNODENAME_TypeShape" />
+				</xsd:sequence>
+				<xsd:attribute fixed="R" name="class"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="LANGUAGE_CD_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="LANGUAGE_CD_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="AUDIT_ACTN_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="AUDIT_ACTN_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="BASE_LANGUAGE_CD_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="BASE_LANGUAGE_CD_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="MSG_SEQ_FLG_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="MSG_SEQ_FLG_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="PROCESS_INSTANCE_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="PROCESS_INSTANCE_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="PUBLISH_RULE_ID_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="PUBLISH_RULE_ID_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="MSGNODENAME_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="MSGNODENAME_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:simpleType name="LANGUAGE_CD_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Language Code</xsd:documentation>
+					<xsd:documentation>LANGUAGE_CD is a character of length 3. Allows
+						Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="3" />
+					<xsd:whiteSpace value="preserve" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="AUDIT_ACTN_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Audit Action Code for Application Messages. This
+						tells the subscriber whether the row has been added, changed, or
+						deleted.</xsd:documentation>
+					<xsd:documentation>AUDIT_ACTN is a character of length 1. Allows
+						Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="1" />
+					<xsd:whiteSpace value="preserve" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="BASE_LANGUAGE_CD_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>BASE_LANGUAGE_CD is a character of length 3.
+						Allows Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="3" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="MSG_SEQ_FLG_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>MSG_SEQ_FLG is a character of length 1. Allows
+						Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="1" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="PROCESS_INSTANCE_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Process Instance</xsd:documentation>
+					<xsd:documentation>PROCESS_INSTANCE is a number of length 10 with a
+						decimal position of 0</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:integer">
+					<xsd:totalDigits value="10" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="PUBLISH_RULE_ID_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Publish Rule ID</xsd:documentation>
+					<xsd:documentation>PUBLISH_RULE_ID is a character of length 30.
+						Allows Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="MSGNODENAME_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Application Message Node Name. Name of the
+						Application Message Node Definition.</xsd:documentation>
+					<xsd:documentation>MSGNODENAME is a character of length 30. Allows
+						Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:schema>
+		<xsd:schema elementFormDefault="qualified"
+			targetNamespace="http://xmlns.oracle.com/Enterprise/Tools/schemas/A_THIRD_NAME_WITH_UNDERSCORE_MSG.v1"
+			xmlns="http://xmlns.oracle.com/Enterprise/Tools/schemas/A_THIRD_NAME_WITH_UNDERSCORE_MSG.v1"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="A_THIRD_NAME_WITH_UNDERSCORE_MSG"
+				type="A_THIRD_NAME_WITH_UNDERSCORE_MSG_TypeShape" />
+			<xsd:complexType name="A_THIRD_NAME_WITH_UNDERSCORE_MSG_TypeShape">
+				<xsd:sequence>
+					<xsd:element name="FieldTypes"
+						type="FieldTypes_TypeShape" />
+					<xsd:element name="MsgData" type="MsgData_TypeShape" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypes_TypeShape">
+				<xsd:all>
+					<xsd:element name="A_THIRD_NAME_WITH_UNDERSCORE_WRK"
+						type="FieldTypesA_THIRD_NAME_WITH_UNDERSCORE_WRK_TypeShape" />
+					<xsd:element name="PSCAMA"
+						type="FieldTypesPSCAMA_TypeShape" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType
+				name="FieldTypesA_THIRD_NAME_WITH_UNDERSCORE_WRK_TypeShape">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="ERRNUM"
+						type="FieldTypesNumberFieldType" />
+					<xsd:element minOccurs="0" name="DESCRLONG"
+						type="FieldTypesCharFieldType" />
+				</xsd:sequence>
+				<xsd:attribute fixed="R" name="class"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesPSCAMA_TypeShape">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="LANGUAGE_CD"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="AUDIT_ACTN"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="BASE_LANGUAGE_CD"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="MSG_SEQ_FLG"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="PROCESS_INSTANCE"
+						type="FieldTypesNumberFieldType" />
+					<xsd:element minOccurs="0" name="PUBLISH_RULE_ID"
+						type="FieldTypesCharFieldType" />
+					<xsd:element minOccurs="0" name="MSGNODENAME"
+						type="FieldTypesCharFieldType" />
+				</xsd:sequence>
+				<xsd:attribute fixed="R" name="class"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesCharFieldType">
+				<xsd:attribute fixed="CHAR" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesNumberFieldType">
+				<xsd:attribute fixed="NUMBER" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesDateFieldType">
+				<xsd:attribute fixed="DATE" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesTimeFieldType">
+				<xsd:attribute fixed="TIME" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesDateTimeFieldType">
+				<xsd:attribute fixed="DATETIME" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="FieldTypesImageRefFieldType">
+				<xsd:attribute fixed="IMAGEREFERENCE" name="type"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="MsgData_TypeShape">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0"
+						name="Transaction" type="Transaction_TypeShape" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Transaction_TypeShape">
+				<xsd:all>
+					<xsd:element minOccurs="0" name="A_THIRD_NAME_WITH_UNDERSCORE_WRK"
+						type="A_THIRD_NAME_WITH_UNDERSCORE_WRKMsgDataRecord_TypeShape" />
+					<xsd:element name="PSCAMA"
+						type="PSCAMAMsgDataRecord_TypeShape" />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType
+				name="A_THIRD_NAME_WITH_UNDERSCORE_WRKMsgDataRecord_TypeShape">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="ERRNUM"
+						type="ERRNUM_TypeShape" />
+					<xsd:element minOccurs="0" name="DESCRLONG"
+						type="DESCRLONG_TypeShape" />
+				</xsd:sequence>
+				<xsd:attribute fixed="R" name="class"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="ERRNUM_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="ERRNUM_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="DESCRLONG_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="DESCRLONG_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:simpleType name="ERRNUM_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>ERRNUM is a number of length 5 with a decimal
+						position of 0</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:integer">
+					<xsd:totalDigits value="5" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="DESCRLONG_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Long Description</xsd:documentation>
+					<xsd:documentation>DESCRLONG is a character of length 0
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:whiteSpace value="preserve" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="PSCAMAMsgDataRecord_TypeShape">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="LANGUAGE_CD"
+						type="LANGUAGE_CD_TypeShape" />
+					<xsd:element minOccurs="0" name="AUDIT_ACTN"
+						type="AUDIT_ACTN_TypeShape" />
+					<xsd:element minOccurs="0" name="BASE_LANGUAGE_CD"
+						type="BASE_LANGUAGE_CD_TypeShape" />
+					<xsd:element minOccurs="0" name="MSG_SEQ_FLG"
+						type="MSG_SEQ_FLG_TypeShape" />
+					<xsd:element minOccurs="0" name="PROCESS_INSTANCE"
+						type="PROCESS_INSTANCE_TypeShape" />
+					<xsd:element minOccurs="0" name="PUBLISH_RULE_ID"
+						type="PUBLISH_RULE_ID_TypeShape" />
+					<xsd:element minOccurs="0" name="MSGNODENAME"
+						type="MSGNODENAME_TypeShape" />
+				</xsd:sequence>
+				<xsd:attribute fixed="R" name="class"
+					type="xsd:string" use="required" />
+			</xsd:complexType>
+			<xsd:complexType name="LANGUAGE_CD_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="LANGUAGE_CD_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="AUDIT_ACTN_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="AUDIT_ACTN_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="BASE_LANGUAGE_CD_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="BASE_LANGUAGE_CD_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="MSG_SEQ_FLG_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="MSG_SEQ_FLG_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="PROCESS_INSTANCE_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="PROCESS_INSTANCE_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="PUBLISH_RULE_ID_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="PUBLISH_RULE_ID_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="MSGNODENAME_TypeShape">
+				<xsd:simpleContent>
+					<xsd:extension base="MSGNODENAME_TypeDef">
+						<xsd:attribute name="IsChanged" type="xsd:string"
+							use="optional" />
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:simpleType name="LANGUAGE_CD_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Language Code</xsd:documentation>
+					<xsd:documentation>LANGUAGE_CD is a character of length 3. Allows
+						Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="3" />
+					<xsd:whiteSpace value="preserve" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="AUDIT_ACTN_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Audit Action Code for Application Messages. This
+						tells the subscriber whether the row has been added, changed, or
+						deleted.</xsd:documentation>
+					<xsd:documentation>AUDIT_ACTN is a character of length 1. Allows
+						Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="1" />
+					<xsd:whiteSpace value="preserve" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="BASE_LANGUAGE_CD_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>BASE_LANGUAGE_CD is a character of length 3.
+						Allows Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="3" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="MSG_SEQ_FLG_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>MSG_SEQ_FLG is a character of length 1. Allows
+						Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="1" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="PROCESS_INSTANCE_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Process Instance</xsd:documentation>
+					<xsd:documentation>PROCESS_INSTANCE is a number of length 10 with a
+						decimal position of 0</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:integer">
+					<xsd:totalDigits value="10" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="PUBLISH_RULE_ID_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Publish Rule ID</xsd:documentation>
+					<xsd:documentation>PUBLISH_RULE_ID is a character of length 30.
+						Allows Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="MSGNODENAME_TypeDef">
+				<xsd:annotation>
+					<xsd:documentation>Application Message Node Name. Name of the
+						Application Message Node Definition.</xsd:documentation>
+					<xsd:documentation>MSGNODENAME is a character of length 30. Allows
+						Uppercase characters including numbers</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="30" />
+					<xsd:whiteSpace value="preserve" />
+					<xsd:pattern value="([A-Z]|[0-9]|\p{Z}|\p{P}|\p{Lu})*" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ.v1">
+		<wsdl:documentation>Actualización E-mail</wsdl:documentation>
+		<wsdl:part element="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ.v1:A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ"
+			name="parameter" />
+	</wsdl:message>
+	<wsdl:message name="A_THIRD_NAME_WITH_UNDERSCORE_MSG.v1">
+		<wsdl:documentation>Mensaje de respuesta estándard
+		</wsdl:documentation>
+		<wsdl:part element="A_THIRD_NAME_WITH_UNDERSCORE_MSG.v1:A_THIRD_NAME_WITH_UNDERSCORE_MSG"
+			name="parameter" />
+	</wsdl:message>
+	<wsdl:portType name="A_NAME_WITH_UNDERSCORE_SRV_PortType">
+		<wsdl:operation name="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_OPR_SRV">
+			<wsdl:documentation>Actualiza emails de persona</wsdl:documentation>
+			<wsdl:input message="tns:A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ.v1"
+				name="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ.v1" />
+			<wsdl:output message="tns:A_THIRD_NAME_WITH_UNDERSCORE_MSG.v1"
+				name="A_THIRD_NAME_WITH_UNDERSCORE_MSG.v1" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="A_NAME_WITH_UNDERSCORE_SRV_Binding"
+		type="tns:A_NAME_WITH_UNDERSCORE_SRV_PortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_OPR_SRV">
+			<soap:operation soapAction="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_OPR_SRV.v1"
+				style="document" />
+			<wsp:Policy
+				wsu:Id="UsernameTokenSecurityPolicyPasswordOptional"
+				xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+				<wsp:ExactlyOne>
+					<wsp:All>
+						<wsse:SecurityToken wsp:Usage="wsp:Required"
+							xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+							<wsse:TokenType>wsse:UserNameToken</wsse:TokenType>
+							<Claims>
+								<SubjectName MatchType="wsse:Exact" />
+								<UsePassword wsp:Usage="wsp:Optional" />
+							</Claims>
+						</wsse:SecurityToken>
+					</wsp:All>
+				</wsp:ExactlyOne>
+			</wsp:Policy>
+			<wsdl:input name="A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_REQ.v1">
+				<soap:body
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output name="A_THIRD_NAME_WITH_UNDERSCORE_MSG.v1">
+				<soap:body
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="A_NAME_WITH_UNDERSCORE_SRV">
+		<wsdl:documentation>Servicios Personas</wsdl:documentation>
+		<wsdl:port binding="tns:A_NAME_WITH_UNDERSCORE_SRV_Binding"
+			name="A_NAME_WITH_UNDERSCORE_SRV_Port">
+			<soap:address
+				location="http://an.url/path" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
