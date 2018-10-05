@@ -98,7 +98,8 @@ public abstract class CamelContextGenerator {
     
     private void addTypeMapping(EndpointInfo epinfo, JavaModel javaModel) {
         IllegalArgumentAssertion.assertTrue(javaModel.getInterfaces().size() == 1, "Multiple interfaces not supported");
-        JavaInterface javaIntrf = javaModel.getInterfaces().get(epinfo.getClassName());
+        // the keys used have removed the underscores
+        JavaInterface javaIntrf = javaModel.getInterfaces().get(epinfo.getClassName().replaceAll("_", ""));
         for (MethodInfo method : epinfo.getMethods()) {
             if ("document".equals(method.getStyle())) {
                 JavaMethod javaMethod = getJavaMethod(javaIntrf, method.getMethodName());
@@ -125,8 +126,7 @@ public abstract class CamelContextGenerator {
     private JavaMethod getJavaMethod(JavaInterface intrf, String methodName) {
         JavaMethod result = null;
         for (JavaMethod method : intrf.getMethods()) {
-        	// sometimes the method name and the operation name differ by case, so default to case insensitive
-            if (method.getName().equalsIgnoreCase(methodName))
+            if (method.getOperationName().equalsIgnoreCase(methodName))
                 result = method;
         }
         IllegalStateAssertion.assertNotNull(result, "Cannot obtain java method for: " + methodName);

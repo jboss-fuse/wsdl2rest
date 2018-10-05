@@ -121,8 +121,11 @@ public class MethodInfoImpl extends MetaInfoImpl implements MethodInfo {
     }
 
     private boolean hasPathParam(ParamInfo pinfo) {
-        String httpMethod = getHttpMethod();
-        boolean pathParam = httpMethod.equals("GET") || httpMethod.equals("DELETE");
+        boolean pathParam =
+        		//null httpMethod is supposed to default to GET based on ResourceMapperImpl.mapResources(String)
+        		httpMethod == null
+        		|| "GET".equals(httpMethod)
+        		|| "DELETE".equals(httpMethod);
         return pathParam && pinfo.getParamType() != null;
     }
 
