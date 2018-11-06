@@ -16,15 +16,23 @@
  */
 package org.jboss.fuse.wsdl2rest.test.calculator;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
+
+import javax.xml.transform.Source;
 
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.impl.Wsdl2Rest;
 import org.junit.Assert;
 import org.junit.Test;
+import org.w3c.dom.Node;
+import org.xmlunit.builder.Input;
+import org.xmlunit.xpath.JAXPXPathEngine;
 
 
 public class CalculatorDocLitTest {
@@ -33,7 +41,7 @@ public class CalculatorDocLitTest {
     public void testJavaClient() throws Exception {
         
         File wsdlFile = new File("src/test/resources/calculator/calculator.wsdl");
-        Assert.assertTrue(wsdlFile.exists());
+        assertThat(wsdlFile).exists();
         
         Path outpath = Paths.get("target/wsdl2rest/calculator");
         Wsdl2Rest wsdl2Rest = new Wsdl2Rest(wsdlFile.toURI().toURL(), outpath);
@@ -45,6 +53,11 @@ public class CalculatorDocLitTest {
         Assert.assertEquals("ICalculator", clazzDef.getClassName());
         
         File cctxFile = outpath.resolve(Paths.get("camel", "wsdl2rest-camel-context.xml")).toFile();
-        Assert.assertTrue(cctxFile.exists());
+        assertThat(cctxFile).exists();
+        Source camelSourceFile = Input.fromFile(cctxFile).build();
+        JAXPXPathEngine jaxpxPathEngine = new JAXPXPathEngine();
+        jaxpxPathEngine.setNamespaceContext(Collections.singletonMap("camel", "http://camel.apache.org/schema/spring"));
+		Iterable<Node> restPostNodes = jaxpxPathEngine.selectNodes("//camel:camelContext/camel:rest/camel:post", camelSourceFile);
+        assertThat(restPostNodes).hasSize(2);
     }
 }

@@ -21,12 +21,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
+
+import javax.xml.transform.Source;
 
 import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.MethodInfo;
 import org.jboss.fuse.wsdl2rest.impl.Wsdl2Rest;
 import org.junit.Test;
+import org.w3c.dom.Node;
+import org.xmlunit.builder.Input;
+import org.xmlunit.xpath.JAXPXPathEngine;
 
 public class WithUnderscoreTest {
 	
@@ -44,9 +50,15 @@ public class WithUnderscoreTest {
 	        assertThat(clazzDef.getPackageName()).isEqualTo("1.com/Enterprise/HCM/services/A_NAME_WITH_UNDERSCORE_SRV.oracle.xmlns");
 	        assertThat(clazzDef.getClassName()).isEqualTo("A_NAME_WITH_UNDERSCORE_SRV_PortType");
 	        MethodInfo method = clazzDef.getMethod("A_SECOND_NAME_WITH_UNDERSCORE_EMAIL_OPR_SRV");
-	        assertThat(method.getPath()).isEqualTo("/{arg0}");
+	        assertThat(method.getPath()).isEqualTo("a_second_name_with_underscore_email_opr_srv/{arg0}");
 	        
 	        File cctxFile = outpath.resolve(Paths.get("camel", "wsdl2rest-camel-context.xml")).toFile();
 	        assertThat(cctxFile).exists();
+	        
+	        Source camelSourceFile = Input.fromFile(cctxFile).build();
+	        JAXPXPathEngine jaxpxPathEngine = new JAXPXPathEngine();
+	        jaxpxPathEngine.setNamespaceContext(Collections.singletonMap("camel", "http://camel.apache.org/schema/spring"));
+			Iterable<Node> restPostNodes = jaxpxPathEngine.selectNodes("//camel:camelContext/camel:rest/camel:get", camelSourceFile);
+	        assertThat(restPostNodes).hasSize(1);
 	    }
 }

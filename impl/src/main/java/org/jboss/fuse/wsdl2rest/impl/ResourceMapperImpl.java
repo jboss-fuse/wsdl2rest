@@ -29,7 +29,7 @@ public class ResourceMapperImpl implements ResourceMapper {
     private Pattern httpPostWordsPattern = Pattern.compile(httpPostWords);
     private Pattern httpDeleteWordsPattern = Pattern.compile(httpDelWords);
     private Pattern httpPutWordsPattern = Pattern.compile(httpPutWords);
-    private Pattern resourcePattern = Pattern.compile("[a-z]+|([A-Z][a-z]+)*");
+    private Pattern resourcePattern = Pattern.compile("[A-Za-z_]+|([A-Z_][a-z_]+)*");
 
     public List<String> getResources() {
         return Collections.unmodifiableList(resources);
