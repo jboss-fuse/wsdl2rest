@@ -77,6 +77,12 @@ public class Wsdl2Rest {
         
         WSDLProcessor wsdlProcessor = new WSDLProcessorImpl();
         wsdlProcessor.process(wsdlUrl);
+
+        // if there was a SOAP address in the WSDL and the JAX-WS address
+        // has not been overridden via the command-line, use the one from the WSDL
+        if (wsdlProcessor.getJaxWsServiceLocation() != null && jaxwsAddress == null) {
+            jaxwsAddress = wsdlProcessor.getJaxWsServiceLocation();
+        }
         
         List<EndpointInfo> clazzDefs = wsdlProcessor.getClassDefinitions();
         ResourceMapper resMapper = new ResourceMapperImpl();
