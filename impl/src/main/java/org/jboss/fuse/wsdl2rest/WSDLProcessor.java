@@ -10,4 +10,6 @@ public interface WSDLProcessor {
     void process(URL wsdlURL) throws WSDLException;
 
     List<EndpointInfo> getClassDefinitions();
+
+    URL getJaxWsServiceLocation();
 }

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -28,6 +29,7 @@ import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.ExtensibilityElement;
 import javax.wsdl.extensions.schema.Schema;
 import javax.wsdl.extensions.soap.SOAPOperation;
+import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.xml.namespace.QName;
@@ -55,6 +57,8 @@ public class WSDLProcessorImpl implements WSDLProcessor {
 
     private Map<QName, String> typeRegistry = new HashMap<>(); 
     private Map<QName, EndpointInfo> portTypeMap = new LinkedHashMap<>();
+
+    private String jaxwsServiceLocation = null;
 
     /*
      * JAXB XML Schema binding
@@ -100,6 +104,17 @@ public class WSDLProcessorImpl implements WSDLProcessor {
     public List<EndpointInfo> getClassDefinitions() {
         List<EndpointInfo> result = new ArrayList<>(portTypeMap.values());
         return Collections.unmodifiableList(result);
+    }
+
+    public URL getJaxWsServiceLocation() {
+        try {
+            URL jaxwsServiceURL = new URL(jaxwsServiceLocation);
+            log.info("\tSOAP Address URL: {}", jaxwsServiceURL.toExternalForm());
+            return jaxwsServiceURL;
+        } catch (MalformedURLException ex) {
+            log.info("\tInvalid SOAP Address from WSDL: {}", jaxwsServiceLocation);
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -241,6 +256,14 @@ public class WSDLProcessorImpl implements WSDLProcessor {
             for (Port port : ports.values()) {
                 log.info("\tPort: {}", port.getName());
                 processBinding(def, port.getBinding());
+
+                List<ExtensibilityElement> extensionElements = port.getExtensibilityElements();
+                for (Object extension : extensionElements) {
+                    if (extension instanceof SOAPAddress) {
+                        SOAPAddress address = (SOAPAddress) extension;
+                        jaxwsServiceLocation = address.getLocationURI();
+                    }
+                }
             }
         }
     }

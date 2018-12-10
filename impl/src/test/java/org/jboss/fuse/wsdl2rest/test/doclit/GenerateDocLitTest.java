@@ -27,6 +27,7 @@ import org.jboss.fuse.wsdl2rest.EndpointInfo;
 import org.jboss.fuse.wsdl2rest.MethodInfo;
 import org.jboss.fuse.wsdl2rest.ResourceMapper;
 import org.jboss.fuse.wsdl2rest.impl.ResourceMapperImpl;
+import org.jboss.fuse.wsdl2rest.impl.WSDLProcessorImpl;
 import org.jboss.fuse.wsdl2rest.impl.Wsdl2Rest;
 import org.jboss.fuse.wsdl2rest.impl.codegen.JavaTypeGenerator;
 import org.junit.Assert;
@@ -37,6 +38,18 @@ public class GenerateDocLitTest {
 
     static final String WSDL_LOCATION = "../jaxws/src/main/resources/doclit/Address.wsdl";
     static final String OUTPUT_PATH = "target/generated-wsdl2rest";
+
+    @Test
+    public void testWSDLProcessor() throws Exception {
+        File wsdlFile = new File(WSDL_LOCATION);
+        URL wsdlURL = wsdlFile.toURI().toURL();
+
+        WSDLProcessorImpl wsdlProc = new WSDLProcessorImpl();
+        wsdlProc.process(wsdlURL);
+        
+        URL actualValue = new URL("http://localhost:9090/AddressPort"); 
+        Assert.assertEquals(actualValue.toExternalForm(), wsdlProc.getJaxWsServiceLocation().toExternalForm());
+    }
 
     @Test
     public void testGenerate() throws Exception {
