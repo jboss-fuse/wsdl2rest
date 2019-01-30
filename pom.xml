@@ -11,10 +11,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <version.apache.camel>2.20.1</version.apache.camel>
+        <version.apache.camel>2.23.1</version.apache.camel>
         <version.apache.cxf>3.2.1</version.apache.cxf>
         <version.apache.velocity>1.7</version.apache.velocity>
-        <version.eclipse.jetty>9.4.6.v20170531</version.eclipse.jetty>
         <version.args4j>2.33</version.args4j>
         <version.javaparser>2.5.1</version.javaparser>
         <version.javax.ws.rs.api>2.1</version.javax.ws.rs.api>
@@ -93,34 +92,9 @@
                 <version>${version.apache.cxf}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-transports-http-jetty</artifactId>
-                <version>${version.apache.cxf}</version>
-             </dependency>
-            <dependency>
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity</artifactId>
                 <version>${version.apache.velocity}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-servlet</artifactId>
-                <version>${version.eclipse.jetty}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-servlets</artifactId>
-                <version>${version.eclipse.jetty}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-client</artifactId>
-                <version>${version.eclipse.jetty}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-jmx</artifactId>
-                <version>${version.eclipse.jetty}</version>
             </dependency>
             <dependency>
                 <groupId>wsdl4j</groupId>
