@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.jboss.fuse.wsdl2rest</groupId>
         <artifactId>wsdl2rest-tests-blueprint</artifactId>
-        <version>0.8.0.fuse-SNAPSHOT</version>
+        <version>0.8.0.fuse-730062</version>
     </parent>
 
     <artifactId>wsdl2rest-tests-blueprint-doclit</artifactId>
