@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jboss.fuse.wsdl2rest</groupId>
         <artifactId>wsdl2rest</artifactId>
-        <version>0.8.0.fuse-SNAPSHOT</version>
+        <version>0.8.sb2.fuse-740001</version>
     </parent>
 
     <artifactId>wsdl2rest-jaxws</artifactId>
