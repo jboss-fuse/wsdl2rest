@@ -32,6 +32,7 @@
         <version-maven-release-plugin>2.5</version-maven-release-plugin>
         <version-maven-source-plugin>2.3</version-maven-source-plugin>
         <version-maven-surefire-plugin>2.20.1</version-maven-surefire-plugin>
+        <version-maven-bundle-plugin>3.5.1</version-maven-bundle-plugin>
     </properties>
     
     <!-- Source Control -->
@@ -128,6 +129,11 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-codegen-plugin</artifactId>
+                    <version>${version.apache.cxf}</version>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>${version-maven-antrun-plugin}</version>
@@ -191,6 +197,11 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>${version-build-helper-plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>${version-maven-bundle-plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
