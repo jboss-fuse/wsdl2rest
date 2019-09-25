@@ -136,19 +136,16 @@ public class CalculatorDocLitTest {
     }
 
     private boolean searchForValue(String value, Path filePath) throws Exception {
-        Scanner kb = new Scanner(value);
-    	try {
-	        String name = kb.nextLine();
-	
-	        List<String> lines = Files.readAllLines(filePath);
-	        for (String line : lines) {
-	            if (line.contains(name)) {
-	                return true;
-	            }
-	        }
-    	} finally {
-    		kb.close();
-    	}
-    	return false;
-    }    
+        try (Scanner kb = new Scanner(value)) {
+            String name = kb.nextLine();
+
+            List<String> lines = Files.readAllLines(filePath);
+            for (String line : lines) {
+                if (line.contains(name)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
