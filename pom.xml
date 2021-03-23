@@ -13,7 +13,7 @@
 
         <version.apache.camel>2.23.2.fuse-790031</version.apache.camel>
         <version.apache.cxf>3.3.6.fuse-790026</version.apache.cxf>
-        <version.apache.velocity>1.7</version.apache.velocity>
+        <version.apache.velocity>2.3</version.apache.velocity>
         <version.args4j>2.33</version.args4j>
         <version.javaparser>2.5.1</version.javaparser>
         <version.javax.ws.rs.api>2.1</version.javax.ws.rs.api>
@@ -95,7 +95,7 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.velocity</groupId>
-                <artifactId>velocity</artifactId>
+                <artifactId>velocity-engine-core</artifactId>
                 <version>${version.apache.velocity}</version>
             </dependency>
             <dependency>

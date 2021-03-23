@@ -26,6 +26,7 @@ import org.jboss.fuse.wsdl2rest.impl.service.MethodInfoImpl;
 import org.jboss.fuse.wsdl2rest.impl.service.ParamImpl;
 import org.jboss.fuse.wsdl2rest.util.IllegalArgumentAssertion;
 import org.jboss.fuse.wsdl2rest.util.IllegalStateAssertion;
+import org.slf4j.helpers.NOPLogger;
 
 public abstract class CamelContextGenerator {
 
@@ -62,7 +63,7 @@ public abstract class CamelContextGenerator {
         ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
         if (this.noVelocityLog) {
-        	ve.setProperty("runtime.log.logsystem.class", org.apache.velocity.runtime.log.NullLogChute.class.getName());
+        	ve.setProperty("runtime.log.instance", NOPLogger.NOP_LOGGER);
         }
         ve.init();
 
