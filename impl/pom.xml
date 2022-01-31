@@ -45,7 +45,7 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>slf4j-simple</artifactId>
             <!-- Add in scope compile so it ends up in the manifest Class-Path -->
         </dependency>
         <dependency>
