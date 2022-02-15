@@ -20,6 +20,7 @@
         <version.junit>4.12.0.redhat-003</version.junit>
         <version.assertj>3.11.1</version.assertj>
         <version.wsdl4j>1.6.3.redhat-2</version.wsdl4j>
+        <version.xom>1.2.5</version.xom>
         
         <!-- Plugin versions -->
         <version-build-helper-plugin>3.0.0</version-build-helper-plugin>
@@ -102,6 +103,11 @@
                 <groupId>wsdl4j</groupId>
                 <artifactId>wsdl4j</artifactId>
                 <version>${version.wsdl4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>xom</groupId>
+                <artifactId>xom</artifactId>
+                <version>${version.xom}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
