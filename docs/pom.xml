@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.jboss.fuse.wsdl2rest</groupId>
         <artifactId>wsdl2rest</artifactId>
-        <version>0.8.0.fuse-SNAPSHOT</version>
+        <version>0.8.0.fuse-7_13_0-00005</version>
     </parent>
 
     <artifactId>wsdl2rest-docs</artifactId>
